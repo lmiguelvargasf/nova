@@ -90,11 +90,10 @@ pnpm --version
    task docker:build
    ```
 
-2. Start all services:
+2. Start backend and database services:
    ```bash
    task docker:up
    ```
-   **Note:** *This starts the backend + database. The frontend runs locally (next step).*
 
 3. Install frontend dependencies:
    ```bash
@@ -105,7 +104,7 @@ pnpm --version
    ```bash
    task frontend:codegen
    ```
-   **Note:** This exports the GraphQL schema from the backend into `frontend/schema/schema.graphql` (via a one-off backend container) and then runs code generation.
+   **Note:** This exports the GraphQL schema from the backend into `frontend/schema/schema.graphql` and then runs code generation.
 
 5. Start the frontend locally:
    ```bash
