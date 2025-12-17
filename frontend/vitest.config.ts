@@ -43,7 +43,7 @@ export default defineConfig({
         "**/playwright-report/**",
         // Storybook files
         "vitest.shims.d.ts",
-        "vitest.workspace.ts",
+        "vitest.storybook.workspace.ts",
         ".storybook/**",
         "**/storybook-static/**",
         // GraphQL files

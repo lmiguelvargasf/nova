@@ -48,6 +48,16 @@ tasks:
     cmds:
       - pnpm test:run
 
+  test:storybook:
+    desc: Run Storybook story tests (Vitest browser mode via Playwright)
+    cmds:
+      - pnpm test:storybook
+
+  test:all:
+    desc: Run unit/component tests + Storybook story tests (may require Playwright browsers)
+    cmds:
+      - pnpm test:all
+
   coverage:
     desc: Generate unit/component test (Vitest) coverage report
     cmds:
