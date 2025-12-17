@@ -42,7 +42,7 @@ A modern full-stack application template built for quick and efficient project s
 ### Prerequisites
 
 The primary prerequisites for this project are:
-- **[Docker Desktop][docker-desktop]:** Provides Docker Engine and Docker Compose (used for backend + database).
+- **[Docker Desktop][docker-desktop]:** Provides Docker Engine and Docker Compose.
 - **[Task][task]:** A task runner / build tool used for managing common development workflows.
 - **[pre-commit][]:** A tool for managing and running pre-commit hooks.
 - **Node.js + pnpm:** Used for running the frontend locally.
