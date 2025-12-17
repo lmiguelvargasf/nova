@@ -1,4 +1,4 @@
-# Nova Stack 🌟
+# Nova 🌟
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 ![Python](https://img.shields.io/badge/python-3.13-blue?style=for-the-badge&logo=python)
@@ -44,7 +44,9 @@ A modern full-stack application template built for quick and efficient project s
 The primary prerequisites for this project are:
 - **[Docker Desktop][docker-desktop]:** Provides Docker Engine and Docker Compose.
 - **[Task][task]:** A task runner / build tool used for managing common development workflows.
-- **[pre-commit][]:** A tool for managing and running pre-commit hooks.
+- **[pre-commit][pre-commit]:** A tool for managing and running pre-commit hooks.
+- **[nvm][nvm]:** Manages your local Node.js versions.
+- **[pnpm][pnpm]:** frontend package manager.
 
 #### Alternative Installation
 
@@ -60,6 +62,9 @@ docker --version
 docker compose version
 task --version
 pre-commit --version
+nvm --version
+node --version
+pnpm --version
 ```
 
 ### Environment Setup
@@ -85,30 +90,40 @@ pre-commit --version
    task docker:build
    ```
 
-2. Start all services:
+2. Start backend and database services:
    ```bash
    task docker:up
    ```
-   **Note:** *Wait for the frontend service to be fully running.*
 
-3. Generate frontend code based on the backend API:
+3. Install frontend dependencies:
+   ```bash
+   task frontend:install
+   ```
+
+4. Generate frontend code based on the backend API:
    ```bash
    task frontend:codegen
    ```
+   **Note:** This exports the GraphQL schema from the backend into `frontend/schema/schema.graphql` and then runs code generation.
 
-4. Create an initial admin user:
+5. Start the frontend locally:
+   ```bash
+   task frontend:dev
+   ```
+
+6. Create an initial admin user:
    ```bash
    task backend:create-user
    ```
    **Note:** *Follow the prompts. Use your email address as the username. You can leave the email field blank when prompted later.*
 
-5. The services will be available at:
+7. The services will be available at:
    - [Frontend Application](http://localhost:3000)
    - [Backend Admin UI](http://localhost:8000/admin/)
    - [Backend Health Check](http://localhost:8000/health)
    - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
-6. To stop and remove containers:
+8. To stop and remove containers:
    ```bash
    task docker:down
    ```
@@ -132,24 +147,11 @@ Refer to the `README.md` files in the [`backend`](./backend/README.md) and [`fro
 
 ### Frontend
 
-If the frontend container crashes when installing dependencies:
+If GraphQL codegen fails (or your generated types feel out of date):
 
-1. Stop all services:
+1. Regenerate the schema + frontend GraphQL types:
    ```bash
-   task docker:down
-   ```
-2. Open a shell in a temporary frontend container:
-   ```bash
-   task frontend:bash
-   ```
-3. Inside the container, install the dependencies.
-4. Build all services again:
-   ```bash
-   task docker:build
-   ```
-5. Start all services:
-   ```bash
-   task docker:up
+   task frontend:codegen
    ```
 
 ## 🔄 CI/CD Workflows
@@ -174,10 +176,9 @@ This project is licensed under the [MIT License](./LICENSE).
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
 [nextjs]: https://nextjs.org/
+[nvm]: https://github.com/nvm-sh/nvm
 [piccolo]: https://piccolo-orm.com/
-[postgresql]: https://www.postgresql.org/
-[pre-commit]: https://pre-commit.com/
-[piccolo]: https://piccolo-orm.com/
+[pnpm]: https://pnpm.io/
 [postgresql]: https://www.postgresql.org/
 [pre-commit]: https://pre-commit.com/
 [python]: https://www.python.org/

@@ -5,7 +5,7 @@ version: '3.17'
 vars:
   DOCKER_COMPOSE: docker compose
   BACKEND_TASK: "{{.DOCKER_COMPOSE}} exec backend task"
-  FRONTEND_TASK: "{{.DOCKER_COMPOSE}} exec frontend task"
+  FRONTEND_TASK: task -d frontend
 
 tasks:
   docker:build:
@@ -69,6 +69,12 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} create-user"
 
+  backend:schema:export:
+    desc: Export backend GraphQL schema to frontend/schema/schema.graphql
+    cmds:
+      - mkdir -p frontend/schema
+      - '{{.DOCKER_COMPOSE}} run --rm -T --no-deps backend task schema:export > frontend/schema/schema.graphql'
+
   frontend:lint:
     desc: Run frontend lint
     cmds:
@@ -112,6 +118,7 @@ tasks:
   frontend:codegen:
     desc: Run frontend codegen
     cmds:
+      - task: backend:schema:export
       - "{{.FRONTEND_TASK}} codegen"
 
   frontend:storybook:build:
@@ -124,14 +131,12 @@ tasks:
     cmds:
       - "{{.FRONTEND_TASK}} storybook:run"
 
-  frontend:bash:
-    desc: Run an interactive bash shell using the frontend Dockerfile as context (no prebuilt image required)
+  frontend:dev:
+    desc: Run Next.js dev server locally (no Docker)
     cmds:
-      - >-
-        docker container run --rm -it \
-          --name frontend-deps-tool \
-          -v "{{.PWD}}/frontend:/app" \
-          -v node_modules:/app/node_modules \
-          -w /app \
-          $(docker build -q -t frontend-deps-tool -f frontend/Dockerfile frontend) \
-          bash
+      - "{{.FRONTEND_TASK}} dev"
+
+  frontend:install:
+    desc: Install frontend dependencies locally (no Docker)
+    cmds:
+      - "{{.FRONTEND_TASK}} install"

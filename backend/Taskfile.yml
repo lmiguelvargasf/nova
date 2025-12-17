@@ -7,6 +7,11 @@ vars:
   PYTEST: uv run pytest
 
 tasks:
+  schema:export:
+    desc: Export GraphQL schema (prints SDL to stdout)
+    cmds:
+      - uv run strawberry export-schema backend.schema:schema
+
   lint:fix:
     desc: Run ruff and automatically fix violations
     cmds:

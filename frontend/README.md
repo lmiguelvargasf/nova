@@ -1,6 +1,6 @@
 # Frontend
 
-This service is containerized via Docker Compose. See the [project root README](../README.md) for setup and running instructions.
+This service runs locally using Node.js and pnpm. See the [project root README](../README.md) for setup and running instructions.
 
 ## Access Frontend
 
@@ -24,6 +24,8 @@ To see all available tasks and their descriptions, run:
 ```bash
 task --list
 ```
+
+You can also run commands directly in the `frontend` directory with `pnpm`.
 
 [Biome]: https://biomejs.dev/
 [Playwright]: https://playwright.dev/
