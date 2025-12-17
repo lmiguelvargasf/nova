@@ -69,6 +69,12 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} create-user"
 
+  backend:schema:export:
+    desc: Export backend GraphQL schema to frontend/schema/schema.graphql
+    cmds:
+      - mkdir -p frontend/schema
+      - '{{.DOCKER_COMPOSE}} run --rm -T --no-deps backend task schema:export > frontend/schema/schema.graphql'
+
   frontend:lint:
     desc: Run frontend lint
     cmds:
@@ -114,12 +120,6 @@ tasks:
     cmds:
       - task: backend:schema:export
       - "{{.FRONTEND_TASK}} codegen"
-
-  backend:schema:export:
-    desc: Export backend GraphQL schema to frontend/schema/schema.graphql
-    cmds:
-      - mkdir -p frontend/schema
-      - '{{.DOCKER_COMPOSE}} run --rm -T --no-deps backend task schema:export > frontend/schema/schema.graphql'
 
   frontend:storybook:build:
     desc: Run frontend storybook:build
