@@ -1,0 +1,140 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  POSTGRES_DB: db
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_HOST: localhost
+  POSTGRES_PORT: 5432
+  POSTGRES_TEST_DB: db_test
+  PICCOLO_CONF: backend.config.piccolo
+
+jobs:
+  generate-schema:
+    name: Generate GraphQL Schema
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Backend Dependencies
+        uses: ./.github/actions/backend-setup
+
+      - name: Generate GraphQL Schema
+        working-directory: ./backend
+        run: |
+          mkdir -p ../frontend/schema
+          uv run strawberry export-schema backend.schema:schema > ../frontend/schema/schema.graphql
+
+      - name: Upload Schema Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: graphql-schema
+          path: frontend/schema/schema.graphql
+          retention-days: 1
+
+  frontend-lint-and-test:
+    name: Frontend Lint and Test
+    needs: [generate-schema]
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.52.0-noble
+
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: '10.8.1'
+
+      - name: Get pnpm store directory
+        id: pnpm-store
+        shell: bash
+        run: |
+          echo "store_path=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-store.outputs.store_path }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Download Schema Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: graphql-schema
+          path: frontend/schema
+
+      - name: Generate GraphQL Code
+        run: pnpm codegen
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Format Check
+        run: pnpm check
+
+      - name: Run Tests
+        run: pnpm test:run
+
+  backend-lint-and-test:
+    name: Backend Lint and Test
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Backend Dependencies
+        uses: ./.github/actions/backend-setup
+
+      - name: Lint with ruff
+        run: uv run ruff check --force-exclude --fix
+
+      - name: Format check with ruff
+        run: uv run ruff format --force-exclude
+
+      - name: Type check with pyrefly
+        run: uv run pyrefly check
+
+      - name: Run tests
+        run: uv run pytest --no-cov

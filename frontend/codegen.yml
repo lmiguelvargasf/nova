@@ -1,0 +1,18 @@
+schema: ${NEXT_PUBLIC_GRAPHQL_ENDPOINT:./schema/schema.graphql}
+documents: "src/**/*.graphql"
+generates:
+  src/lib/graphql/:
+    preset: "client"
+    config:
+      withHooks: true
+      dedupeOperationSuffix: true
+      enumsAsTypes: true
+      skipTypename: false
+      nonOptionalTypename: true
+      strictScalars: true
+      scalars:
+        ID: string
+        DateTime: string
+        UUID: string
+        JSON: '{ [key: string]: any }'
+        Upload: File

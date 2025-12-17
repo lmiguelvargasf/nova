@@ -1,0 +1,137 @@
+# https://taskfile.dev
+
+version: '3.17'
+
+vars:
+  DOCKER_COMPOSE: docker compose
+  BACKEND_TASK: "{{.DOCKER_COMPOSE}} exec backend task"
+  FRONTEND_TASK: "{{.DOCKER_COMPOSE}} exec frontend task"
+
+tasks:
+  docker:build:
+    desc: Build all services (with cache)
+    cmds:
+      - "{{.DOCKER_COMPOSE}} build"
+
+  docker:build:no-cache:
+    desc: Build all services without cache
+    cmds:
+      - "{{.DOCKER_COMPOSE}} build --no-cache"
+
+  docker:up:
+    desc: Start all services
+    cmds:
+      - "{{.DOCKER_COMPOSE}} up"
+
+  docker:down:
+    desc: Stop all services
+    cmds:
+      - "{{.DOCKER_COMPOSE}} down"
+
+  docker:down:volumes:
+    desc: Stop all services and remove volumes
+    aliases: [docker:down:v]
+    cmds:
+      - "{{.DOCKER_COMPOSE}} down -v"
+
+  backend:lint:fix:
+    desc: Run backend lint:fix
+    cmds:
+      - "{{.BACKEND_TASK}} lint:fix"
+
+  backend:format:
+    desc: Run backend format
+    cmds:
+      - "{{.BACKEND_TASK}} format"
+
+  backend:test:
+    desc: Run backend test
+    cmds:
+      - "{{.BACKEND_TASK}} test"
+
+  backend:test:cov:
+    desc: Run backend test:cov
+    cmds:
+      - "{{.BACKEND_TASK}} test:cov"
+
+  backend:test:cov:html:
+    desc: Run backend test:cov:html
+    cmds:
+      - "{{.BACKEND_TASK}} test:cov:html"
+
+  backend:typecheck:
+    desc: Run backend typecheck
+    cmds:
+      - "{{.BACKEND_TASK}} typecheck"
+
+  backend:create-user:
+    desc: Run backend create-user
+    cmds:
+      - "{{.BACKEND_TASK}} create-user"
+
+  frontend:lint:
+    desc: Run frontend lint
+    cmds:
+      - "{{.FRONTEND_TASK}} lint"
+
+  frontend:format:
+    desc: Run frontend format
+    cmds:
+      - "{{.FRONTEND_TASK}} format"
+
+  frontend:check:
+    desc: Run frontend check
+    cmds:
+      - "{{.FRONTEND_TASK}} check"
+
+  frontend:check:unsafe:
+    desc: Run frontend check:unsafe
+    cmds:
+      - "{{.FRONTEND_TASK}} check:unsafe"
+
+  frontend:test:run:
+    desc: Run frontend test:run
+    cmds:
+      - "{{.FRONTEND_TASK}} test:run"
+
+  frontend:test:ui:
+    desc: Run frontend test:ui
+    cmds:
+      - "{{.FRONTEND_TASK}} test:ui"
+
+  frontend:coverage:
+    desc: Run frontend coverage
+    cmds:
+      - "{{.FRONTEND_TASK}} coverage"
+
+  frontend:test:e2e:
+    desc: Run frontend test:e2e
+    cmds:
+      - "{{.FRONTEND_TASK}} test:e2e"
+
+  frontend:codegen:
+    desc: Run frontend codegen
+    cmds:
+      - "{{.FRONTEND_TASK}} codegen"
+
+  frontend:storybook:build:
+    desc: Run frontend storybook:build
+    cmds:
+      - "{{.FRONTEND_TASK}} storybook:build"
+
+  frontend:storybook:run:
+    desc: Run frontend storybook:run
+    cmds:
+      - "{{.FRONTEND_TASK}} storybook:run"
+
+  frontend:bash:
+    desc: Run an interactive bash shell using the frontend Dockerfile as context (no prebuilt image required)
+    cmds:
+      - >-
+        docker container run --rm -it \
+          --name frontend-deps-tool \
+          -v "{{.PWD}}/frontend:/app" \
+          -v node_modules:/app/node_modules \
+          -w /app \
+          $(docker build -q -t frontend-deps-tool -f frontend/Dockerfile frontend) \
+          bash

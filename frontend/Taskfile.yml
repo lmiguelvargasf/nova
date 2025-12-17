@@ -1,0 +1,74 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  lint:
+    desc: Run Biome linter
+    cmds:
+      - pnpm run lint
+
+  format:
+    desc: Format code using Biome
+    cmds:
+      - pnpm run format
+
+  check:
+    desc: Check Biome rules and apply safe fixes (incl. formatting)
+    cmds:
+      - pnpm run check
+
+  check:unsafe:
+    desc: Check Biome rules and apply all fixes (incl. unsafe and formatting)
+    cmds:
+      - pnpm run check:unsafe
+
+  test:
+    desc: Run unit/component tests (Vitest) in watch mode
+    cmds:
+      - pnpm run test
+
+  test:ui:
+    desc: Run unit/component tests (Vitest) with interactive UI, available at http://localhost:51204/__vitest__/
+    cmds:
+      - pnpm run test:ui
+
+  test:run:
+    desc: Run all unit/component tests (Vitest) once
+    cmds:
+      - pnpm run test:run
+
+  coverage:
+    desc: Generate unit/component test (Vitest) coverage report
+    cmds:
+      - pnpm run coverage
+
+  test:e2e:
+    desc: Run end-to-end tests (Playwright) headlessly
+    cmds:
+      - pnpm run test:e2e
+
+  test:e2e:report:
+    desc: Show Playwright HTML report
+    cmds:
+      - pnpm run test:e2e:report
+
+  test:e2e:ui:
+    desc: Run end-to-end tests (Playwright) with interactive UI
+    cmds:
+      - pnpm run test:e2e:ui
+
+  storybook:build:
+    desc: Build Storybook static site
+    cmds:
+      - pnpm run storybook:build
+
+  storybook:run:
+    desc: Run Storybook development server
+    cmds:
+      - pnpm run storybook:run
+
+  codegen:
+    desc: Run GraphQL code generation
+    cmds:
+      - pnpm run codegen

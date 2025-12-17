@@ -1,0 +1,58 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Backend service for the application"
+readme = "README.md"
+authors = [
+    { name = "M", email = "lmiguelvargasf@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "litestar[standard]>=2.15.2",
+    "loguru>=0.7.3",
+    "piccolo-admin>=1.9.1",
+    "piccolo[postgres]>=1.24.2",
+    "pydantic-settings>=2.8.1",
+    "strawberry-graphql>=0.266.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pyrefly>=0.19.1",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
+    "pytest-cov>=6.1.1",
+    "pytest-mock>=3.14.0",
+    "ruff>=0.11.7",
+    "strawberry-graphql[debug-server]>=0.266.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+[tool.ruff.lint]
+select = ["E", "F", "B", "I", "UP", "RUF"]
+ignore = ["E501"]
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "--cov=src"
+
+[tool.coverage.run]
+omit = [
+    "src/backend/config/piccolo*.py",
+]
+
+[tool.pyrefly]
+python-version = "3.13"
+project-includes = ["src"]
+search-path = ["src"]
+site-package-path = [".venv/lib/python3.13/site-packages"]

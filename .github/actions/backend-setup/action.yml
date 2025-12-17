@@ -1,0 +1,22 @@
+name: "Backend Setup"
+description: "Install Python dependencies"
+inputs:
+  working-directory:
+    description: "Directory containing the backend code"
+    required: true
+    default: "./backend"
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+
+    - name: Install uv & Dependencies
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install uv
+        cd ${{ inputs.working-directory }}
+        uv sync

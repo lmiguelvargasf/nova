@@ -1,0 +1,67 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: "backend"
+    env_file:
+      - .env
+      - ./backend/.env
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - /app/.venv
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:8000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  db:
+    image: postgres:17
+    container_name: "db"
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >
+          pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB &&
+          pg_isready -U $$POSTGRES_USER -d $$POSTGRES_TEST_DB
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: "frontend"
+    env_file:
+      - .env
+      - ./frontend/.env.local
+    ports:
+      - "3000:3000"
+      - "51204:51204" # Vite UI
+      - "6006:6006" # Storybook
+    volumes:
+      - ./frontend:/app
+      - node_modules:/app/node_modules
+      - /app/.pnpm-store
+      - /app/src/lib/graphql
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  db_data:
+  node_modules:

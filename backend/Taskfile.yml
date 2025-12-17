@@ -1,0 +1,43 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  RUFF: uv run ruff
+  PYTEST: uv run pytest
+
+tasks:
+  lint:fix:
+    desc: Run ruff and automatically fix violations
+    cmds:
+      - "{{.RUFF}} check --force-exclude --fix"
+
+  format:
+    desc: Run ruff's formatter
+    cmds:
+      - "{{.RUFF}} format --force-exclude"
+
+  typecheck:
+    desc: Run pyrefly for static type checking
+    cmds:
+      - uv run pyrefly check
+
+  test:
+    desc: Run tests without coverage
+    cmds:
+      - PICCOLO_CONF=backend.config.piccolo_test {{.PYTEST}} --no-cov
+
+  test:cov:
+    desc: Run tests with coverage and console report
+    cmds:
+      - PICCOLO_CONF=backend.config.piccolo_test {{.PYTEST}}
+
+  test:cov:html:
+    desc: Run tests with coverage and HTML report
+    cmds:
+      - PICCOLO_CONF=backend.config.piccolo_test {{.PYTEST}} --cov-report html
+
+  create-user:
+    desc: Create a new user using Piccolo
+    cmds:
+      - piccolo user create

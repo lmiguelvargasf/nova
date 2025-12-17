@@ -1,0 +1,47 @@
+# Python cache
+__pycache__
+
+# Python virtual environment
+.venv
+
+# Environment configuration
+.env
+.env-example
+
+# Docker files
+.dockerignore
+Dockerfile
+
+# Git
+.git/
+.gitignore
+
+# Python cache files
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Development environments
+.vscode/
+.idea/
+.DS_Store
+
+# Testing
+tests/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Misc
+*.md
+!README.md
+*.log
+tmp/
