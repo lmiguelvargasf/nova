@@ -45,7 +45,8 @@ The primary prerequisites for this project are:
 - **[Docker Desktop][docker-desktop]:** Provides Docker Engine and Docker Compose.
 - **[Task][task]:** A task runner / build tool used for managing common development workflows.
 - **[pre-commit][pre-commit]:** A tool for managing and running pre-commit hooks.
-- **[nvm][nvm] + [pnpm][pnpm]:** Used for running the frontend locally.
+- **[nvm][nvm]:** Manages your local Node.js versions.
+- **[pnpm][pnpm]:** Package manager used to install and run the frontend locally.
 
 #### Alternative Installation
 
