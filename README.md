@@ -106,6 +106,7 @@ pre-commit --version
    ```bash
    task frontend:codegen
    ```
+   **Note:** This exports the GraphQL schema from the backend into `frontend/schema/schema.graphql` and then runs code generation.
 
 6. Create an initial admin user:
    ```bash
