@@ -25,19 +25,6 @@ To see all available tasks and their descriptions, run:
 task --list
 ```
 
-## Local Development
-
-From the project root:
-
-- Install dependencies:
-  ```bash
-  task frontend:install
-  ```
-- Run the dev server:
-  ```bash
-  task frontend:dev
-  ```
-
 You can also run commands directly in the `frontend` directory with `pnpm`.
 
 [Biome]: https://biomejs.dev/
