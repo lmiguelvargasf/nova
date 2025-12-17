@@ -42,9 +42,10 @@ A modern full-stack application template built for quick and efficient project s
 ### Prerequisites
 
 The primary prerequisites for this project are:
-- **[Docker Desktop][docker-desktop]:** Provides Docker Engine and Docker Compose.
+- **[Docker Desktop][docker-desktop]:** Provides Docker Engine and Docker Compose (used for backend + database).
 - **[Task][task]:** A task runner / build tool used for managing common development workflows.
 - **[pre-commit][]:** A tool for managing and running pre-commit hooks.
+- **Node.js + pnpm:** Used for running the frontend locally.
 
 #### Alternative Installation
 
@@ -89,26 +90,36 @@ pre-commit --version
    ```bash
    task docker:up
    ```
-   **Note:** *Wait for the frontend service to be fully running.*
+   **Note:** *This starts the backend + database. The frontend runs locally (next step).*
 
-3. Generate frontend code based on the backend API:
+3. Install frontend dependencies:
+   ```bash
+   task frontend:install
+   ```
+
+4. Start the frontend locally:
+   ```bash
+   task frontend:dev
+   ```
+
+5. Generate frontend code based on the backend API:
    ```bash
    task frontend:codegen
    ```
 
-4. Create an initial admin user:
+6. Create an initial admin user:
    ```bash
    task backend:create-user
    ```
    **Note:** *Follow the prompts. Use your email address as the username. You can leave the email field blank when prompted later.*
 
-5. The services will be available at:
+7. The services will be available at:
    - [Frontend Application](http://localhost:3000)
    - [Backend Admin UI](http://localhost:8000/admin/)
    - [Backend Health Check](http://localhost:8000/health)
    - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
-6. To stop and remove containers:
+8. To stop and remove containers:
    ```bash
    task docker:down
    ```
@@ -132,24 +143,22 @@ Refer to the `README.md` files in the [`backend`](./backend/README.md) and [`fro
 
 ### Frontend
 
-If the frontend container crashes when installing dependencies:
+If the frontend dependency install fails:
 
 1. Stop all services:
    ```bash
    task docker:down
    ```
-2. Open a shell in a temporary frontend container:
+
+2. Reinstall frontend dependencies locally:
    ```bash
-   task frontend:bash
+   task frontend:install
    ```
-3. Inside the container, install the dependencies.
-4. Build all services again:
-   ```bash
-   task docker:build
-   ```
-5. Start all services:
+
+3. Restart the backend + database, and then the frontend:
    ```bash
    task docker:up
+   task frontend:dev
    ```
 
 ## 🔄 CI/CD Workflows

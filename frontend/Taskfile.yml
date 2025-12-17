@@ -3,6 +3,16 @@
 version: '3'
 
 tasks:
+  dev:
+    desc: Run Next.js development server
+    cmds:
+      - pnpm run dev
+
+  install:
+    desc: Install dependencies
+    cmds:
+      - pnpm install
+
   lint:
     desc: Run Biome linter
     cmds:

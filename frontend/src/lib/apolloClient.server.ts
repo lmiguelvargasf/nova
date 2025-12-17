@@ -7,7 +7,8 @@ export const getClient = cache(() => {
     cache: new InMemoryCache(),
     link: new HttpLink({
       uri:
-        process.env.INTERNAL_GRAPHQL_ENDPOINT || "http://backend:8000/graphql",
+        process.env.INTERNAL_GRAPHQL_ENDPOINT ||
+        "http://localhost:8000/graphql",
     }),
   });
 });
