@@ -144,22 +144,16 @@ Refer to the `README.md` files in the [`backend`](./backend/README.md) and [`fro
 
 ### Frontend
 
-If the frontend dependency install fails:
+If GraphQL codegen fails (or your generated types feel out of date):
 
-1. Stop all services:
-   ```bash
-   task docker:down
-   ```
-
-2. Reinstall frontend dependencies locally:
-   ```bash
-   task frontend:install
-   ```
-
-3. Restart the backend + database, and then the frontend:
+1. Ensure the backend container is running:
    ```bash
    task docker:up
-   task frontend:dev
+   ```
+
+2. Regenerate the schema + frontend GraphQL types:
+   ```bash
+   task frontend:codegen
    ```
 
 ## 🔄 CI/CD Workflows
