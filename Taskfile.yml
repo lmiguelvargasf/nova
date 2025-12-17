@@ -119,7 +119,7 @@ tasks:
     desc: Export backend GraphQL schema to frontend/schema/schema.graphql
     cmds:
       - mkdir -p frontend/schema
-      - '{{.DOCKER_COMPOSE}} exec -T backend task schema:export > frontend/schema/schema.graphql'
+      - '{{.DOCKER_COMPOSE}} run --rm -T --no-deps backend task schema:export > frontend/schema/schema.graphql'
 
   frontend:storybook:build:
     desc: Run frontend storybook:build

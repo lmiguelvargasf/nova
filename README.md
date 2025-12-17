@@ -97,16 +97,16 @@ pre-commit --version
    task frontend:install
    ```
 
-4. Start the frontend locally:
-   ```bash
-   task frontend:dev
-   ```
-
-5. Generate frontend code based on the backend API:
+4. Generate frontend code based on the backend API:
    ```bash
    task frontend:codegen
    ```
-   **Note:** This exports the GraphQL schema from the backend into `frontend/schema/schema.graphql` and then runs code generation.
+   **Note:** This exports the GraphQL schema from the backend into `frontend/schema/schema.graphql` (via a one-off backend container) and then runs code generation.
+
+5. Start the frontend locally:
+   ```bash
+   task frontend:dev
+   ```
 
 6. Create an initial admin user:
    ```bash
@@ -146,12 +146,7 @@ Refer to the `README.md` files in the [`backend`](./backend/README.md) and [`fro
 
 If GraphQL codegen fails (or your generated types feel out of date):
 
-1. Ensure the backend container is running:
-   ```bash
-   task docker:up
-   ```
-
-2. Regenerate the schema + frontend GraphQL types:
+1. Regenerate the schema + frontend GraphQL types:
    ```bash
    task frontend:codegen
    ```
