@@ -44,8 +44,8 @@ A modern full-stack application template built for quick and efficient project s
 The primary prerequisites for this project are:
 - **[Docker Desktop][docker-desktop]:** Provides Docker Engine and Docker Compose.
 - **[Task][task]:** A task runner / build tool used for managing common development workflows.
-- **[pre-commit][]:** A tool for managing and running pre-commit hooks.
-- **Node.js + pnpm:** Used for running the frontend locally.
+- **[pre-commit][pre-commit]:** A tool for managing and running pre-commit hooks.
+- **[nvm][nvm] + [pnpm][pnpm]:** Used for running the frontend locally.
 
 #### Alternative Installation
 
@@ -61,6 +61,9 @@ docker --version
 docker compose version
 task --version
 pre-commit --version
+nvm --version
+node --version
+pnpm --version
 ```
 
 ### Environment Setup
@@ -173,10 +176,9 @@ This project is licensed under the [MIT License](./LICENSE).
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
 [nextjs]: https://nextjs.org/
+[nvm]: https://github.com/nvm-sh/nvm
 [piccolo]: https://piccolo-orm.com/
-[postgresql]: https://www.postgresql.org/
-[pre-commit]: https://pre-commit.com/
-[piccolo]: https://piccolo-orm.com/
+[pnpm]: https://pnpm.io/
 [postgresql]: https://www.postgresql.org/
 [pre-commit]: https://pre-commit.com/
 [python]: https://www.python.org/
