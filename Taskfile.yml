@@ -2,37 +2,49 @@
 
 version: '3.17'
 
+dotenv:
+  - .env
+
 vars:
   DOCKER_COMPOSE: docker compose
-  BACKEND_TASK: "{{.DOCKER_COMPOSE}} exec backend task"
+  BACKEND_TASK: task -d backend
   FRONTEND_TASK: task -d frontend
 
 tasks:
-  docker:build:
-    desc: Build all services (with cache)
+  db:pull:
+    desc: Pull database image
     cmds:
-      - "{{.DOCKER_COMPOSE}} build"
+      - "{{.DOCKER_COMPOSE}} pull"
 
-  docker:build:no-cache:
-    desc: Build all services without cache
-    cmds:
-      - "{{.DOCKER_COMPOSE}} build --no-cache"
-
-  docker:up:
-    desc: Start all services
+  db:up:
+    desc: Start database service
     cmds:
       - "{{.DOCKER_COMPOSE}} up"
 
-  docker:down:
-    desc: Stop all services
+  db:down:
+    desc: Stop database service
     cmds:
       - "{{.DOCKER_COMPOSE}} down"
 
-  docker:down:volumes:
-    desc: Stop all services and remove volumes
-    aliases: [docker:down:v]
+  db:down:volumes:
+    desc: Stop database service and remove volumes
     cmds:
       - "{{.DOCKER_COMPOSE}} down -v"
+
+  backend:install:
+    desc: Install backend dependencies
+    cmds:
+      - "{{.BACKEND_TASK}} install"
+
+  backend:migrate:
+    desc: Run backend migrations
+    cmds:
+      - "{{.BACKEND_TASK}} migrate"
+
+  backend:dev:
+    desc: Run backend
+    cmds:
+      - "{{.BACKEND_TASK}} dev"
 
   backend:lint:fix:
     desc: Run backend lint:fix
@@ -73,7 +85,17 @@ tasks:
     desc: Export backend GraphQL schema to frontend/schema/schema.graphql
     cmds:
       - mkdir -p frontend/schema
-      - '{{.DOCKER_COMPOSE}} run --rm -T --no-deps backend task schema:export > frontend/schema/schema.graphql'
+      - "{{.BACKEND_TASK}} schema:export > frontend/schema/schema.graphql"
+
+  frontend:install:
+    desc: Install frontend dependencies
+    cmds:
+      - "{{.FRONTEND_TASK}} install"
+
+  frontend:dev:
+    desc: Run frontend
+    cmds:
+      - "{{.FRONTEND_TASK}} dev"
 
   frontend:lint:
     desc: Run frontend lint
@@ -130,13 +152,3 @@ tasks:
     desc: Run frontend storybook:run
     cmds:
       - "{{.FRONTEND_TASK}} storybook:run"
-
-  frontend:dev:
-    desc: Run Next.js dev server locally (no Docker)
-    cmds:
-      - "{{.FRONTEND_TASK}} dev"
-
-  frontend:install:
-    desc: Install frontend dependencies locally (no Docker)
-    cmds:
-      - "{{.FRONTEND_TASK}} install"

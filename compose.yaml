@@ -1,26 +1,4 @@
 services:
-  backend:
-    build:
-      context: ./backend
-    container_name: "backend"
-    env_file:
-      - .env
-      - ./backend/.env
-    depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./backend:/app
-      - /app/.venv
-    healthcheck:
-      test: ["CMD-SHELL", "curl --fail http://localhost:8000/health || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 5s
-
   db:
     image: postgres:17
     container_name: "db"

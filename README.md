@@ -44,9 +44,10 @@ A modern full-stack application template built for quick and efficient project s
 The primary prerequisites for this project are:
 - **[Docker Desktop][docker-desktop]:** Provides Docker Engine and Docker Compose.
 - **[Task][task]:** A task runner / build tool used for managing common development workflows.
-- **[pre-commit][pre-commit]:** A tool for managing and running pre-commit hooks.
-- **[nvm][nvm]:** Manages your local Node.js versions.
-- **[pnpm][pnpm]:** frontend package manager.
+- **[pre-commit][]:** A tool for managing and running pre-commit hooks.
+- **[uv][]:** backend package manager.
+- **[nvm][]:** Manages your local Node.js versions.
+- **[pnpm][]:** frontend package manager.
 
 #### Alternative Installation
 
@@ -62,6 +63,7 @@ docker --version
 docker compose version
 task --version
 pre-commit --version
+uv --version
 nvm --version
 node --version
 pnpm --version
@@ -85,47 +87,57 @@ pnpm --version
 
 ### Starting the Application
 
-1. Build the Docker images:
+1. Pull database image:
    ```bash
-   task docker:build
+   task db:pull
    ```
 
-2. Start backend and database services:
+1. Start database service:
    ```bash
-   task docker:up
+   task db:up
    ```
 
-3. Install frontend dependencies:
+1. Install backend dependencies:
+   ```bash
+   task backend:install
+   ```
+
+1. Install frontend dependencies:
    ```bash
    task frontend:install
    ```
 
-4. Generate frontend code based on the backend API:
+1. Start backend:
+   ```bash
+   task backend:dev
+   ```
+
+1. Generate frontend code based on the backend API:
    ```bash
    task frontend:codegen
    ```
    **Note:** This exports the GraphQL schema from the backend into `frontend/schema/schema.graphql` and then runs code generation.
 
-5. Start the frontend locally:
+1. Start frontend:
    ```bash
    task frontend:dev
    ```
 
-6. Create an initial admin user:
+1. Create an initial admin user:
    ```bash
    task backend:create-user
    ```
    **Note:** *Follow the prompts. Use your email address as the username. You can leave the email field blank when prompted later.*
 
-7. The services will be available at:
+1. The services will be available at:
    - [Frontend Application](http://localhost:3000)
    - [Backend Admin UI](http://localhost:8000/admin/)
    - [Backend Health Check](http://localhost:8000/health)
    - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
-8. To stop and remove containers:
+1. To stop and remove database service:
    ```bash
-   task docker:down
+   task db:down
    ```
 
 ## ⚙️ Development Tasks
@@ -186,3 +198,4 @@ This project is licensed under the [MIT License](./LICENSE).
 [tailwind]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
 [typescript]: https://www.typescriptlang.org/
+[uv]: https://docs.astral.sh/uv/

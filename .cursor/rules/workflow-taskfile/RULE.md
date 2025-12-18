@@ -21,7 +21,7 @@ This repo is **Taskfile-first** for workflow operations (install/dev/build/lint/
 
 ## 2) Execution Rules (How to run things)
 - Always recommend the **Taskfile path**:
-  - Docker lifecycle must go through Taskfile targets (no `docker compose up` directly).
+  - Docker lifecycle must go through Taskfile targets (no `docker compose up` directly). Docker Compose handles just the database service.
   - Frontend install/dev/codegen must go through Taskfile targets.
 - For unfamiliar tasks, prefer `task --summary <task>` before execution (safe, no-op).
 - Only suggest raw commands when:
@@ -44,7 +44,7 @@ If a necessary workflow is missing from Taskfile:
 - Propose adding a Task target in `Taskfile.yml` and then using it.
 
 Naming convention for new tasks:
-- `scope:action` (examples: `backend:test`, `frontend:lint`, `db:migrate`, `docker:up`)
+- `scope:action` (examples: `backend:install`, `backend:test`, `frontend:lint`, `frontend:codegen`)
 - Prefer “verbs” for actions: `install`, `dev`, `test`, `lint`, `fmt`, `build`, `codegen`, `migrate`.
 
 If you add a task:
