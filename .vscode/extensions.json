@@ -1,0 +1,24 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "charliermarsh.ruff",
+    "tamasfe.even-better-toml",
+    "redhat.vscode-yaml",
+    "mikestead.dotenv",
+    "biomejs.biome",
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    "graphql.vscode-graphql",
+    "graphql.vscode-graphql-syntax",
+    "ms-playwright.playwright",
+    "unifiedjs.vscode-mdx",
+    "task.vscode-task",
+    "ms-azuretools.vscode-docker",
+    "usernamehw.errorlens",
+    "eamodio.gitlens",
+    "streetsidesoftware.code-spell-checker",
+    "christian-kohler.path-intellisense",
+    "EditorConfig.EditorConfig"
+  ]
+}
