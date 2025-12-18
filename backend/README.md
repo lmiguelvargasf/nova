@@ -1,6 +1,8 @@
 # Backend
 
-This service is containerized via Docker Compose. See the [project root README](../README.md) for setup and running instructions.
+This service runs locally using `uv`.
+Docker Compose is used only for the database service.
+See the [project root README](../README.md) for setup and running instructions.
 
 ## Access Backend
 
@@ -28,8 +30,8 @@ To see all available tasks and their descriptions, run:
 task --list
 ```
 
+[Task]: https://taskfile.dev/
 [pyrefly]: https://pyrefly.org/
 [pytest]: https://docs.pytest.org/
 [pytest-cov]: https://pytest-cov.readthedocs.io/en/latest/readme.html
 [ruff]: https://docs.astral.sh/ruff/
-[Task]: https://taskfile.dev/
