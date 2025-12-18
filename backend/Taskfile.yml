@@ -7,6 +7,22 @@ vars:
   PYTEST: uv run pytest
 
 tasks:
+  install:
+    desc: Install backend dependencies
+    cmds:
+      - uv sync
+
+  migrate:
+    desc: Apply Piccolo migrations
+    cmds:
+      - uv run piccolo migrations forward all
+
+  dev:
+    desc: Run Litestar dev server (migrate first)
+    deps: [migrate]
+    cmds:
+      - uv run litestar run --reload
+
   schema:export:
     desc: Export GraphQL schema (prints SDL to stdout)
     cmds:
@@ -45,4 +61,4 @@ tasks:
   create-user:
     desc: Create a new user using Piccolo
     cmds:
-      - piccolo user create
+      - uv run piccolo user create
