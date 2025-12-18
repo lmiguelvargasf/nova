@@ -5,6 +5,7 @@ globs:
   - "Taskfile.yml"
   - "compose.yaml"
   - "frontend/schema/schema.graphql"
+alwaysApply: false
 ---
 
 ## 1) Scope Boundary

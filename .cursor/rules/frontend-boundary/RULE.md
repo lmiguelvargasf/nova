@@ -4,6 +4,7 @@ globs:
   - "frontend/**/*"
   - "Taskfile.yml"
   - "compose.yaml"
+alwaysApply: false
 ---
 
 ## 1) Scope Boundary
