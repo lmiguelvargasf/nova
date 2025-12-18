@@ -44,7 +44,7 @@ If a necessary workflow is missing from Taskfile:
 - Propose adding a Task target in `Taskfile.yml` and then using it.
 
 Naming convention for new tasks:
-- `scope:action` (examples: `backend:test`, `frontend:lint`, `db:migrate`, `docker:up`)
+- `scope:action` (examples: `backend:install`, `backend:test`, `frontend:lint`, `frontend:codegen`)
 - Prefer “verbs” for actions: `install`, `dev`, `test`, `lint`, `fmt`, `build`, `codegen`, `migrate`.
 
 If you add a task:

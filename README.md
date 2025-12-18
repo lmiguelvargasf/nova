@@ -87,14 +87,14 @@ pnpm --version
 
 ### Starting the Application
 
-1. Build the Docker images:
+1. Pull the database image:
    ```bash
-   task docker:build
+   task db:pull
    ```
 
 1. Start database service:
    ```bash
-   task docker:up
+   task db:up
    ```
 
 1. Install backend dependencies:
@@ -137,7 +137,7 @@ pnpm --version
 
 1. To stop and remove database service:
    ```bash
-   task docker:down
+   task db:down
    ```
 
 ## ⚙️ Development Tasks

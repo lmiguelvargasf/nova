@@ -11,29 +11,23 @@ vars:
   FRONTEND_TASK: task -d frontend
 
 tasks:
-  docker:build:
-    desc: Build services (with cache)
+  db:pull:
+    desc: Pull database image
     cmds:
-      - "{{.DOCKER_COMPOSE}} build"
+      - "{{.DOCKER_COMPOSE}} pull"
 
-  docker:build:no-cache:
-    desc: Build services without cache
-    cmds:
-      - "{{.DOCKER_COMPOSE}} build --no-cache"
-
-  docker:up:
-    desc: Start services
+  db:up:
+    desc: Start database service
     cmds:
       - "{{.DOCKER_COMPOSE}} up"
 
-  docker:down:
-    desc: Stop services
+  db:down:
+    desc: Stop database service
     cmds:
       - "{{.DOCKER_COMPOSE}} down"
 
-  docker:down:volumes:
-    desc: Stop services and remove volumes
-    aliases: [docker:down:v]
+  db:down:volumes:
+    desc: Stop database service and remove volumes
     cmds:
       - "{{.DOCKER_COMPOSE}} down -v"
 
