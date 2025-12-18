@@ -1,0 +1,44 @@
+{
+  "folders": [
+    { "name": "repo", "path": "." },
+    { "name": "backend", "path": "backend" },
+    { "name": "frontend", "path": "frontend" }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/.pytest_cache": true,
+      "**/.ruff_cache": true,
+      "**/.mypy_cache": true,
+      "**/.venv": true,
+      "**/node_modules": true,
+      "frontend/.next": true,
+
+      "backend": true,
+      "frontend": true
+    },
+    "search.exclude": {
+      "**/__pycache__": true,
+      "**/.pytest_cache": true,
+      "**/.ruff_cache": true,
+      "**/.mypy_cache": true,
+      "**/.venv": true,
+      "**/node_modules": true,
+      "frontend/.next": true
+    },
+    "files.watcherExclude": {
+      "**/__pycache__/**": true,
+      "**/.pytest_cache/**": true,
+      "**/.ruff_cache/**": true,
+      "**/.venv/**": true,
+      "**/node_modules/**": true,
+      "**/.next/**": true
+    },
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "python.terminal.activateEnvironment": false
+  }
+}
