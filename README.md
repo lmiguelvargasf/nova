@@ -107,16 +107,16 @@ pnpm --version
    task frontend:install
    ```
 
+1. Start backend:
+   ```bash
+   task backend:dev
+   ```
+
 1. Generate frontend code based on the backend API:
    ```bash
    task frontend:codegen
    ```
    **Note:** This exports the GraphQL schema from the backend into `frontend/schema/schema.graphql` and then runs code generation.
-
-1. Start backend:
-   ```bash
-   task backend:dev
-   ```
 
 1. Start frontend:
    ```bash
