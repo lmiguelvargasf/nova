@@ -9,8 +9,8 @@ alwaysApply: false
 ---
 
 ## 1) Scope Boundary
-- Keep backend changes inside `backend/`.
-- Cross-repo edits are allowed **only when required by the task** or required to keep contracts/examples in sync:
+- **Isolation**: Keep all backend logic within `backend/`. Never import from `frontend/`.
+- **Cross-repo changes**: Allowed **only when required by the task** or required to keep contracts/examples in sync:
   - GraphQL schema/codegen outputs (e.g., `task backend:schema:export` / `task frontend:codegen`)
   - `.env.example` / README updates when backend env vars or workflows change
 

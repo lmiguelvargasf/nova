@@ -9,13 +9,16 @@ alwaysApply: false
 
 ## 1) Scope Boundary
 - **Isolation**: Keep all frontend logic within `frontend/`. Never import from `backend/`.
-- **Dependencies**: Use `pnpm` for dependency management. Avoid adding new packages without explicit justification.
+- **Cross-repo changes**: Allowed **only when required by the task** or required to keep contracts/examples in sync:
+  - GraphQL schema/codegen outputs (e.g., `task backend:schema:export` / `task frontend:codegen`)
+  - `.env.example` / README updates when frontend env vars or workflows change
 
 ## 2) Technology Stack & Standards
 - **Framework**: Next.js 15 (App Router).
 - **Styling**: Tailwind CSS 4. Follow existing design tokens and utility patterns. Avoid custom CSS unless absolutely necessary.
 - **Language**: TypeScript. Maintain strict typing; avoid `any`.
 - **Package manager**: `pnpm` (this repo uses a workspace + `pnpm-lock.yaml`).
+- **Dependencies**: Managed with `pnpm`. Do not add packages without explicit permission.
 - **Data Fetching**: Apollo Client (GraphQL). Use `src/lib/apolloClient.server.ts` for Server Components and `src/lib/apolloClient.ts` for Client Components.
 - **Linting & Formatting**: Biome is the primary tool. Use `task frontend:check` for automated fixes.
 
