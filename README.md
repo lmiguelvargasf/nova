@@ -87,7 +87,7 @@ pnpm --version
 
 ### Starting the Application
 
-1. Pull the database image:
+1. Pull database image:
    ```bash
    task db:pull
    ```
