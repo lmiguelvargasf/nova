@@ -10,7 +10,7 @@ alwaysApply: true
 - **Data Fetching**: Apollo Client (GraphQL). Use `src/lib/apolloClient.server.ts` for Server Components and `src/lib/apolloClient.ts` for Client Components.
 - **Linting & Formatting**: Biome is the primary tool. Use `task frontend:check` for automated fixes.
 
-## 2) The Frontend Boundary
+## 2) Scope Boundary
 - **Isolation**: Keep all frontend logic within `frontend/`. Never import from `backend/`.
 - **Structure**:
   - `src/app/`: Next.js pages, layouts, `loading.tsx`, and `error.tsx`.
