@@ -45,6 +45,7 @@ The primary prerequisites for this project are:
 - **[Docker Desktop][docker-desktop]:** Provides Docker Engine and Docker Compose.
 - **[Task][task]:** A task runner / build tool used for managing common development workflows.
 - **[pre-commit][pre-commit]:** A tool for managing and running pre-commit hooks.
+- **[uv][uv]:** backend package manager.
 - **[nvm][nvm]:** Manages your local Node.js versions.
 - **[pnpm][pnpm]:** frontend package manager.
 
@@ -62,6 +63,7 @@ docker --version
 docker compose version
 task --version
 pre-commit --version
+uv --version
 nvm --version
 node --version
 pnpm --version
@@ -90,40 +92,50 @@ pnpm --version
    task docker:build
    ```
 
-2. Start backend and database services:
+2. Start the database service:
    ```bash
    task docker:up
    ```
 
-3. Install frontend dependencies:
+3. Install backend dependencies:
+   ```bash
+   task backend:install
+   ```
+
+4. Run backend:
+   ```bash
+   task backend:dev
+   ```
+
+5. Install frontend dependencies:
    ```bash
    task frontend:install
    ```
 
-4. Generate frontend code based on the backend API:
+6. Generate frontend code based on the backend API:
    ```bash
    task frontend:codegen
    ```
    **Note:** This exports the GraphQL schema from the backend into `frontend/schema/schema.graphql` and then runs code generation.
 
-5. Start the frontend locally:
+7. Start the frontend:
    ```bash
    task frontend:dev
    ```
 
-6. Create an initial admin user:
+8. Create an initial admin user:
    ```bash
    task backend:create-user
    ```
    **Note:** *Follow the prompts. Use your email address as the username. You can leave the email field blank when prompted later.*
 
-7. The services will be available at:
+9. The services will be available at:
    - [Frontend Application](http://localhost:3000)
    - [Backend Admin UI](http://localhost:8000/admin/)
    - [Backend Health Check](http://localhost:8000/health)
    - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
-8. To stop and remove containers:
+10. To stop and remove database service:
    ```bash
    task docker:down
    ```
@@ -186,3 +198,4 @@ This project is licensed under the [MIT License](./LICENSE).
 [tailwind]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
 [typescript]: https://www.typescriptlang.org/
+[uv]: https://docs.astral.sh/uv/
