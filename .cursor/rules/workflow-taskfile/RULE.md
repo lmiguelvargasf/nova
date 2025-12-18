@@ -5,7 +5,7 @@ alwaysApply: true
 
 ## 0) Prime Directive
 This repo is **Taskfile-first** for workflow operations (install/dev/build/lint/format/test/codegen/docker lifecycle).
-- Prefer `task <target>` over raw `docker`, `docker compose`, `pnpm`, `pip`, etc.
+- Prefer `task <target>` over raw `docker`, `docker compose`, `pnpm`, `pip`, `uv`, etc.
 - It’s OK to use raw commands for **read-only diagnostics** (e.g., `ls`, `cat`, `grep`, `curl`) when they don’t replace a workflow.
 - Diagnostics that don’t replace a workflow (e.g., logs/status/version checks) may be run directly when helpful.
 - Never invent task targets. If you're not sure a target exists, **verify first**.
