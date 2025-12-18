@@ -21,7 +21,7 @@ This repo is **Taskfile-first** for workflow operations (install/dev/build/lint/
 
 ## 2) Execution Rules (How to run things)
 - Always recommend the **Taskfile path**:
-  - Docker lifecycle must go through Taskfile targets (no `docker compose up` directly).
+  - Docker lifecycle must go through Taskfile targets (no `docker compose up` directly). In this repo, Docker Compose handles just the database service.
   - Frontend install/dev/codegen must go through Taskfile targets.
 - For unfamiliar tasks, prefer `task --summary <task>` before execution (safe, no-op).
 - Only suggest raw commands when:
