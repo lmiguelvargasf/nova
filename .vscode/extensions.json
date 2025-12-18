@@ -13,12 +13,9 @@
     "graphql.vscode-graphql-syntax",
     "ms-playwright.playwright",
     "unifiedjs.vscode-mdx",
-    "task.vscode-task",
     "ms-azuretools.vscode-docker",
     "usernamehw.errorlens",
     "eamodio.gitlens",
-    "streetsidesoftware.code-spell-checker",
-    "christian-kohler.path-intellisense",
-    "EditorConfig.EditorConfig"
+    "christian-kohler.path-intellisense"
   ]
 }
