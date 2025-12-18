@@ -2,6 +2,9 @@
 
 version: '3.17'
 
+dotenv:
+  - .env
+
 vars:
   DOCKER_COMPOSE: docker compose
   BACKEND_TASK: task -d backend
