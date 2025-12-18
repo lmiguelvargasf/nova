@@ -92,50 +92,50 @@ pnpm --version
    task docker:build
    ```
 
-2. Start the database service:
+1. Start database service:
    ```bash
    task docker:up
    ```
 
-3. Install backend dependencies:
+1. Install backend dependencies:
    ```bash
    task backend:install
    ```
 
-4. Run backend:
-   ```bash
-   task backend:dev
-   ```
-
-5. Install frontend dependencies:
+1. Install frontend dependencies:
    ```bash
    task frontend:install
    ```
 
-6. Generate frontend code based on the backend API:
+1. Generate frontend code based on the backend API:
    ```bash
    task frontend:codegen
    ```
    **Note:** This exports the GraphQL schema from the backend into `frontend/schema/schema.graphql` and then runs code generation.
 
-7. Start the frontend:
+1. Start backend:
+   ```bash
+   task backend:dev
+   ```
+
+1. Start frontend:
    ```bash
    task frontend:dev
    ```
 
-8. Create an initial admin user:
+1. Create an initial admin user:
    ```bash
    task backend:create-user
    ```
    **Note:** *Follow the prompts. Use your email address as the username. You can leave the email field blank when prompted later.*
 
-9. The services will be available at:
+1. The services will be available at:
    - [Frontend Application](http://localhost:3000)
    - [Backend Admin UI](http://localhost:8000/admin/)
    - [Backend Health Check](http://localhost:8000/health)
    - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
-10. To stop and remove database service:
+1. To stop and remove database service:
    ```bash
    task docker:down
    ```
