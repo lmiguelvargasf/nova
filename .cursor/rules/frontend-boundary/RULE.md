@@ -15,6 +15,7 @@ alwaysApply: false
 - **Framework**: Next.js 15 (App Router).
 - **Styling**: Tailwind CSS 4. Follow existing design tokens and utility patterns. Avoid custom CSS unless absolutely necessary.
 - **Language**: TypeScript. Maintain strict typing; avoid `any`.
+- **Package manager**: `pnpm` (this repo uses a workspace + `pnpm-lock.yaml`).
 - **Data Fetching**: Apollo Client (GraphQL). Use `src/lib/apolloClient.server.ts` for Server Components and `src/lib/apolloClient.ts` for Client Components.
 - **Linting & Formatting**: Biome is the primary tool. Use `task frontend:check` for automated fixes.
 

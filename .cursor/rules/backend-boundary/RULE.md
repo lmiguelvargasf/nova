@@ -20,7 +20,8 @@ alwaysApply: false
 - **GraphQL**: Strawberry + `strawberry.litestar` integration.
 - **Python**: `>=3.13` (use modern typing; keep type hints accurate for `pyrefly`).
 - **Settings/Validation**: `pydantic-settings` (Pydantic v2) for configuration; use Pydantic models when validation is non-trivial.
-- **Dependencies**: Managed with `uv` (`uv.lock` exists). Do not add packages without explicit permission.
+- **Package manager**: `uv` (`uv.lock` exists).
+- **Dependencies**: Managed with `uv`. Do not add packages without explicit permission.
 
 ## 3) Conventions
 - Follow existing Litestar conventions and project structure already in this repo.
