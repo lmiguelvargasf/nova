@@ -1,6 +1,10 @@
 ---
 description: Backend boundary rules (Litestar, Piccolo, Strawberry, Python 3.13+); keep changes scoped, consistent, and contract-safe.
-alwaysApply: true
+globs:
+  - "backend/**/*"
+  - "Taskfile.yml"
+  - "compose.yaml"
+  - "frontend/schema/schema.graphql"
 ---
 
 ## 1) Scope Boundary

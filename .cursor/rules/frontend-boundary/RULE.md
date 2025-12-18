@@ -1,6 +1,9 @@
 ---
 description: Frontend boundary rules (Next.js 15, TypeScript, Tailwind 4, Apollo)
-alwaysApply: true
+globs:
+  - "frontend/**/*"
+  - "Taskfile.yml"
+  - "compose.yaml"
 ---
 
 ## 1) Scope Boundary
