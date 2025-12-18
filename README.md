@@ -43,11 +43,11 @@ A modern full-stack application template built for quick and efficient project s
 
 The primary prerequisites for this project are:
 - **[Docker Desktop][docker-desktop]:** Provides Docker Engine and Docker Compose.
-- **[Task][task]:** A task runner / build tool used for managing common development workflows.
-- **[pre-commit][pre-commit]:** A tool for managing and running pre-commit hooks.
-- **[uv][uv]:** backend package manager.
-- **[nvm][nvm]:** Manages your local Node.js versions.
-- **[pnpm][pnpm]:** frontend package manager.
+- **[Task][]:** A task runner / build tool used for managing common development workflows.
+- **[pre-commit][]:** A tool for managing and running pre-commit hooks.
+- **[uv][]:** backend package manager.
+- **[nvm][]:** Manages your local Node.js versions.
+- **[pnpm][]:** frontend package manager.
 
 #### Alternative Installation
 
@@ -183,6 +183,7 @@ All versioned changes are documented on the [GitHub Releases][releases] page.
 
 This project is licensed under the [MIT License](./LICENSE).
 
+[Task]: https://taskfile.dev/
 [chartjs]: https://www.chartjs.org/
 [docker-desktop]: https://www.docker.com/products/docker-desktop/
 [graphql]: https://graphql.org/
@@ -196,6 +197,5 @@ This project is licensed under the [MIT License](./LICENSE).
 [python]: https://www.python.org/
 [releases]: https://github.com/lmiguelvargasf/nova-stack/releases
 [tailwind]: https://tailwindcss.com/
-[task]: https://taskfile.dev/
 [typescript]: https://www.typescriptlang.org/
 [uv]: https://docs.astral.sh/uv/
