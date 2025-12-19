@@ -82,7 +82,7 @@ tasks:
       - "{{.BACKEND_TASK}} typecheck"
 
   backend:create-admin-user:
-    desc: Create or promote an admin user for SQLAdmin login
+    desc: Create an admin user
     cmds:
       - "{{.BACKEND_TASK}} create-admin-user"
 

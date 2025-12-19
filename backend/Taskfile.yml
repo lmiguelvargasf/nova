@@ -69,6 +69,6 @@ tasks:
       - "{{.PYTEST}} --cov-report html"
 
   create-admin-user:
-    desc: Create or promote an admin user (email/password) for SQLAdmin login
+    desc: Create an admin user
     cmds:
       - uv run python -m backend.scripts.create_admin_user
