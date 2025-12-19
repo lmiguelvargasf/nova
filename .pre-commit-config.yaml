@@ -8,27 +8,19 @@ repos:
       - id: check-added-large-files
       - id: check-merge-conflict
 
-  # --- backend hooks ---
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.10
-    hooks:
-      - id: ruff
-        name: ruff (backend)
-        args: [--fix]
-        additional_dependencies: []
-        types: [python]
-        files: ^backend/.*\.py$
-      - id: ruff-format
-        name: ruff-format (backend)
-        additional_dependencies: []
-        types: [python]
-        files: ^backend/.*\.py$
-
-  # --- frontend hooks ---
+  # --- repo-local hooks (via Taskfile) ---
   - repo: local
     hooks:
-      - id: biome-check
-        name: biome-check (frontend)
-        entry: bash -c 'cd frontend && pnpm exec biome check --write "${@/#frontend\//}"' --
+      - id: task-backend
+        name: task backend (ruff)
+        entry: task backend:lint:fix backend:format
         language: system
-        files: ^frontend/.*\.(js|jsx|ts|tsx|json|css)$
+        pass_filenames: false
+        files: ^backend/
+
+      - id: task-frontend
+        name: task frontend (biome)
+        entry: task frontend:check
+        language: system
+        pass_filenames: false
+        files: ^frontend/
