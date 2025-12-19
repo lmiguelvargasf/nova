@@ -1,8 +1,12 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, InMemoryCache } from "@apollo/client/core";
+import { HttpLink } from "@apollo/client/link/http";
 
 const client = new ApolloClient({
-  uri:
-    process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || "http://localhost:8000/graphql",
+  link: new HttpLink({
+    uri:
+      process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ||
+      "http://localhost:8000/graphql",
+  }),
   cache: new InMemoryCache(),
 });
 

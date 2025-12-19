@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import type { ImageProps } from "next/image";
-import { expect, test, vi } from "vitest";
 import Home from "@/app/page";
 
 // Mock the Apollo client module

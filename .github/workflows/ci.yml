@@ -56,7 +56,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v3
@@ -95,8 +95,11 @@ jobs:
       - name: Format Check
         run: pnpm check
 
+      - name: Type Check
+        run: pnpm check:types
+
       - name: Run Tests
-        run: pnpm test:run
+        run: pnpm test:unit:run
 
   backend-lint-and-test:
     name: Backend Lint and Test

@@ -6,11 +6,18 @@ on:
 
 env:
   PR_SIZE_THRESHOLD: 400
+  # Exclude files/dirs which commonly inflate PR additions without meaningfully increasing review scope
+  # - lockfiles: package manager / dependency updates
+  # - generated artifacts: coverage reports, storybook static output, Next build output, etc.
+  PR_SIZE_EXCLUDE_REGEX: '(^frontend/pnpm-lock\.yaml$|^backend/uv\.lock$|^frontend/storybook-static/|^frontend/coverage/|^frontend/schema/|^frontend/\.next/)'
 
 jobs:
   validate-pr:
     name: Validate PR
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+      issues: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,15 +45,40 @@ jobs:
       - name: Check for large PR
         id: pr_size
         run: |
-          PR_ADDITIONS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" \
-            | jq '.additions')
+          set -euo pipefail
 
-          if [ $PR_ADDITIONS -gt ${{ env.PR_SIZE_THRESHOLD }} ]; then
-            echo "⚠️ This PR is quite large with $PR_ADDITIONS additions. Consider breaking it down into smaller, more focused PRs."
+          EXCLUDE_REGEX="${PR_SIZE_EXCLUDE_REGEX:-}"
+          PAGE=1
+          TOTAL=0
+
+          # Sum additions across PR files, excluding lockfiles / generated artifacts.
+          # Using the /pulls/{pull_number}/files endpoint avoids false positives from lockfile churn.
+          while true; do
+            RESP="$(curl -fsSL \
+              -H "Authorization: Bearer ${{ github.token }}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files?per_page=100&page=${PAGE}")"
+
+            COUNT="$(echo "$RESP" | jq 'length')"
+            if [ "$COUNT" -eq 0 ]; then
+              break
+            fi
+
+            if [ -n "$EXCLUDE_REGEX" ]; then
+              ADD="$(echo "$RESP" | jq --arg re "$EXCLUDE_REGEX" '[.[] | select((.filename | test($re)) | not) | .additions] | add // 0')"
+            else
+              ADD="$(echo "$RESP" | jq '[.[] | .additions] | add // 0')"
+            fi
+
+            TOTAL=$((TOTAL + ADD))
+            PAGE=$((PAGE + 1))
+          done
+
+          if [ "$TOTAL" -gt "${{ env.PR_SIZE_THRESHOLD }}" ]; then
+            echo "⚠️ This PR is quite large with ${TOTAL} additions (excluding lockfiles/generated). Consider breaking it down into smaller, more focused PRs."
             echo "is_large=true" >> $GITHUB_OUTPUT
           else
-            echo "PR size looks good with $PR_ADDITIONS additions."
+            echo "PR size looks good with ${TOTAL} additions (excluding lockfiles/generated)."
             echo "is_large=false" >> $GITHUB_OUTPUT
           fi
         shell: bash
@@ -61,5 +93,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '⚠️ This PR is quite large. Consider breaking it down into smaller, more focused PRs for easier review.'
+              body: '⚠️ This PR is quite large (excluding lockfiles/generated artifacts). Consider breaking it down into smaller, more focused PRs for easier review.'
             })
