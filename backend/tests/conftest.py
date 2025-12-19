@@ -14,13 +14,14 @@ from sqlalchemy.ext.asyncio import (
 from strawberry.litestar import make_graphql_controller
 
 from backend.apps.users.services import UserService
-from backend.config.alchemy import build_connection_string
-from backend.config.base import settings
 from backend.schema import schema
 
 
 @pytest.fixture
 async def db_engine() -> AsyncIterator[AsyncEngine]:
+    from backend.config.alchemy import build_connection_string
+    from backend.config.base import settings
+
     if settings.postgres_test_db == settings.postgres_db:
         raise RuntimeError("Refusing to run tests against the development database.")
 
