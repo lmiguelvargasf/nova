@@ -55,7 +55,7 @@ tasks:
   validate:
     desc: Run full validation suite (check + check:types + tests + storybook tests)
     cmds:
-      - pnpm validate
+      - env -u NODE_ENV pnpm validate
 
   test:
     desc: Run unit/component tests (Vitest) in watch mode
