@@ -10,7 +10,7 @@ repos:
 
   # --- backend hooks ---
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.7
+    rev: v0.14.10
     hooks:
       - id: ruff
         name: ruff (backend)
@@ -26,7 +26,7 @@ repos:
 
   # --- frontend hooks ---
   - repo: https://github.com/biomejs/pre-commit
-    rev: v1.9.4
+    rev: v2.3.10
     hooks:
       - id: biome-check
         name: biome-check (frontend)
