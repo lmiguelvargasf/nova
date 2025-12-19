@@ -36,7 +36,6 @@ export default defineConfig({
         // framework and build configs
         "**/next.config.ts",
         "**/postcss.config.mjs",
-        "**/eslint.config.mjs",
         "**/vitest.config.ts",
         "**/playwright.config.ts",
         // type declarations
