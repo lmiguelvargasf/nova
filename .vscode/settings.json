@@ -2,17 +2,12 @@
   "editor.formatOnSave": false,
   "terminal.integrated.cwd": "${workspaceFolder}",
 
-  "python.defaultInterpreterPath": "backend/.venv/bin/python",
-  "python.analysis.extraPaths": ["backend/src"],
-  "python.analysis.typeCheckingMode": "basic",
+  "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
   "python.testing.pytestEnabled": true,
   "python.testing.unittestEnabled": false,
-  "python.testing.cwd": "backend",
+  "python.testing.cwd": "${workspaceFolder}/backend",
   "python.testing.pytestArgs": ["tests"],
   "python.terminal.activateEnvironment": true,
-
-  "cursorpyright.analysis.extraPaths": ["backend/src"],
-  "cursorpyright.analysis.typeCheckingMode": "basic",
 
   "ruff.format.enable": true,
   "[python]": {
@@ -29,7 +24,7 @@
   "[javascript]": { "editor.defaultFormatter": "biomejs.biome" },
   "[typescript]": { "editor.defaultFormatter": "biomejs.biome" },
   "[javascriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
-  "[typescriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[typescriptreact]": { "editor.defaultFormatter": "vscode.typescript-language-features" },
   "[json]": { "editor.defaultFormatter": "biomejs.biome" },
   "[jsonc]": { "editor.defaultFormatter": "biomejs.biome" },
 
@@ -44,5 +39,6 @@
   "eslint.workingDirectories": [{ "mode": "auto" }],
   "eslint.validate": [
     "javascript", "javascriptreact", "typescript", "typescriptreact"
-  ]
+  ],
+  "python-envs.pythonProjects": []
 }
