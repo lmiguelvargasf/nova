@@ -1,5 +1,5 @@
 ---
-description: Frontend boundary rules (Next.js 15, TypeScript, Tailwind 4, Apollo)
+description: Frontend boundary rules (Next.js 16, TypeScript, Tailwind 4, Apollo)
 globs:
   - "frontend/**/*"
   - "Taskfile.yml"
@@ -14,7 +14,8 @@ alwaysApply: false
   - `.env.example` / README updates when frontend env vars or workflows change
 
 ## 2) Technology Stack & Standards
-- **Framework**: Next.js 15 (App Router).
+- **Framework**: Next.js 16 (App Router).
+- **Runtime**: Node.js 24.
 - **Styling**: Tailwind CSS 4. Follow existing design tokens and utility patterns. Avoid custom CSS unless absolutely necessary.
 - **Language**: TypeScript. Maintain strict typing; avoid `any`.
 - **Package manager**: `pnpm` (this repo uses a workspace + `pnpm-lock.yaml`).

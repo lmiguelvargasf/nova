@@ -1,6 +1,6 @@
 # Frontend
 
-This service runs locally using Node.js and pnpm. See the [project root README](../README.md) for setup and running instructions.
+This service runs locally using Node.js (v24), Next.js 16, and pnpm. See the [project root README](../README.md) for setup and running instructions.
 
 ## Access Frontend
 
