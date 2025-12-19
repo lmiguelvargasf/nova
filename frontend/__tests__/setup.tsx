@@ -4,7 +4,6 @@
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
 import type React from "react";
-import { vi } from "vitest";
 
 // Mock next/image to render a regular HTML <img> in tests
 vi.mock("next/image", () => ({
