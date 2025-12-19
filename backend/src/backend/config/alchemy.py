@@ -3,7 +3,7 @@ from advanced_alchemy.extensions.litestar import (
     SQLAlchemyAsyncConfig,
 )
 
-from backend.apps.users.models import UserModel
+from backend.apps import models as app_models
 
 from .base import settings
 
@@ -33,7 +33,7 @@ alchemy_config = SQLAlchemyAsyncConfig(
     before_send_handler="autocommit",
     session_config=session_config,
     # Ensure the migration/autogenerate machinery sees all imported models.
-    metadata=UserModel.metadata,
+    metadata=app_models.metadata,
     # We use Alembic migrations for schema management.
     create_all=False,
 )

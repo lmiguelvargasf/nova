@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.litestar import make_graphql_controller
 
+from .apps.users.services import UserService
 from .config.alchemy import alchemy_config
 from .config.base import settings
 from .schema import schema
@@ -57,7 +58,7 @@ async def health_check() -> HealthStatus:
 
 
 async def graphql_context_getter(db_session: AsyncSession) -> dict[str, object]:
-    return {"db_session": db_session}
+    return {"db_session": db_session, "user_service": UserService(db_session)}
 
 
 GraphQLController = make_graphql_controller(
