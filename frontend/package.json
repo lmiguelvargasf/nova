@@ -7,7 +7,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "validate": "pnpm check && pnpm check:types && pnpm test:unit:run && pnpm test:story:run",
+    "validate": "pnpm check && pnpm check:types && pnpm test:unit:run && pnpm test:story:run && pnpm build",
 
     "// --- CHECKS (LINT/FORMAT/TYPES) ---": "",
     "check": "biome check --write .",
