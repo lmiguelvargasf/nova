@@ -7,23 +7,29 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": [
-      ".pnpm-store",
-      "public",
-      ".next",
-      "coverage",
-      "playwright-report",
-      "storybook-static",
-      "src/lib/graphql",
-      "schema/schema.graphql"
+    "includes": [
+      "**/*",
+      "!!**/.pnpm-store",
+      "!!**/public",
+      "!!**/.next",
+      "!!**/coverage",
+      "!!**/playwright-report",
+      "!!**/storybook-static",
+      "!!**/src/lib/graphql",
+      "!!**/schema/schema.graphql"
     ]
   },
   "formatter": {
     "enabled": true,
     "useEditorconfig": true
   },
-  "organizeImports": {
-    "enabled": true
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
   },
   "linter": {
     "enabled": true,
