@@ -32,11 +32,5 @@
     "source.organizeImports.biome": "explicit",
     "source.fixAll.ruff": "explicit",
     "source.organizeImports.ruff": "explicit"
-  },
-
-  "eslint.format.enable": false,
-  "eslint.workingDirectories": [{ "mode": "auto" }],
-  "eslint.validate": [
-    "javascript", "javascriptreact", "typescript", "typescriptreact"
-  ]
+  }
 }
