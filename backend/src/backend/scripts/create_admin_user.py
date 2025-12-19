@@ -17,24 +17,20 @@ async def _create_admin(*, email: str, password: str) -> bool:
             select(UserModel).where(UserModel.email == email)
         )
         if existing:
-            existing.is_admin = True
-            existing.is_active = True
-            existing.password_hash = hash_password(password)
-            created = False
-        else:
-            session.add(
-                UserModel(
-                    email=email,
-                    password_hash=hash_password(password),
-                    first_name="",
-                    last_name="",
-                    is_admin=True,
-                    is_active=True,
-                )
+            return False
+
+        session.add(
+            UserModel(
+                email=email,
+                password_hash=hash_password(password),
+                first_name="",
+                last_name="",
+                is_admin=True,
+                is_active=True,
             )
-            created = True
+        )
         await session.commit()
-        return created
+        return True
 
 
 def _is_valid_email(email: str) -> bool:
@@ -90,7 +86,7 @@ def main() -> None:
     if created:
         console.print(f"[green]Created admin user:[/green] {email_norm}")
     else:
-        console.print(f"[yellow]Updated admin user:[/yellow] {email_norm}")
+        console.print(f"[yellow]User already exists:[/yellow] {email_norm}")
 
 
 if __name__ == "__main__":
