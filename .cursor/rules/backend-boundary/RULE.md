@@ -1,5 +1,5 @@
 ---
-description: Backend boundary rules (Litestar, Piccolo, Strawberry, Python 3.13+); keep changes scoped, consistent, and contract-safe.
+description: Backend boundary rules (Litestar, Piccolo, Strawberry, Python 3.14+); keep changes scoped, consistent, and contract-safe.
 globs:
   - "backend/**/*"
   - "Taskfile.yml"
@@ -18,7 +18,7 @@ alwaysApply: false
 - **Framework**: Litestar (`litestar[standard]`). Prefer `async def` handlers for request/IO code.
 - **ORM**: Piccolo (Postgres). Follow Piccolo table patterns and query APIs.
 - **GraphQL**: Strawberry + `strawberry.litestar` integration.
-- **Python**: `>=3.13` (use modern typing; keep type hints accurate for `pyrefly`).
+- **Python**: `>=3.14` (use modern typing; keep type hints accurate for `pyrefly`).
 - **Settings/Validation**: `pydantic-settings` (Pydantic v2) for configuration; use Pydantic models when validation is non-trivial.
 - **Package manager**: `uv` (`uv.lock` exists).
 - **Dependencies**: Managed with `uv`. Do not add packages without explicit permission.
