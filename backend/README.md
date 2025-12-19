@@ -17,10 +17,6 @@ The admin UI is backed by SQLAlchemy models and is protected with **session-base
 - **Required env vars**:
   - `ADMIN_SESSION_SECRET`
 
-- **Create the first admin user**:
-  - `task backend:create-admin-user`
-  - You can also pass env vars to avoid prompts: `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_FIRST_NAME`, `ADMIN_LAST_NAME`
-
 ## Migrations (Advanced Alchemy / Alembic)
 
 - **Apply migrations**: `task backend:migrate`
