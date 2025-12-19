@@ -8,7 +8,6 @@
   "python.testing.cwd": "${workspaceFolder}/backend",
   "python.testing.pytestArgs": ["tests"],
 
-  "ruff.format.enable": true,
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true
