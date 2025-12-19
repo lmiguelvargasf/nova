@@ -122,6 +122,16 @@ tasks:
     cmds:
       - "{{.FRONTEND_TASK}} check:unsafe"
 
+  frontend:type-check:
+    desc: Run frontend type-check
+    cmds:
+      - "{{.FRONTEND_TASK}} type-check"
+
+  frontend:validate:
+    desc: Run frontend validate (check + type-check + tests)
+    cmds:
+      - "{{.FRONTEND_TASK}} validate"
+
   frontend:test:run:
     desc: Run frontend test:run
     cmds:

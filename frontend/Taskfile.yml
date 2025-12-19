@@ -47,6 +47,16 @@ tasks:
     cmds:
       - pnpm check:unsafe
 
+  type-check:
+    desc: Run TypeScript type checker
+    cmds:
+      - pnpm type-check
+
+  validate:
+    desc: Run full validation suite (check + type-check + tests + storybook tests)
+    cmds:
+      - pnpm validate
+
   test:
     desc: Run unit/component tests (Vitest) in watch mode
     cmds:
