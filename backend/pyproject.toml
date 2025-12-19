@@ -9,7 +9,7 @@ authors = [
 requires-python = ">=3.14"
 dependencies = [
     "advanced-alchemy[argon2]>=1.8.2",
-    "asyncpg",
+    "asyncpg>=0.31.0",
     "litestar[standard]>=2.19.0",
     "loguru>=0.7.3",
     "pydantic-settings>=2.12.0",
