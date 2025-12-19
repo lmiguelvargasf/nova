@@ -122,30 +122,35 @@ tasks:
     cmds:
       - "{{.FRONTEND_TASK}} check:unsafe"
 
-  frontend:type-check:
-    desc: Run frontend type-check
+  frontend:check:types:
+    desc: Run frontend check:types
     cmds:
-      - "{{.FRONTEND_TASK}} type-check"
+      - "{{.FRONTEND_TASK}} check:types"
 
   frontend:validate:
-    desc: Run frontend validate (check + type-check + tests)
+    desc: Run frontend validate (check + check:types + tests)
     cmds:
       - "{{.FRONTEND_TASK}} validate"
 
-  frontend:test:run:
-    desc: Run frontend test:run
+  frontend:test:unit:
+    desc: Run frontend test:unit
     cmds:
-      - "{{.FRONTEND_TASK}} test:run"
+      - "{{.FRONTEND_TASK}} test:unit"
 
-  frontend:test:ui:
-    desc: Run frontend test:ui
+  frontend:test:unit:run:
+    desc: Run frontend test:unit:run
     cmds:
-      - "{{.FRONTEND_TASK}} test:ui"
+      - "{{.FRONTEND_TASK}} test:unit:run"
 
-  frontend:coverage:
-    desc: Run frontend coverage
+  frontend:test:unit:ui:
+    desc: Run frontend test:unit:ui
     cmds:
-      - "{{.FRONTEND_TASK}} coverage"
+      - "{{.FRONTEND_TASK}} test:unit:ui"
+
+  frontend:test:coverage:
+    desc: Run frontend test:coverage
+    cmds:
+      - "{{.FRONTEND_TASK}} test:coverage"
 
   frontend:test:e2e:
     desc: Run frontend test:e2e
@@ -163,7 +168,7 @@ tasks:
     cmds:
       - "{{.FRONTEND_TASK}} storybook:build"
 
-  frontend:storybook:run:
-    desc: Run frontend storybook:run
+  frontend:storybook:dev:
+    desc: Run frontend storybook:dev
     cmds:
-      - "{{.FRONTEND_TASK}} storybook:run"
+      - "{{.FRONTEND_TASK}} storybook:dev"

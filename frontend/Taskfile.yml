@@ -47,13 +47,13 @@ tasks:
     cmds:
       - pnpm check:unsafe
 
-  type-check:
+  check:types:
     desc: Run TypeScript type checker
     cmds:
-      - pnpm type-check
+      - pnpm check:types
 
   validate:
-    desc: Run full validation suite (check + type-check + tests + storybook tests)
+    desc: Run full validation suite (check + check:types + tests + storybook tests)
     cmds:
       - pnpm validate
 
@@ -62,32 +62,37 @@ tasks:
     cmds:
       - pnpm test
 
-  test:ui:
-    desc: Run unit/component tests (Vitest) with interactive UI, available at http://localhost:51204/__vitest__/
+  test:unit:
+    desc: Run unit/component tests (Vitest) in watch mode
     cmds:
-      - pnpm test:ui
+      - pnpm test:unit
 
-  test:run:
+  test:unit:run:
     desc: Run all unit/component tests (Vitest) once
     cmds:
-      - pnpm test:run
+      - pnpm test:unit:run
 
-  test:storybook:
+  test:unit:ui:
+    desc: Run unit/component tests (Vitest) with interactive UI
+    cmds:
+      - pnpm test:unit:ui
+
+  test:story:
     desc: Run Storybook story tests (Vitest browser mode via Playwright)
     deps: ["playwright:install:chromium"]
     cmds:
-      - pnpm test:storybook
+      - pnpm test:story
 
-  test:all:
-    desc: Run unit/component tests + Storybook story tests (may require Playwright browsers)
+  test:story:run:
+    desc: Run Storybook story tests once
     deps: ["playwright:install:chromium"]
     cmds:
-      - pnpm test:all
+      - pnpm test:story:run
 
-  coverage:
+  test:coverage:
     desc: Generate unit/component test (Vitest) coverage report
     cmds:
-      - pnpm coverage
+      - pnpm test:coverage
 
   test:e2e:
     desc: Run end-to-end tests (Playwright) headlessly
@@ -110,10 +115,10 @@ tasks:
     cmds:
       - pnpm storybook:build
 
-  storybook:run:
+  storybook:dev:
     desc: Run Storybook development server
     cmds:
-      - pnpm storybook:run
+      - pnpm storybook:dev
 
   codegen:
     desc: Run GraphQL code generation
