@@ -13,7 +13,6 @@ env:
   POSTGRES_HOST: localhost
   POSTGRES_PORT: 5432
   POSTGRES_TEST_DB: db_test
-  PICCOLO_CONF: backend.config.piccolo
 
 jobs:
   generate-schema:
