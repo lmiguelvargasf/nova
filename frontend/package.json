@@ -35,7 +35,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "^2.0.0",
     "@chromatic-com/storybook": "^3",
     "@eslint/eslintrc": "^3",
     "@graphql-codegen/cli": "^5.0.5",

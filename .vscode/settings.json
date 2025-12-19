@@ -21,6 +21,7 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
 
   "biome.enabled": true,
+  "biome.lsp.bin": "frontend/node_modules/.bin/biome",
   "[javascript]": { "editor.defaultFormatter": "biomejs.biome" },
   "[typescript]": { "editor.defaultFormatter": "biomejs.biome" },
   "[javascriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
