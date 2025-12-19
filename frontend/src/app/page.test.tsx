@@ -1,7 +1,7 @@
-import Home from "@/app/page";
 import { render, screen } from "@testing-library/react";
 import type { ImageProps } from "next/image";
 import { expect, test, vi } from "vitest";
+import Home from "@/app/page";
 
 // Mock the Apollo client module
 vi.mock("@/lib/apolloClient.server", () => ({
@@ -27,6 +27,7 @@ vi.mock("next/image", () => ({
   ) => {
     // Ensure alt prop is properly passed through to satisfy a11y requirements
     return (
+      // biome-ignore lint/performance/noImgElement: next/image is intentionally mocked to a plain <img> in tests
       <img
         src={props.src as string}
         alt={props.alt}

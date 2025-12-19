@@ -1,21 +1,22 @@
 {
   "recommendations": [
-    "ms-python.python",
-    "ms-python.vscode-pylance",
-    "charliermarsh.ruff",
-    "tamasfe.even-better-toml",
-    "redhat.vscode-yaml",
-    "mikestead.dotenv",
+    "anysphere.cursorpyright",
     "biomejs.biome",
-    "dbaeumer.vscode-eslint",
     "bradlc.vscode-tailwindcss",
+    "charliermarsh.ruff",
+    "christian-kohler.path-intellisense",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
     "graphql.vscode-graphql",
     "graphql.vscode-graphql-syntax",
-    "ms-playwright.playwright",
-    "unifiedjs.vscode-mdx",
+    "mikestead.dotenv",
     "ms-azuretools.vscode-docker",
+    "ms-playwright.playwright",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "redhat.vscode-yaml",
+    "tamasfe.even-better-toml",
+    "unifiedjs.vscode-mdx",
     "usernamehw.errorlens",
-    "eamodio.gitlens",
-    "christian-kohler.path-intellisense"
   ]
 }

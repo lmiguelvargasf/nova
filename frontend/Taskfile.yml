@@ -64,13 +64,13 @@ tasks:
 
   test:storybook:
     desc: Run Storybook story tests (Vitest browser mode via Playwright)
-    deps: [playwright:install:chromium]
+    deps: ["playwright:install:chromium"]
     cmds:
       - pnpm test:storybook
 
   test:all:
     desc: Run unit/component tests + Storybook story tests (may require Playwright browsers)
-    deps: [playwright:install:chromium]
+    deps: ["playwright:install:chromium"]
     cmds:
       - pnpm test:all
 
@@ -81,7 +81,7 @@ tasks:
 
   test:e2e:
     desc: Run end-to-end tests (Playwright) headlessly
-    deps: [playwright:install]
+    deps: ["playwright:install"]
     cmds:
       - pnpm test:e2e
 
