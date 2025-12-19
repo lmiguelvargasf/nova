@@ -36,5 +36,10 @@
     "rules": {
       "recommended": true
     }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
   }
 }

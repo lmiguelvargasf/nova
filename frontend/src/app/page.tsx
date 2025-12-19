@@ -1,10 +1,10 @@
+import Image from "next/image";
 import { getClient } from "@/lib/apolloClient.server";
 import {
   GetUserByIdDocument,
   type GetUserByIdQuery,
   type GetUserByIdQueryVariables,
 } from "@/lib/graphql/graphql";
-import Image from "next/image";
 
 export default async function Home() {
   let userData: GetUserByIdQuery["user"] | null = null;
