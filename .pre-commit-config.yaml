@@ -25,9 +25,10 @@ repos:
         files: ^backend/.*\.py$
 
   # --- frontend hooks ---
-  - repo: https://github.com/biomejs/pre-commit
-    rev: v2.3.10
+  - repo: local
     hooks:
       - id: biome-check
         name: biome-check (frontend)
-        files: ^frontend/.*\.(js|jsx|ts|tsx|json)$
+        entry: bash -c 'cd frontend && pnpm exec biome check --write "${@/#frontend\//}"' --
+        language: system
+        files: ^frontend/.*\.(js|jsx|ts|tsx|json|css)$
