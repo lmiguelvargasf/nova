@@ -36,6 +36,11 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} install"
 
+  backend:lock:
+    desc: Upgrade backend dependencies
+    cmds:
+      - "{{.BACKEND_TASK}} lock"
+
   backend:migrate:
     desc: Run backend migrations
     cmds:

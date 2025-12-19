@@ -16,6 +16,12 @@ tasks:
     cmds:
       - uv sync
 
+  lock:
+    desc: Upgrade backend lockfile (dependencies)
+    cmds:
+      - uv lock --upgrade
+      - uv sync
+
   migrate:
     desc: Apply Piccolo migrations
     cmds:
