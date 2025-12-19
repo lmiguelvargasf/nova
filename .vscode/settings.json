@@ -11,6 +11,9 @@
   "python.testing.pytestArgs": ["tests"],
   "python.terminal.activateEnvironment": true,
 
+  "cursorpyright.analysis.extraPaths": ["backend/src"],
+  "cursorpyright.analysis.typeCheckingMode": "basic",
+
   "ruff.format.enable": true,
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
@@ -41,9 +44,5 @@
   "eslint.workingDirectories": [{ "mode": "auto" }],
   "eslint.validate": [
     "javascript", "javascriptreact", "typescript", "typescriptreact"
-  ],
-  "cursorpyright.analysis.extraPaths": [
-    "backend/src"
-  ],
-  "cursorpyright.analysis.typeCheckingMode": "basic"
+  ]
 }
