@@ -10,6 +10,12 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  {
+    ignores: [
+      // Generated files (via graphql-codegen) - linting these creates noisy, low-value warnings.
+      "src/lib/graphql/**",
+    ],
+  },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 ];
 

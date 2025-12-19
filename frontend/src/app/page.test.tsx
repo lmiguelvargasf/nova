@@ -3,6 +3,8 @@ import type { ImageProps } from "next/image";
 import { expect, test, vi } from "vitest";
 import Home from "@/app/page";
 
+/* eslint-disable @next/next/no-img-element */
+
 // Mock the Apollo client module
 vi.mock("@/lib/apolloClient.server", () => ({
   getClient: () => ({

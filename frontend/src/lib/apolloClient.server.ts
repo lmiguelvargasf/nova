@@ -1,4 +1,5 @@
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { ApolloClient, InMemoryCache } from "@apollo/client/core";
+import { HttpLink } from "@apollo/client/link/http";
 import { cache } from "react";
 
 // Wrap the client creation in React cache for automatic deduplication per request
