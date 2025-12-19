@@ -1,3 +1,5 @@
+from typing import Any, cast
+
 from advanced_alchemy.extensions.litestar import SQLAlchemyPlugin
 from litestar import Litestar, asgi, get
 from litestar.types import Receive, Scope, Send
@@ -22,10 +24,13 @@ async def admin(scope: Scope, receive: Receive, send: Send) -> None:
             }
         )
         await send(
-            {
-                "type": "http.response.body",
-                "body": b"Admin session secret not configured.",
-            }
+            cast(
+                Any,
+                {
+                    "type": "http.response.body",
+                    "body": b"Admin session secret not configured.",
+                },
+            )
         )
         return
 
