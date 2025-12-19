@@ -47,10 +47,6 @@ asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 addopts = "--cov=src"
 
-[tool.coverage.run]
-omit = [
-]
-
 [tool.pyrefly]
 python-version = "3.14"
 project-includes = ["src"]
