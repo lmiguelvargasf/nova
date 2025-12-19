@@ -1,7 +1,7 @@
 # Nova 🌟
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
-![Python](https://img.shields.io/badge/python-3.13-blue?style=for-the-badge&logo=python)
+![Python](https://img.shields.io/badge/python-3.14-blue?style=for-the-badge&logo=python)
 ![Node.js](https://img.shields.io/badge/node.js-22.14-brightgreen?style=for-the-badge&logo=node.js)
 ![Next.js](https://img.shields.io/badge/Next.js-15.x-black?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript)
@@ -42,6 +42,7 @@ A modern full-stack application template built for quick and efficient project s
 ### Prerequisites
 
 The primary prerequisites for this project are:
+- **[Python][python]:** Version 3.14 or later (required for the backend).
 - **[Docker Desktop][docker-desktop]:** Provides Docker Engine and Docker Compose.
 - **[Task][task]:** A task runner / build tool used for managing common development workflows.
 - **[pre-commit][]:** A tool for managing and running pre-commit hooks.
