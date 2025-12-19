@@ -17,6 +17,11 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/43/d6/483192bcf2d9d6addf1fa5df334f5e85c31361fcffae49a20629471dedc9/advanced_alchemy-1.8.2-py3-none-any.whl", hash = "sha256:37d476ba6db4ffea9fea8e0bc3c6356926c0e49291b8508c96bc2c0e6b27ea3f", size = 259812, upload-time = "2025-12-13T01:05:45.359Z" },
 ]
 
+[package.optional-dependencies]
+argon2 = [
+    { name = "argon2-cffi" },
+]
+
 [[package]]
 name = "alembic"
 version = "1.17.2"
@@ -124,8 +129,7 @@ name = "backend"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "advanced-alchemy" },
-    { name = "argon2-cffi" },
+    { name = "advanced-alchemy", extra = ["argon2"] },
     { name = "asyncpg" },
     { name = "litestar", extra = ["standard"] },
     { name = "loguru" },
@@ -147,8 +151,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "advanced-alchemy", specifier = ">=1.8.2" },
-    { name = "argon2-cffi" },
+    { name = "advanced-alchemy", extras = ["argon2"], specifier = ">=1.8.2" },
     { name = "asyncpg" },
     { name = "litestar", extras = ["standard"], specifier = ">=2.19.0" },
     { name = "loguru", specifier = ">=0.7.3" },
