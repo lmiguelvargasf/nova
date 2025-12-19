@@ -8,6 +8,7 @@ authors = [
 ]
 requires-python = ">=3.14"
 dependencies = [
+    "advanced-alchemy>=1.8.2",
     "litestar[standard]>=2.19.0",
     "loguru>=0.7.3",
     "piccolo-admin>=1.12.0",
