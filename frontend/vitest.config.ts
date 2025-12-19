@@ -3,11 +3,6 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   plugins: [tsconfigPaths()],
-  server: {
-    host: "0.0.0.0",
-    port: 51204,
-    strictPort: true,
-  },
   test: {
     globals: true,
     environment: "jsdom",
