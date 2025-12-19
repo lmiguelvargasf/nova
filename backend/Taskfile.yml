@@ -23,9 +23,9 @@ tasks:
       - uv sync
 
   migrate:
-    desc: Apply Piccolo migrations
+    desc: Apply database migrations (Advanced Alchemy / Alembic)
     cmds:
-      - uv run piccolo migrations forward all
+      - uv run litestar database upgrade --no-prompt
 
   dev:
     desc: Run Litestar dev server (migrate first)
@@ -56,19 +56,19 @@ tasks:
   test:
     desc: Run tests without coverage
     cmds:
-      - PICCOLO_CONF=backend.config.piccolo_test {{.PYTEST}} --no-cov
+      - "{{.PYTEST}} --no-cov"
 
   test:cov:
     desc: Run tests with coverage and console report
     cmds:
-      - PICCOLO_CONF=backend.config.piccolo_test {{.PYTEST}}
+      - "{{.PYTEST}}"
 
   test:cov:html:
     desc: Run tests with coverage and HTML report
     cmds:
-      - PICCOLO_CONF=backend.config.piccolo_test {{.PYTEST}} --cov-report html
+      - "{{.PYTEST}} --cov-report html"
 
-  create-user:
-    desc: Create a new user using Piccolo
+  create-admin-user:
+    desc: Create or promote an admin user (email/password) for SQLAdmin login
     cmds:
-      - uv run piccolo user create
+      - uv run python -m backend.scripts.create_admin_user

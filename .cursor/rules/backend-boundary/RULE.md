@@ -1,5 +1,5 @@
 ---
-description: Backend boundary rules (Litestar, Piccolo, Strawberry, Python 3.14+); keep changes scoped, consistent, and contract-safe.
+description: Backend boundary rules (Litestar, Advanced Alchemy/SQLAlchemy, Strawberry, Python 3.14+); keep changes scoped, consistent, and contract-safe.
 globs:
   - "backend/**/*"
   - "Taskfile.yml"
@@ -16,7 +16,7 @@ alwaysApply: false
 
 ## 2) Technology Stack & Standards
 - **Framework**: Litestar (`litestar[standard]`). Prefer `async def` handlers for request/IO code.
-- **ORM**: Piccolo (Postgres). Follow Piccolo table patterns and query APIs.
+- **ORM**: SQLAlchemy via **Advanced Alchemy** (async, Postgres via `asyncpg`).
 - **GraphQL**: Strawberry + `strawberry.litestar` integration.
 - **Python**: `>=3.14` (use modern typing; keep type hints accurate for `pyrefly`).
 - **Settings/Validation**: `pydantic-settings` (Pydantic v2) for configuration; use Pydantic models when validation is non-trivial.
@@ -32,8 +32,8 @@ alwaysApply: false
 - Keep resolvers/handlers **small and readable**. If logic grows (multi-step workflows, complex validation, cross-table operations), move it into a local service module (within `backend/`) and call it from the resolver/handler.
 
 ## 5) Database & Migrations
-- Do **not** manually change DB schema/state outside Piccolo’s migration system.
-- Any Piccolo table change should come with an appropriate migration and a clear note about how to apply it.
+- Do **not** manually change DB schema/state outside the repo migration workflow (`litestar database ...`).
+- Any SQLAlchemy model/table change should come with an appropriate migration and a clear note about how to apply it.
 - Prefer Taskfile workflows. If a required workflow is missing (e.g., “create a migration”), add a Task target rather than documenting multi-step manual commands as the official process.
 
 ## 6) GraphQL & Contracts

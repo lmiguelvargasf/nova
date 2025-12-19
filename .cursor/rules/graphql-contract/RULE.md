@@ -26,12 +26,12 @@ Whenever you modify backend types/resolvers or frontend `.graphql` documents:
 3.  **Frontend**: Fix TS errors in `frontend/src/` using the updated types/fragments.
 4.  **Verify**: Run `task frontend:check` to ensure no linting or type regressions.
 
-## 3) Backend Design (Strawberry + Piccolo)
+## 3) Backend Design (Strawberry + SQLAlchemy)
 - **Naming**: Use Python `snake_case` for fields; Strawberry automatically converts to `camelCase` for the schema.
 - **Nullability**:
   - Be explicit: use `T | None` in Python for nullable fields.
   - Default to nullable for DB relationships unless existence is guaranteed.
-- **Performance**: Use Piccolo's `.prefetch()` for relationships to avoid N+1 queries. Keep resolvers thin by moving complex logic to service modules.
+- **Performance**: Avoid N+1 by using SQLAlchemy eager-loading patterns (e.g. `selectinload`/`joinedload`) and keeping resolvers thin by moving complex logic to service modules.
 
 ## 4) Frontend Practice (Apollo + Client Preset)
 - **Colocation**: Keep `.graphql` files (queries/mutations/fragments) next to the components that use them.

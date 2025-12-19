@@ -9,11 +9,13 @@ authors = [
 requires-python = ">=3.14"
 dependencies = [
     "advanced-alchemy>=1.8.2",
+    "argon2-cffi",
+    "asyncpg",
+    "itsdangerous",
     "litestar[standard]>=2.19.0",
     "loguru>=0.7.3",
-    "piccolo-admin>=1.12.0",
-    "piccolo[postgres]>=1.30.0",
     "pydantic-settings>=2.12.0",
+    "sqladmin>=0.22.0",
     "strawberry-graphql>=0.287.3",
 ]
 
@@ -49,7 +51,6 @@ addopts = "--cov=src"
 
 [tool.coverage.run]
 omit = [
-    "src/backend/config/piccolo*.py",
 ]
 
 [tool.pyrefly]

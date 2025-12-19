@@ -10,6 +10,22 @@ See the [project root README](../README.md) for setup and running instructions.
 - [Backend Health Check](http://localhost:8000/health)
 - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
+## Admin UI (SQLAdmin)
+
+The admin UI is backed by SQLAlchemy models and is protected with **session-based login** (email/password) via SQLAdmin's `AuthenticationBackend`.
+
+- **Required env vars**:
+  - `ADMIN_SESSION_SECRET`
+
+- **Create the first admin user**:
+  - `task backend:create-admin-user`
+  - You can also pass env vars to avoid prompts: `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_FIRST_NAME`, `ADMIN_LAST_NAME`
+
+## Migrations (Advanced Alchemy / Alembic)
+
+- **Apply migrations**: `task backend:migrate`
+- **Create migrations** (CLI): `uv run litestar database make-migrations --no-prompt -m "your message"`
+
 ## Tooling
 
 The following tools are used in this project:

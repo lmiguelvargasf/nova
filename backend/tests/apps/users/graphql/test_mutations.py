@@ -1,27 +1,25 @@
-from piccolo.apps.user.tables import BaseUser
+from backend.apps.users.models import UserModel
 
 
 class TestUserMutations:
-    async def test_create_user_success(self, mocker, graphql_client):
-        # Setup mock to return no existing user
-        mock_objects = mocker.patch.object(BaseUser, "objects")
-        mock_get = mocker.AsyncMock(return_value=None)
-        mock_objects.return_value.get = mock_get
+    async def test_create_user_success(self, db_session_mock, graphql_client):
+        db_session_mock.scalar.return_value = None
 
-        mock_save = mocker.patch.object(BaseUser, "save", new_callable=mocker.AsyncMock)
-        original_init = BaseUser.__init__
+        created: list[UserModel] = []
 
-        def patched_init(self, *args, **kwargs):
-            original_init(self, *args, **kwargs)
-            self.id = 1
+        def add_side_effect(obj):
+            created.append(obj)
 
-        mocker.patch.object(BaseUser, "__init__", patched_init)
+        async def flush_side_effect():
+            created[0].id = 1
+
+        db_session_mock.add.side_effect = add_side_effect
+        db_session_mock.flush.side_effect = flush_side_effect
 
         mutation = """
         mutation CreateUser($userInput: UserInput!) {
             createUser(userInput: $userInput) {
                 id
-                username
                 firstName
                 lastName
                 email
@@ -30,10 +28,10 @@ class TestUserMutations:
         """
         variables = {
             "userInput": {
-                "username": "newuser",
+                "email": "new@example.com",
+                "password": "TestPassword123",
                 "firstName": "New",
                 "lastName": "User",
-                "email": "new@example.com",
             }
         }
         result = await graphql_client.mutation(mutation, variables=variables)
@@ -42,42 +40,43 @@ class TestUserMutations:
         assert "createUser" in result["data"]
         expected_user_data = {
             "id": "1",
-            "username": "newuser",
             "firstName": "New",
             "lastName": "User",
             "email": "new@example.com",
         }
         assert result["data"]["createUser"] == expected_user_data
 
-        mock_get.assert_called_once()
-        mock_save.assert_called_once()
+        db_session_mock.scalar.assert_called_once()
+        db_session_mock.add.assert_called_once()
+        db_session_mock.flush.assert_called_once()
 
-    async def test_create_user_already_exists(self, mocker, graphql_client):
-        mock_objects = mocker.patch.object(BaseUser, "objects")
-        existing_user = BaseUser(
-            id=1,
-            username="existinguser",
+    async def test_create_user_already_exists(self, db_session_mock, graphql_client):
+        existing_user = UserModel(
+            email="existing@example.com",
+            password_hash="hashed",
             first_name="Existing",
             last_name="User",
-            email="existing@example.com",
+            is_admin=False,
+            is_active=True,
         )
-        mock_objects.return_value.get = mocker.AsyncMock(return_value=existing_user)
+        existing_user.id = 1
+        db_session_mock.scalar.return_value = existing_user
 
         mutation = """
         mutation CreateUser($userInput: UserInput!) {
             createUser(userInput: $userInput) {
                 id
-                username
+                email
             }
         }
         """
 
         variables = {
             "userInput": {
-                "username": "existinguser",
+                "email": "existing@example.com",
+                "password": "TestPassword123",
                 "firstName": "Test",
                 "lastName": "User",
-                "email": "test@example.com",
             }
         }
 
@@ -86,8 +85,8 @@ class TestUserMutations:
         assert "errors" in result
         assert len(result["errors"]) == 1
         assert (
-            "User with username 'existinguser' already exists"
+            "User with email 'existing@example.com' already exists"
             in result["errors"][0]["message"]
         )
 
-        mock_objects.return_value.get.assert_called_once()
+        db_session_mock.scalar.assert_called_once()

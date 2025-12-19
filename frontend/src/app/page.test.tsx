@@ -9,7 +9,7 @@ vi.mock("@/lib/apolloClient.server", () => ({
       Promise.resolve({
         data: {
           user: {
-            username: "testuser",
+            email: "test@example.com",
           },
         },
       }),

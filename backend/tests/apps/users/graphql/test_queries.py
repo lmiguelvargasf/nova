@@ -1,23 +1,23 @@
-from piccolo.apps.user.tables import BaseUser
+from backend.apps.users.models import UserModel
 
 
 class TestUserQueries:
-    async def test_get_user_by_id(self, mocker, graphql_client):
-        mock_objects = mocker.patch.object(BaseUser, "objects")
-        mock_user = BaseUser(
-            id=1,
-            username="testuser",
+    async def test_get_user_by_id(self, db_session_mock, graphql_client):
+        mock_user = UserModel(
+            email="test@example.com",
+            password_hash="hashed",
             first_name="Test",
             last_name="User",
-            email="test@example.com",
+            is_admin=False,
+            is_active=True,
         )
-        mock_objects.return_value.get = mocker.AsyncMock(return_value=mock_user)
+        mock_user.id = 1
+        db_session_mock.scalar.return_value = mock_user
 
         query = """
         query GetUser($id: ID!) {
             user(id: $id) {
                 id
-                username
                 firstName
                 lastName
                 email
@@ -34,24 +34,22 @@ class TestUserQueries:
         assert user_data is not None
         expected_data = {
             "id": "1",
-            "username": "testuser",
             "firstName": "Test",
             "lastName": "User",
             "email": "test@example.com",
         }
         assert user_data == expected_data
 
-        mock_objects.return_value.get.assert_called_once()
+        db_session_mock.scalar.assert_called_once()
 
-    async def test_get_user_by_id_not_found(self, mocker, graphql_client):
-        mock_objects = mocker.patch.object(BaseUser, "objects")
-        mock_objects.return_value.get = mocker.AsyncMock(return_value=None)
+    async def test_get_user_by_id_not_found(self, db_session_mock, graphql_client):
+        db_session_mock.scalar.return_value = None
 
         query = """
         query GetUser($id: ID!) {
             user(id: $id) {
                 id
-                username
+                email
             }
         }
         """
@@ -61,4 +59,4 @@ class TestUserQueries:
         assert "errors" in result
         assert len(result["errors"]) == 1
         assert "User with id 999 not found" in result["errors"][0]["message"]
-        mock_objects.return_value.get.assert_called_once()
+        db_session_mock.scalar.assert_called_once()
