@@ -95,6 +95,9 @@ jobs:
       - name: Format Check
         run: pnpm check
 
+      - name: Type Check
+        run: pnpm type-check
+
       - name: Run Tests
         run: pnpm test:run
 
