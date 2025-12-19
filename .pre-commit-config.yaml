@@ -31,4 +31,3 @@ repos:
       - id: biome-check
         name: biome-check (frontend)
         files: ^frontend/.*\.(js|jsx|ts|tsx|json)$
-        args: ["--config-path", "frontend/biome.json"]
