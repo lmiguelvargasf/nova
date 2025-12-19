@@ -11,7 +11,7 @@ importers:
       '@apollo/client':
         specifier: ^4.0.11
         version: 4.0.11(graphql-ws@6.0.6(graphql@16.12.0)(ws@8.18.3))(graphql@16.12.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rxjs@7.8.2)
-      '@apollo/experimental-nextjs-app-support':
+      '@apollo/client-integration-nextjs':
         specifier: ^0.14.3
         version: 0.14.3(@apollo/client@4.0.11(graphql-ws@6.0.6(graphql@16.12.0)(ws@8.18.3))(graphql@16.12.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rxjs@7.8.2))(@types/react@19.2.7)(graphql@16.12.0)(next@16.1.0(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rxjs@7.8.2)
       graphql:
@@ -187,14 +187,6 @@ packages:
         optional: true
       subscriptions-transport-ws:
         optional: true
-
-  '@apollo/experimental-nextjs-app-support@0.14.3':
-    resolution: {integrity: sha512-g+XjX+1k/vHVFGdK/l4rwCi9BC8/Nku/05aoPASdxvMDeDD9qMVA3iAjWknCuwbOM/9dMlRWKnRoavRQuV8ZHQ==}
-    peerDependencies:
-      '@apollo/client': ^4.0.0
-      next: ^15.2.3
-      react: ^19
-      rxjs: ^7.3.0
 
   '@ardatan/relay-compiler@12.0.0':
     resolution: {integrity: sha512-9anThAaj1dQr6IGmzBMcfzOQKTa5artjuPmw8NYK/fiGEMjADbSguBY2FMDykt+QhilR3wc9VA/3yVju7JHg7Q==}
@@ -5059,18 +5051,6 @@ snapshots:
       graphql-ws: 6.0.6(graphql@16.12.0)(ws@8.18.3)
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
-
-  '@apollo/experimental-nextjs-app-support@0.14.3(@apollo/client@4.0.11(graphql-ws@6.0.6(graphql@16.12.0)(ws@8.18.3))(graphql@16.12.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rxjs@7.8.2))(@types/react@19.2.7)(graphql@16.12.0)(next@16.1.0(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rxjs@7.8.2)':
-    dependencies:
-      '@apollo/client': 4.0.11(graphql-ws@6.0.6(graphql@16.12.0)(ws@8.18.3))(graphql@16.12.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rxjs@7.8.2)
-      '@apollo/client-integration-nextjs': 0.14.3(@apollo/client@4.0.11(graphql-ws@6.0.6(graphql@16.12.0)(ws@8.18.3))(graphql@16.12.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rxjs@7.8.2))(@types/react@19.2.7)(graphql@16.12.0)(next@16.1.0(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rxjs@7.8.2)
-      next: 16.1.0(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      react: 19.2.3
-      rxjs: 7.8.2
-    transitivePeerDependencies:
-      - '@types/react'
-      - graphql
-      - react-dom
 
   '@ardatan/relay-compiler@12.0.0(graphql@16.12.0)':
     dependencies:
