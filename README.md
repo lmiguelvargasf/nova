@@ -28,7 +28,6 @@ A modern full-stack application template built for quick and efficient project s
 - **[Python][python]** – Core programming language for backend.
 - **[Litestar][litestar]** – High-performance ASGI framework for modern Python web apps.
 - **[Advanced Alchemy][advanced-alchemy]** – SQLAlchemy integration (async) + migrations tooling.
-- **[SQLAdmin][sqladmin]** – Admin UI for SQLAlchemy models.
 - **[PostgreSQL][postgresql]** – Advanced open-source relational database known for reliability.
 - **[GraphQL][graphql]** – API query language providing a more efficient alternative to REST.
 
@@ -125,14 +124,8 @@ pnpm --version
    task frontend:dev
    ```
 
-1. Configure Admin UI (SQLAdmin) login:
-   - Set `ADMIN_SESSION_SECRET` in your `.env` / `backend/.env`.
-   - Create the first admin user: `task backend:create-admin-user`
-   - Open the admin UI at `/admin/` and sign in with email/password.
-
 1. The services will be available at:
    - [Frontend Application](http://localhost:3000)
-   - [Backend Admin UI](http://localhost:8000/admin/)
    - [Backend Health Check](http://localhost:8000/health)
    - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
@@ -196,7 +189,6 @@ This project is licensed under the [MIT License](./LICENSE).
 [pre-commit]: https://pre-commit.com/
 [python]: https://www.python.org/
 [releases]: https://github.com/lmiguelvargasf/nova-stack/releases
-[sqladmin]: https://pypi.org/project/sqladmin/
 [tailwind]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
 [typescript]: https://www.typescriptlang.org/

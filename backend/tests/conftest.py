@@ -94,7 +94,6 @@ async def test_client(
 
     test_app = create_app(
         graphql_context_getter=context_getter,
-        include_admin=False,
         use_sqlalchemy_plugin=False,
     )
 

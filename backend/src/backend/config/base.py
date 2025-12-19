@@ -12,7 +12,5 @@ class Settings(BaseSettings):
     # requiring different env var names.
     use_test_db: bool = False
 
-    admin_session_secret: str | None = None
-
 
 settings = Settings()  # type: ignore[call-arg]

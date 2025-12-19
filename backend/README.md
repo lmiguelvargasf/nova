@@ -6,16 +6,8 @@ See the [project root README](../README.md) for setup and running instructions.
 
 ## Access Backend
 
-- [Backend Admin UI](http://localhost:8000/admin/)
 - [Backend Health Check](http://localhost:8000/health)
 - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
-
-## Admin UI (SQLAdmin)
-
-The admin UI is backed by SQLAlchemy models and is protected with **session-based login** (email/password) via SQLAdmin's `AuthenticationBackend`.
-
-- **Required env vars**:
-  - `ADMIN_SESSION_SECRET`
 
 ## Migrations (Advanced Alchemy / Alembic)
 
