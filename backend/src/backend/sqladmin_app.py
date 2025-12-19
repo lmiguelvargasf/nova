@@ -44,6 +44,6 @@ admin = Admin(
     # We mount the Starlette app under Litestar, so keep SQLAdmin rooted at "/".
     base_url="/",
     title="Nova Admin",
-    authentication_backend=AdminAuth(secret_key=settings.admin_session_secret or ""),
+    authentication_backend=AdminAuth(secret_key=settings.admin_session_secret),
 )
 admin.add_view(UserAdmin)
