@@ -12,8 +12,6 @@ class Settings(BaseSettings):
     # requiring different env var names.
     use_test_db: bool = False
 
-    # SQLAdmin session auth
-    # Used as Starlette SessionMiddleware secret_key (required to protect /admin).
     admin_session_secret: str | None = None
 
 
