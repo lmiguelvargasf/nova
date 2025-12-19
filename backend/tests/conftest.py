@@ -2,19 +2,17 @@ from collections.abc import AsyncIterator
 from typing import Any
 
 import pytest
-from litestar import Litestar, get
+from litestar import Litestar
 from litestar.testing import AsyncTestClient
-from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
-from strawberry.litestar import make_graphql_controller
 
+from backend.app_factory import create_app
 from backend.apps.users.services import UserService
-from backend.schema import schema
 
 
 @pytest.fixture
@@ -94,20 +92,11 @@ async def test_client(
             "user_service": user_service_mock,
         }
 
-    GraphQLController = make_graphql_controller(
-        schema=schema,
-        path="/graphql",
-        context_getter=context_getter,
+    test_app = create_app(
+        graphql_context_getter=context_getter,
+        include_admin=False,
+        use_sqlalchemy_plugin=False,
     )
-
-    class HealthStatus(BaseModel):
-        status: str
-
-    @get("/health")
-    async def health_check() -> HealthStatus:
-        return HealthStatus(status="ok")
-
-    test_app = Litestar(route_handlers=[health_check, GraphQLController])
 
     async with AsyncTestClient(app=test_app) as client:
         yield client
