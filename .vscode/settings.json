@@ -2,12 +2,13 @@
   "editor.formatOnSave": false,
   "terminal.integrated.cwd": "${workspaceFolder}",
 
-  "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
-  "python.analysis.extraPaths": ["${workspaceFolder}/backend/src"],
+  "python.defaultInterpreterPath": "backend/.venv/bin/python",
+  "python.analysis.extraPaths": ["backend/src"],
   "python.analysis.typeCheckingMode": "basic",
   "python.testing.pytestEnabled": true,
   "python.testing.unittestEnabled": false,
-  "python.testing.pytestArgs": ["backend/tests"],
+  "python.testing.cwd": "backend",
+  "python.testing.pytestArgs": ["tests"],
   "python.terminal.activateEnvironment": true,
 
   "ruff.format.enable": true,
@@ -16,7 +17,7 @@
     "editor.formatOnSave": true
   },
 
-  "typescript.tsdk": "${workspaceFolder}/frontend/node_modules/typescript/lib",
+  "typescript.tsdk": "frontend/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.updateImportsOnFileMove.enabled": "always",
   "javascript.updateImportsOnFileMove.enabled": "always",
@@ -40,5 +41,9 @@
   "eslint.workingDirectories": [{ "mode": "auto" }],
   "eslint.validate": [
     "javascript", "javascriptreact", "typescript", "typescriptreact"
-  ]
+  ],
+  "cursorpyright.analysis.extraPaths": [
+    "backend/src"
+  ],
+  "cursorpyright.analysis.typeCheckingMode": "basic"
 }
