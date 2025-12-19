@@ -34,7 +34,6 @@
     "node_modules",
     "e2e",
     "vitest.config.ts",
-    "vitest.storybook.workspace.ts",
-    "playwright.config.ts"
+    "vitest.storybook.workspace.ts"
   ]
 }
