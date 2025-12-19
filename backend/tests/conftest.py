@@ -5,11 +5,62 @@ import pytest
 from litestar import Litestar, get
 from litestar.testing import AsyncTestClient
 from pydantic import BaseModel
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 from strawberry.litestar import make_graphql_controller
 
 from backend.apps.users.services import UserService
+from backend.config.alchemy import build_connection_string
+from backend.config.base import settings
 from backend.schema import schema
+
+
+@pytest.fixture
+async def db_engine() -> AsyncIterator[AsyncEngine]:
+    if settings.postgres_test_db == settings.postgres_db:
+        raise RuntimeError("Refusing to run tests against the development database.")
+
+    engine = create_async_engine(
+        build_connection_string(use_test_db=True),
+        pool_pre_ping=True,
+    )
+
+    try:
+        yield engine
+    finally:
+        await engine.dispose()
+
+
+@pytest.fixture
+async def db_schema(db_engine: AsyncEngine) -> AsyncIterator[None]:
+    from backend.apps import models as app_models
+
+    async with db_engine.begin() as conn:
+        await conn.run_sync(app_models.metadata.drop_all)
+        await conn.run_sync(app_models.metadata.create_all)
+    try:
+        yield
+    finally:
+        async with db_engine.begin() as conn:
+            await conn.run_sync(app_models.metadata.drop_all)
+
+
+@pytest.fixture
+async def db_sessionmaker(db_engine: AsyncEngine, db_schema: None):
+    return async_sessionmaker(db_engine, expire_on_commit=False)
+
+
+@pytest.fixture
+async def db_session(db_sessionmaker: async_sessionmaker[AsyncSession]):
+    async with db_sessionmaker() as session:
+        try:
+            yield session
+        finally:
+            await session.rollback()
 
 
 @pytest.fixture
