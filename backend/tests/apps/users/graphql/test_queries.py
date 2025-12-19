@@ -1,8 +1,10 @@
+from advanced_alchemy.exceptions import NotFoundError
+
 from backend.apps.users.models import UserModel
 
 
 class TestUserQueries:
-    async def test_get_user_by_id(self, db_session_mock, graphql_client):
+    async def test_get_user_by_id(self, user_service_mock, graphql_client):
         mock_user = UserModel(
             email="test@example.com",
             password_hash="hashed",
@@ -12,7 +14,7 @@ class TestUserQueries:
             is_active=True,
         )
         mock_user.id = 1
-        db_session_mock.scalar.return_value = mock_user
+        user_service_mock.get.return_value = mock_user
 
         query = """
         query GetUser($id: ID!) {
@@ -40,10 +42,12 @@ class TestUserQueries:
         }
         assert user_data == expected_data
 
-        db_session_mock.scalar.assert_called_once()
+        user_service_mock.get.assert_called_once_with(1)
 
-    async def test_get_user_by_id_not_found(self, db_session_mock, graphql_client):
-        db_session_mock.scalar.return_value = None
+    async def test_get_user_by_id_not_found(self, user_service_mock, graphql_client):
+        user_service_mock.get.side_effect = NotFoundError(
+            "No item found when one was expected"
+        )
 
         query = """
         query GetUser($id: ID!) {
@@ -59,4 +63,4 @@ class TestUserQueries:
         assert "errors" in result
         assert len(result["errors"]) == 1
         assert "User with id 999 not found" in result["errors"][0]["message"]
-        db_session_mock.scalar.assert_called_once()
+        user_service_mock.get.assert_called_once_with(999)

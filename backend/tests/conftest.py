@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.litestar import make_graphql_controller
 
+from backend.apps.users.services import UserService
 from backend.schema import schema
 
 
@@ -17,15 +18,29 @@ def db_session_mock(mocker) -> AsyncSession:
     session.scalar = mocker.AsyncMock()
     session.flush = mocker.AsyncMock()
     session.add = mocker.Mock()
+    session.rollback = mocker.AsyncMock()
     return session
+
+
+@pytest.fixture
+def user_service_mock(mocker) -> UserService:
+    service = mocker.Mock()
+    service.get = mocker.AsyncMock()
+    service.get_one_or_none = mocker.AsyncMock()
+    service.create = mocker.AsyncMock()
+    return service
 
 
 @pytest.fixture(scope="function")
 async def test_client(
     db_session_mock: AsyncSession,
+    user_service_mock: UserService,
 ) -> AsyncIterator[AsyncTestClient[Litestar]]:
     async def context_getter() -> dict[str, object]:
-        return {"db_session": db_session_mock}
+        return {
+            "db_session": db_session_mock,
+            "user_service": user_service_mock,
+        }
 
     GraphQLController = make_graphql_controller(
         schema=schema,

@@ -2,19 +2,18 @@ from backend.apps.users.models import UserModel
 
 
 class TestUserMutations:
-    async def test_create_user_success(self, db_session_mock, graphql_client):
-        db_session_mock.scalar.return_value = None
-
-        created: list[UserModel] = []
-
-        def add_side_effect(obj):
-            created.append(obj)
-
-        async def flush_side_effect():
-            created[0].id = 1
-
-        db_session_mock.add.side_effect = add_side_effect
-        db_session_mock.flush.side_effect = flush_side_effect
+    async def test_create_user_success(self, user_service_mock, graphql_client):
+        mock_user = UserModel(
+            email="new@example.com",
+            password_hash="hashed",
+            first_name="New",
+            last_name="User",
+            is_admin=False,
+            is_active=True,
+        )
+        mock_user.id = 1
+        user_service_mock.get_one_or_none.return_value = None
+        user_service_mock.create.return_value = mock_user
 
         mutation = """
         mutation CreateUser($userInput: UserInput!) {
@@ -46,11 +45,19 @@ class TestUserMutations:
         }
         assert result["data"]["createUser"] == expected_user_data
 
-        db_session_mock.scalar.assert_called_once()
-        db_session_mock.add.assert_called_once()
-        db_session_mock.flush.assert_called_once()
+        user_service_mock.get_one_or_none.assert_called_once_with(
+            email="new@example.com"
+        )
+        user_service_mock.create.assert_called_once()
+        create_call = user_service_mock.create.call_args
+        data = create_call.args[0]
+        assert data["email"] == "new@example.com"
+        assert data["first_name"] == "New"
+        assert data["last_name"] == "User"
+        assert data["password_hash"] != "TestPassword123"
+        assert create_call.kwargs["auto_commit"] is True
 
-    async def test_create_user_already_exists(self, db_session_mock, graphql_client):
+    async def test_create_user_already_exists(self, user_service_mock, graphql_client):
         existing_user = UserModel(
             email="existing@example.com",
             password_hash="hashed",
@@ -60,7 +67,7 @@ class TestUserMutations:
             is_active=True,
         )
         existing_user.id = 1
-        db_session_mock.scalar.return_value = existing_user
+        user_service_mock.get_one_or_none.return_value = existing_user
 
         mutation = """
         mutation CreateUser($userInput: UserInput!) {
@@ -89,4 +96,7 @@ class TestUserMutations:
             in result["errors"][0]["message"]
         )
 
-        db_session_mock.scalar.assert_called_once()
+        user_service_mock.get_one_or_none.assert_called_once_with(
+            email="existing@example.com"
+        )
+        user_service_mock.create.assert_not_called()
