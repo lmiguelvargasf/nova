@@ -6,13 +6,13 @@ readme = "README.md"
 authors = [
     { name = "M", email = "lmiguelvargasf@gmail.com" }
 ]
-requires-python = ">=3.13"
+requires-python = ">=3.14"
 dependencies = [
     "litestar[standard]>=2.15.2",
     "loguru>=0.7.3",
-    "piccolo-admin>=1.9.1",
+    "piccolo-admin>=1.12.0",
     "piccolo[postgres]>=1.24.2",
-    "pydantic-settings>=2.8.1",
+    "pydantic-settings>=2.12.0",
     "strawberry-graphql>=0.266.0",
 ]
 
@@ -28,12 +28,12 @@ dev = [
     "pytest-cov>=6.1.1",
     "pytest-mock>=3.14.0",
     "ruff>=0.11.7",
-    "strawberry-graphql[debug-server]>=0.266.0",
+    "strawberry-graphql[debug-server]>=0.287.3",
 ]
 
 [tool.ruff]
 line-length = 88
-target-version = "py313"
+target-version = "py314"
 [tool.ruff.lint]
 select = ["E", "F", "B", "I", "UP", "RUF"]
 ignore = ["E501"]
@@ -52,7 +52,7 @@ omit = [
 ]
 
 [tool.pyrefly]
-python-version = "3.13"
+python-version = "3.14"
 project-includes = ["src"]
 search-path = ["src"]
-site-package-path = [".venv/lib/python3.13/site-packages"]
+site-package-path = [".venv/lib/python3.14/site-packages"]
