@@ -26,7 +26,7 @@ Whenever you modify backend types/resolvers or frontend `.graphql` documents:
 3.  **Frontend**: Fix TS errors in `frontend/src/` using the updated types/fragments.
 4.  **Verify**: Run `task frontend:check` to ensure no linting or type regressions.
 
-## 3) Backend Design (Strawberry + Advaned Alchemy [via SQLAlchemy])
+## 3) Backend Design (Strawberry +  SQLAlchemy [via Advaned Alchemy])
 - **Naming**: Use Python `snake_case` for fields; Strawberry automatically converts to `camelCase` for the schema.
 - **Nullability**:
   - Be explicit: use `T | None` in Python for nullable fields.
