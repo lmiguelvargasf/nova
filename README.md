@@ -41,36 +41,15 @@ A modern full-stack application template built for quick and efficient project s
 
 ### Prerequisites
 
-The primary prerequisites for this project are:
-- **[Python][python]:** Version 3.14 or later (required for the backend).
-- **[Docker Desktop][docker-desktop]:** Provides Docker Engine and Docker Compose.
-- **[Task][task]:** A task runner / build tool used for managing common development workflows.
-- **[pre-commit][]:** A tool for managing and running pre-commit hooks.
-- **[uv][]:** backend package manager.
-- **[nvm][]:** Manages your local Node.js versions.
-- **[pnpm][]:** frontend package manager.
-
-#### Alternative Installation
-
-Alternatively, install the components separately:
-- [**Docker Engine:**](https://docs.docker.com/engine/install/) Version 28 or later.
-- [**Docker Compose:**](https://docs.docker.com/compose/install/linux/#install-the-plugin-manually) Version 2 (V2) or later.
-
-#### Verifying Installation
-
-Verify the installation by running:
-```bash
-docker --version
-docker compose version
-task --version
-pre-commit --version
-uv --version
-nvm --version
-node --version
-pnpm --version
-```
+- **[Docker Desktop][docker-desktop]**: Provides Docker Engine and Docker Compose.
+- **[mise][mise]**: Manages tools like `uv`, `pnpm`, and `task`.
 
 ### Environment Setup
+
+1. Install the project toolchain:
+   ```bash
+   mise install
+   ```
 
 1. Copy the example environment files:
    ```bash
@@ -79,9 +58,9 @@ pnpm --version
    cp frontend/.env.local.example frontend/.env.local
    ```
 
-2. Edit the environment files (`.env`, `backend/.env`, and `frontend/.env.local`) to set the required secrets and configuration values (such as database URLs, API keys, etc.).
+1. Edit the environment files (`.env`, `backend/.env`, and `frontend/.env.local`) to set the required secrets and configuration values (such as database URLs, API keys, etc.).
 
-3. Install pre-commit hooks:
+1. Install pre-commit hooks:
    ```bash
    pre-commit install
    ```
@@ -126,7 +105,7 @@ pnpm --version
 
 1. Create an initial admin user:
    ```bash
-   task backend:create-user
+   task backend:create-admin-user
    ```
 
 1. The services will be available at:
@@ -187,9 +166,8 @@ This project is licensed under the [MIT License](./LICENSE).
 [docker-desktop]: https://www.docker.com/products/docker-desktop/
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
+[mise]: https://mise.jdx.dev/
 [nextjs]: https://nextjs.org/
-[nvm]: https://github.com/nvm-sh/nvm
-[pnpm]: https://pnpm.io/
 [postgresql]: https://www.postgresql.org/
 [pre-commit]: https://pre-commit.com/
 [python]: https://www.python.org/
@@ -197,4 +175,3 @@ This project is licensed under the [MIT License](./LICENSE).
 [tailwind]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
 [typescript]: https://www.typescriptlang.org/
-[uv]: https://docs.astral.sh/uv/
