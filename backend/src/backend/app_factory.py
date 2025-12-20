@@ -15,15 +15,10 @@ def create_app(
     *,
     graphql_context_getter: GraphQLContextGetter | None = None,
     use_sqlalchemy_plugin: bool = True,
-    enable_admin: bool | None = None,
+    enable_admin: bool = True,
     admin_asgi_app: ASGIApp | None = None,
 ) -> Litestar:
     context_getter = graphql_context_getter or default_graphql_context_getter
-
-    if enable_admin is None:
-        from .config.base import settings
-
-        enable_admin = bool((settings.admin_session_secret or "").strip())
 
     route_handlers: list[ControllerRouterHandler] = [
         health_check,
