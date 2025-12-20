@@ -54,14 +54,10 @@ class BackendAdminAuthProvider(AuthProvider):
         if user_id is None:
             return False
 
-        try:
-            user_id_int = int(user_id)
-        except (TypeError, ValueError):
-            request.session.clear()
-            return False
-
         async with AsyncSession(self._engine, expire_on_commit=False) as session:
-            user = await session.get(UserModel, user_id_int)
+            user = await session.scalar(
+                select(UserModel).where(UserModel.id == user_id)
+            )
 
         if user is None or not user.is_admin or not user.is_active:
             request.session.clear()
@@ -75,7 +71,7 @@ class BackendAdminAuthProvider(AuthProvider):
         return response
 
     def get_admin_user(self, request: Request) -> AdminUser | None:
-        user = getattr(request.state, "user", None)
+        user: UserModel | None = getattr(request.state, "user", None)
         if user is None:
             return None
-        return AdminUser(username=str(getattr(user, "email", "Administrator")))
+        return AdminUser(username=user.email)
