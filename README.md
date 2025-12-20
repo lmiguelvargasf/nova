@@ -182,10 +182,10 @@ All versioned changes are documented on the [GitHub Releases][releases] page.
 
 This project is licensed under the [MIT License](./LICENSE).
 
+[advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/
 [chartjs]: https://www.chartjs.org/
 [docker-desktop]: https://www.docker.com/products/docker-desktop/
 [graphql]: https://graphql.org/
-[advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/
 [litestar]: https://litestar.dev/
 [nextjs]: https://nextjs.org/
 [nvm]: https://github.com/nvm-sh/nvm
