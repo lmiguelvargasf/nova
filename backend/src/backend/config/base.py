@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     postgres_password: str
     postgres_host: str
     postgres_port: int
-    admin_session_secret: str | None = None
+    admin_session_secret: str
 
 
 settings = Settings()  # type: ignore[call-arg]
