@@ -28,8 +28,8 @@ alchemy_config = SQLAlchemyAsyncConfig(
     connection_string=build_connection_string(),
     before_send_handler="autocommit",
     session_config=session_config,
-    # Ensure the migration/autogenerate machinery sees all imported models.
+    # Ensure Advanced Alchemy sees all imported models
     metadata=app_models.metadata,
-    # We use Alembic migrations for schema management.
+    # Advanced Alchemy manages schema migrations
     create_all=False,
 )
