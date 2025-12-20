@@ -63,7 +63,7 @@ alwaysApply: true
 
 ## 6.1) Configuration / Settings (Pydantic v2)
 - Don’t introduce new **required** env vars casually.
-- If you add/change settings, update the `Settings` model, and keep setup docs/examples in sync (e.g. root README / `.env.example`) when applicable.
+- If you add/change settings, update the `Settings` model, and keep setup docs/examples in sync (e.g. root README, `.env.example`, `backend/.env.example`) when applicable.
 
 ## 7) Strawberry GraphQL Rules (Schema & Contracts)
 - Keep GraphQL **types/queries/mutations/inputs** in their existing modules under `backend/src/backend/apps/**/graphql/`.
