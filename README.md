@@ -105,7 +105,7 @@ A modern full-stack application template built for quick and efficient project s
 
 1. Create an initial admin user:
    ```bash
-   task backend:create-user
+   task backend:create-admin-user
    ```
 
 1. The services will be available at:
