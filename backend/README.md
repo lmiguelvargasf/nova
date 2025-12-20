@@ -13,7 +13,7 @@ See the [project root README](../README.md) for setup and running instructions.
 
 The following tools are used in this project:
 
-- **[Advanced Alchemy][advanced-alchemy]:** Used as ORM and database migration tool
+- **[Advanced Alchemy][advanced-alchemy]:** Used as ORM and database migration tool.
 - **[ruff][]:** Used for code linting and formatting.
 - **[pytest][]:** Used for running tests.
 - **[pytest-cov][]:** Used for measuring test coverage.
