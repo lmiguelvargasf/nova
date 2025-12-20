@@ -111,6 +111,7 @@ A modern full-stack application template built for quick and efficient project s
 1. The services will be available at:
    - [Frontend Application](http://localhost:3000)
    - [Backend Health Check](http://localhost:8000/health)
+   - [Admin UI](http://localhost:8000/admin)
    - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
 1. To stop and remove database service:

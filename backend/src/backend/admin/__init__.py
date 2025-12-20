@@ -1,0 +1,1 @@
+"""Admin (Starlette-Admin) integration."""
