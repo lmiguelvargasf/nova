@@ -1,5 +1,7 @@
 from starlette_admin.contrib.sqla import ModelView
 
+from backend.apps.users.models import UserModel
+
 
 class UserAdminView(ModelView):
     icon = "fa fa-user"
@@ -20,3 +22,6 @@ class UserAdminView(ModelView):
         "created_at",
         "updated_at",
     )
+
+
+VIEW = (UserAdminView, UserModel)

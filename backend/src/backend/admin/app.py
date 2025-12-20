@@ -8,38 +8,11 @@ from starlette.types import Receive, Scope, Send
 from starlette_admin import BaseAdmin
 from starlette_admin.contrib.sqla.middleware import DBSessionMiddleware
 
-from backend.apps.users.models import UserModel
 from backend.config.alchemy import alchemy_config
 from backend.config.base import settings
 
 from .auth import BackendAdminAuthProvider
-from .views import UserAdminView
-
-
-def create_admin_app(
-    *,
-    engine: AsyncEngine | None = None,
-) -> Starlette:
-    """Create the Starlette Admin application."""
-    secret = settings.admin_session_secret
-    db_engine = engine or alchemy_config.get_engine()
-    admin = BaseAdmin(
-        title="Admin",
-        auth_provider=BackendAdminAuthProvider(engine=db_engine),
-        middlewares=[
-            Middleware(
-                SessionMiddleware,
-                secret_key=secret,
-                same_site="lax",
-            ),
-            Middleware(DBSessionMiddleware, engine=db_engine),
-        ],
-    )
-    admin.add_view(UserAdminView(UserModel))
-
-    app = Starlette()
-    admin.mount_to(app)
-    return app
+from .views import ADMIN_VIEWS
 
 
 def create_admin_handler(
@@ -47,17 +20,34 @@ def create_admin_handler(
     engine: AsyncEngine | None = None,
 ) -> ASGIRouteHandler:
     """Create a Litestar ASGI handler that mounts the Starlette Admin app."""
-    app = create_admin_app(engine=engine)
+    db_engine = engine or alchemy_config.get_engine()
+
+    admin = BaseAdmin(
+        title="Admin",
+        auth_provider=BackendAdminAuthProvider(engine=db_engine),
+        middlewares=[
+            Middleware(
+                SessionMiddleware,
+                secret_key=settings.admin_session_secret,
+                same_site="lax",
+            ),
+            Middleware(DBSessionMiddleware, engine=db_engine),
+        ],
+    )
+
+    for view_class, model in ADMIN_VIEWS:
+        admin.add_view(view_class(model))
+
+    app = Starlette()
+    admin.mount_to(app)
 
     @asgi(path="/admin", is_mount=True, copy_scope=True)
     async def admin_mount(scope: Scope, receive: Receive, send: Send) -> None:
-        # Restore /admin prefix (Litestar strips it with is_mount=True)
         path = scope.get("path") or "/"
         if not path.startswith("/admin"):
             path = f"/admin{path}"
-        # Strip trailing slash except for /admin/ (index)
         if path.endswith("/") and path != "/admin/":
-            path = path[:-1]
+            path = path.rstrip("/")
         scope["path"] = path
         await app(scope, receive, send)
 
