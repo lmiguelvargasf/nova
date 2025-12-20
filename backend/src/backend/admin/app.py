@@ -60,6 +60,7 @@ def create_admin_handler(
         if path.endswith("/") and path != f"{prefix}/":
             path = path[:-1]
         scope["path"] = path
+        scope.pop("router", None)
         await app(scope, receive, send)
 
     return admin_mount
