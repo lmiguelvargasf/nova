@@ -14,7 +14,6 @@ def build_connection_string(db_name: str | None = None) -> str:
 
     We intentionally avoid introducing new required env vars (e.g. DATABASE_URL).
     """
-
     target_db = db_name or settings.postgres_db
     return (
         "postgresql+asyncpg://"
