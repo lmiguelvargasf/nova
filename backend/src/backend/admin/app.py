@@ -25,7 +25,6 @@ def create_admin_app(
     db_engine = engine or alchemy_config.get_engine()
     admin = BaseAdmin(
         title="Admin",
-        base_url="/admin",
         auth_provider=BackendAdminAuthProvider(engine=db_engine),
         middlewares=[
             Middleware(
