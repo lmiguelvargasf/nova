@@ -9,15 +9,11 @@ See the [project root README](../README.md) for setup and running instructions.
 - [Backend Health Check](http://localhost:8000/health)
 - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
-## Migrations (Advanced Alchemy / Alembic)
-
-- **Apply migrations**: `task backend:migrate`
-- **Create migrations** (CLI): `uv run litestar database make-migrations --no-prompt -m "your message"`
-
 ## Tooling
 
 The following tools are used in this project:
 
+- **[Advanced Alchemy][advanced-alchemy]:** A carefully crafted set of tools to work with SQLAlchemy.
 - **[ruff][]:** Used for code linting and formatting.
 - **[pytest][]:** Used for running tests.
 - **[pytest-cov][]:** Used for measuring test coverage.
@@ -26,7 +22,7 @@ The following tools are used in this project:
 
 ## Development Tasks
 
-This project uses [Task][] as a task runner to simplify common development workflows like linting, formatting, and testing.
+This project uses [Task][task] as a task runner to simplify common development workflows like linting, formatting, and testing.
 
 To see all available tasks and their descriptions, run:
 
@@ -34,8 +30,9 @@ To see all available tasks and their descriptions, run:
 task --list
 ```
 
-[Task]: https://taskfile.dev/
+[advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/latest/
 [pyrefly]: https://pyrefly.org/
 [pytest]: https://docs.pytest.org/
 [pytest-cov]: https://pytest-cov.readthedocs.io/en/latest/readme.html
 [ruff]: https://docs.astral.sh/ruff/
+[task]: https://taskfile.dev/
