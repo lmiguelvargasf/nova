@@ -7,8 +7,8 @@ See the [project root README](../README.md) for setup and running instructions.
 ## Access Backend
 
 - [Backend Health Check](http://localhost:8000/health)
+- [Admin UI](http://localhost:8000/admin)
 - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
-- Admin UI: http://127.0.0.1:8000/admin (requires `ADMIN_SESSION_SECRET`)
 
 ## Tooling
 
