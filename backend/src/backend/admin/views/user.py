@@ -24,4 +24,4 @@ class UserAdminView(ModelView):
     )
 
 
-VIEW = (UserAdminView, UserModel)
+view = UserAdminView(UserModel)

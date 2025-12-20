@@ -35,8 +35,8 @@ def create_admin_handler(
         ],
     )
 
-    for view_class, model in ADMIN_VIEWS:
-        admin.add_view(view_class(model))
+    for view in ADMIN_VIEWS:
+        admin.add_view(view)
 
     app = Starlette()
     admin.mount_to(app)
