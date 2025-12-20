@@ -1,5 +1,5 @@
 ---
-description: Python 3.14+ engineering rules (repo-aligned): correctness-first, no guessing, minimal diffs, ruff-formatted, pyrefly-clean.
+description: Python 3.14+ engineering rules (repo-aligned): correctness-first, no guessing, minimal diffs, ruff-formatted, ty-clean.
 globs:
   - "**/*.py"
 alwaysApply: true
@@ -13,13 +13,13 @@ alwaysApply: true
 ## 1) Minimal, Scoped Changes (Correctness > Churn)
 - Change only what the task requires. No drive-by refactors.
 - Do not rename identifiers, reorder code, or reformat unrelated sections.
-- Prefer the smallest diff that preserves readability and keeps `ruff` + `pyrefly` happy.
+- Prefer the smallest diff that preserves readability and keeps `ruff` + `ty` happy.
 
-## 2) Tooling Is the Source of Truth (ruff + pyrefly)
+## 2) Tooling Is the Source of Truth (ruff + ty)
 - **Formatting**: this repo uses **ruff format** (line length 88, target `py314`). Don’t hand-format to a different style.
 - **Linting**: prefer fixes that satisfy ruff rules rather than suppressing them.
   - Use `# noqa: <CODES>` only when justified and as narrow as possible.
-- **Typing**: keep code **pyrefly-clean**.
+- **Typing**: keep code **ty-clean**.
   - Avoid `Any` and `cast()` unless bridging an external/untyped boundary (ASGI scope, framework hooks).
   - If an ignore is unavoidable, use the narrowest form (e.g. `# type: ignore[code]`) and keep it close to the boundary.
 

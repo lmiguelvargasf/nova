@@ -9,6 +9,7 @@ dotenv:
 vars:
   RUFF: uv run ruff
   PYTEST: uv run pytest
+  TYP: uv run ty
 
 tasks:
   install:
@@ -49,9 +50,9 @@ tasks:
       - "{{.RUFF}} format --force-exclude"
 
   typecheck:
-    desc: Run pyrefly for static type checking
+    desc: Run ty for static type checking
     cmds:
-      - uv run pyrefly check
+      - "{{.TYP}} check"
 
   test:
     desc: Run tests without coverage
