@@ -1,0 +1,73 @@
+from collections.abc import AsyncIterator
+
+import pytest
+from argon2 import PasswordHasher
+from litestar import Litestar
+from litestar.testing import AsyncTestClient
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.pool import NullPool
+
+from backend.admin.app import create_admin_app
+from backend.app_factory import create_app
+from backend.apps.users.models import UserModel
+
+
+@pytest.fixture
+async def admin_test_client(db_engine) -> AsyncIterator[AsyncTestClient[Litestar]]:
+    async def context_getter() -> dict[str, object]:
+        return {"db_session": None, "user_service": None}
+
+    admin_engine = create_async_engine(
+        db_engine.url,
+        poolclass=NullPool,
+        pool_pre_ping=True,
+    )
+    admin_starlette_app = create_admin_app(
+        engine=admin_engine, session_secret="test-admin-session-secret"
+    )
+    test_app = create_app(
+        graphql_context_getter=context_getter,
+        use_sqlalchemy_plugin=False,
+        enable_admin=True,
+        admin_asgi_app=admin_starlette_app,
+    )
+    async with AsyncTestClient(app=test_app) as client:
+        yield client
+    await admin_engine.dispose()
+
+
+async def test_admin_redirects_to_login_when_unauthenticated(
+    admin_test_client: AsyncTestClient[Litestar],
+) -> None:
+    response = await admin_test_client.get("/admin", follow_redirects=False)
+    assert response.status_code == 303
+    assert "/admin/login" in response.headers["location"]
+
+
+async def test_admin_login_success(
+    admin_test_client: AsyncTestClient[Litestar],
+    db_sessionmaker,
+) -> None:
+    ph = PasswordHasher()
+    async with db_sessionmaker() as session:
+        session.add(
+            UserModel(
+                email="admin@example.com",
+                password_hash=ph.hash("TestPassword123"),
+                first_name="Admin",
+                last_name="User",
+                is_admin=True,
+                is_active=True,
+            )
+        )
+        await session.commit()
+
+    response = await admin_test_client.post(
+        "/admin/login",
+        data={"username": "admin@example.com", "password": "TestPassword123"},
+        follow_redirects=False,
+    )
+    assert response.status_code == 303
+
+    response = await admin_test_client.get("/admin")
+    assert response.status_code == 200

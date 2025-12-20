@@ -1,4 +1,7 @@
 from litestar import Litestar
+from litestar.plugins import PluginProtocol
+from litestar.types import ControllerRouterHandler
+from starlette.types import ASGIApp
 
 from .graphql.controller import (
     GraphQLContextGetter,
@@ -12,20 +15,32 @@ def create_app(
     *,
     graphql_context_getter: GraphQLContextGetter | None = None,
     use_sqlalchemy_plugin: bool = True,
+    enable_admin: bool | None = None,
+    admin_asgi_app: ASGIApp | None = None,
 ) -> Litestar:
     context_getter = graphql_context_getter or default_graphql_context_getter
 
-    route_handlers = [
+    if enable_admin is None:
+        from .config.base import settings
+
+        enable_admin = bool((settings.admin_session_secret or "").strip())
+
+    route_handlers: list[ControllerRouterHandler] = [
         health_check,
         create_graphql_controller(context_getter=context_getter),
     ]
 
-    plugins = []
+    plugins: list[PluginProtocol] = []
     if use_sqlalchemy_plugin:
         from advanced_alchemy.extensions.litestar import SQLAlchemyPlugin
 
         from .config.alchemy import alchemy_config
 
         plugins.append(SQLAlchemyPlugin(config=alchemy_config))
+
+    if enable_admin:
+        from .admin.app import create_admin_handler
+
+        route_handlers.append(create_admin_handler(admin_asgi_app=admin_asgi_app))
 
     return Litestar(route_handlers=route_handlers, plugins=plugins)
