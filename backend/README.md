@@ -6,7 +6,6 @@ See the [project root README](../README.md) for setup and running instructions.
 
 ## Access Backend
 
-- [Backend Admin UI](http://localhost:8000/admin/)
 - [Backend Health Check](http://localhost:8000/health)
 - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
@@ -14,6 +13,7 @@ See the [project root README](../README.md) for setup and running instructions.
 
 The following tools are used in this project:
 
+- **[Advanced Alchemy][advanced-alchemy]:** Used as ORM and database migration tool.
 - **[ruff][]:** Used for code linting and formatting.
 - **[pytest][]:** Used for running tests.
 - **[pytest-cov][]:** Used for measuring test coverage.
@@ -22,7 +22,7 @@ The following tools are used in this project:
 
 ## Development Tasks
 
-This project uses [Task][] as a task runner to simplify common development workflows like linting, formatting, and testing.
+This project uses [Task][task] as a task runner to simplify common development workflows like linting, formatting, and testing.
 
 To see all available tasks and their descriptions, run:
 
@@ -30,8 +30,9 @@ To see all available tasks and their descriptions, run:
 task --list
 ```
 
-[Task]: https://taskfile.dev/
+[advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/latest/
 [pyrefly]: https://pyrefly.org/
 [pytest]: https://docs.pytest.org/
 [pytest-cov]: https://pytest-cov.readthedocs.io/en/latest/readme.html
 [ruff]: https://docs.astral.sh/ruff/
+[task]: https://taskfile.dev/

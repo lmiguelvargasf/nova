@@ -8,10 +8,10 @@ authors = [
 ]
 requires-python = ">=3.14"
 dependencies = [
+    "advanced-alchemy[argon2]>=1.8.2",
+    "asyncpg>=0.31.0",
     "litestar[standard]>=2.19.0",
     "loguru>=0.7.3",
-    "piccolo-admin>=1.12.0",
-    "piccolo[postgres]>=1.30.0",
     "pydantic-settings>=2.12.0",
     "strawberry-graphql>=0.287.3",
 ]
@@ -22,6 +22,7 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "rich>=14.2.0",
     "pyrefly>=0.46.0",
     "pytest>=9.0.2",
     "pytest-asyncio>=1.3.0",
@@ -45,11 +46,6 @@ testpaths = ["tests"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 addopts = "--cov=src"
-
-[tool.coverage.run]
-omit = [
-    "src/backend/config/piccolo*.py",
-]
 
 [tool.pyrefly]
 python-version = "3.14"

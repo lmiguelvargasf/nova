@@ -81,10 +81,10 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} typecheck"
 
-  backend:create-user:
-    desc: Run backend create-user
+  backend:create-admin-user:
+    desc: Create an admin user
     cmds:
-      - "{{.BACKEND_TASK}} create-user"
+      - "{{.BACKEND_TASK}} create-admin-user"
 
   backend:schema:export:
     desc: Export backend GraphQL schema to frontend/schema/schema.graphql

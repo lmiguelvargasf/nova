@@ -27,7 +27,7 @@ A modern full-stack application template built for quick and efficient project s
 ### Backend
 - **[Python][python]** – Core programming language for backend.
 - **[Litestar][litestar]** – High-performance ASGI framework for modern Python web apps.
-- **[Piccolo][piccolo]** – Async ORM and query builder with migration support.
+- **[Advanced Alchemy][advanced-alchemy]** – SQLAlchemy integration (async) + migrations tooling.
 - **[PostgreSQL][postgresql]** – Advanced open-source relational database known for reliability.
 - **[GraphQL][graphql]** – API query language providing a more efficient alternative to REST.
 
@@ -128,11 +128,9 @@ pnpm --version
    ```bash
    task backend:create-user
    ```
-   **Note:** *Follow the prompts. Use your email address as the username. You can leave the email field blank when prompted later.*
 
 1. The services will be available at:
    - [Frontend Application](http://localhost:3000)
-   - [Backend Admin UI](http://localhost:8000/admin/)
    - [Backend Health Check](http://localhost:8000/health)
    - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
@@ -184,13 +182,13 @@ All versioned changes are documented on the [GitHub Releases][releases] page.
 
 This project is licensed under the [MIT License](./LICENSE).
 
+[advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/
 [chartjs]: https://www.chartjs.org/
 [docker-desktop]: https://www.docker.com/products/docker-desktop/
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
 [nextjs]: https://nextjs.org/
 [nvm]: https://github.com/nvm-sh/nvm
-[piccolo]: https://piccolo-orm.com/
 [pnpm]: https://pnpm.io/
 [postgresql]: https://www.postgresql.org/
 [pre-commit]: https://pre-commit.com/

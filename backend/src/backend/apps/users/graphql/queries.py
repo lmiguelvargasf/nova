@@ -1,6 +1,9 @@
 import strawberry
+from advanced_alchemy.exceptions import NotFoundError
 from graphql.error import GraphQLError
-from piccolo.apps.user.tables import BaseUser
+from strawberry.types import Info
+
+from backend.apps.users.services import UserService
 
 from .types import UserType
 
@@ -8,9 +11,11 @@ from .types import UserType
 @strawberry.type
 class UserQuery:
     @strawberry.field
-    async def user(self, id: strawberry.ID) -> UserType:
+    async def user(self, info: Info, id: strawberry.ID) -> UserType:
         user_id = int(id)
-        user = await BaseUser.objects().get(BaseUser.id == user_id)
-        if user is None:
-            raise GraphQLError(f"User with id {user_id} not found")
+        user_service: UserService = info.context["user_service"]
+        try:
+            user = await user_service.get(user_id)
+        except NotFoundError:
+            raise GraphQLError(f"User with id {user_id} not found") from None
         return UserType.from_model(user)

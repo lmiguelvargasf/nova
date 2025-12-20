@@ -4,13 +4,100 @@ from typing import Any
 import pytest
 from litestar import Litestar
 from litestar.testing import AsyncTestClient
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 
-from backend import app
+from backend.app_factory import create_app
+from backend.apps.users.services import UserService
+
+
+@pytest.fixture
+async def db_engine() -> AsyncIterator[AsyncEngine]:
+    from backend.config.alchemy import build_connection_string
+    from backend.config.base import settings
+
+    if settings.postgres_test_db == settings.postgres_db:
+        raise RuntimeError("Refusing to run tests against the development database.")
+
+    engine = create_async_engine(
+        build_connection_string(db_name=settings.postgres_test_db),
+        pool_pre_ping=True,
+    )
+
+    try:
+        yield engine
+    finally:
+        await engine.dispose()
+
+
+@pytest.fixture
+async def db_schema(db_engine: AsyncEngine) -> AsyncIterator[None]:
+    from backend.apps import models as app_models
+
+    async with db_engine.begin() as conn:
+        await conn.run_sync(app_models.metadata.drop_all)
+        await conn.run_sync(app_models.metadata.create_all)
+    try:
+        yield
+    finally:
+        async with db_engine.begin() as conn:
+            await conn.run_sync(app_models.metadata.drop_all)
+
+
+@pytest.fixture
+async def db_sessionmaker(db_engine: AsyncEngine, db_schema: None):
+    return async_sessionmaker(db_engine, expire_on_commit=False)
+
+
+@pytest.fixture
+async def db_session(db_sessionmaker: async_sessionmaker[AsyncSession]):
+    async with db_sessionmaker() as session:
+        try:
+            yield session
+        finally:
+            await session.rollback()
+
+
+@pytest.fixture
+def db_session_mock(mocker) -> AsyncSession:
+    session = mocker.Mock(spec=AsyncSession)
+    session.scalar = mocker.AsyncMock()
+    session.flush = mocker.AsyncMock()
+    session.add = mocker.Mock()
+    session.rollback = mocker.AsyncMock()
+    return session
+
+
+@pytest.fixture
+def user_service_mock(mocker) -> UserService:
+    service = mocker.Mock()
+    service.get = mocker.AsyncMock()
+    service.get_one_or_none = mocker.AsyncMock()
+    service.create = mocker.AsyncMock()
+    return service
 
 
 @pytest.fixture(scope="function")
-async def test_client() -> AsyncIterator[AsyncTestClient[Litestar]]:
-    async with AsyncTestClient(app=app) as client:
+async def test_client(
+    db_session_mock: AsyncSession,
+    user_service_mock: UserService,
+) -> AsyncIterator[AsyncTestClient[Litestar]]:
+    async def context_getter() -> dict[str, object]:
+        return {
+            "db_session": db_session_mock,
+            "user_service": user_service_mock,
+        }
+
+    test_app = create_app(
+        graphql_context_getter=context_getter,
+        use_sqlalchemy_plugin=False,
+    )
+
+    async with AsyncTestClient(app=test_app) as client:
         yield client
 
 
