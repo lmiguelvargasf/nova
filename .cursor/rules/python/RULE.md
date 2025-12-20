@@ -80,7 +80,7 @@ alwaysApply: true
 
 ## 9) Logging vs Print
 - Do not add `print()` for non-trivial codepaths.
-- Prefer existing logging conventions in the area you’re editing. If none exist, use stdlib `logging` (don’t introduce new logging deps).
+- Prefer existing logging conventions in the area you’re editing. If none exist, use `loguru` (don’t introduce additional logging deps).
 - Never log secrets (passwords, session secrets, tokens).
 
 ## 10) Docstrings (Only When They Add Signal)
