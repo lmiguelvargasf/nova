@@ -7,7 +7,6 @@ from litestar.testing import AsyncTestClient
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.pool import NullPool
 
-from backend.admin.app import create_admin_app
 from backend.app_factory import create_app
 from backend.apps.users.models import UserModel
 
@@ -21,12 +20,11 @@ async def admin_test_client(db_engine) -> AsyncIterator[AsyncTestClient[Litestar
         db_engine.url,
         poolclass=NullPool,
     )
-    admin_starlette_app = create_admin_app(engine=admin_engine)
     test_app = create_app(
         graphql_context_getter=context_getter,
         use_sqlalchemy_plugin=False,
         enable_admin=True,
-        admin_asgi_app=admin_starlette_app,
+        admin_engine=admin_engine,
     )
     async with AsyncTestClient(app=test_app) as client:
         yield client

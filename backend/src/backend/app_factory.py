@@ -1,7 +1,7 @@
 from litestar import Litestar
 from litestar.plugins import PluginProtocol
 from litestar.types import ControllerRouterHandler
-from starlette.types import ASGIApp
+from sqlalchemy.ext.asyncio import AsyncEngine
 
 from .graphql.controller import (
     GraphQLContextGetter,
@@ -16,7 +16,7 @@ def create_app(
     graphql_context_getter: GraphQLContextGetter | None = None,
     use_sqlalchemy_plugin: bool = True,
     enable_admin: bool = True,
-    admin_asgi_app: ASGIApp | None = None,
+    admin_engine: AsyncEngine | None = None,
 ) -> Litestar:
     context_getter = graphql_context_getter or default_graphql_context_getter
 
@@ -36,6 +36,6 @@ def create_app(
     if enable_admin:
         from .admin.app import create_admin_handler
 
-        route_handlers.append(create_admin_handler(admin_asgi_app=admin_asgi_app))
+        route_handlers.append(create_admin_handler(engine=admin_engine))
 
     return Litestar(route_handlers=route_handlers, plugins=plugins)
