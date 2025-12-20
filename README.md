@@ -45,7 +45,7 @@ The only requirement for this project is **[mise][]**.
 
 1. Install **[mise][mise]** by following the [official installation instructions](https://mise.jdx.dev/getting-started.html).
 
-2. Install all project dependencies (Node.js, Python, Task, etc.):
+2. Install all project dependencies (Node.js, Task, uv, etc.):
    ```bash
    mise install
    ```
