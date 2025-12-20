@@ -123,6 +123,7 @@ pnpm --version
    ```bash
    task frontend:dev
    ```
+
 1. Create an initial admin user:
    ```bash
    task backend:create-user
