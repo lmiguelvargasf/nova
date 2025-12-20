@@ -1,5 +1,5 @@
 ---
-description: TypeScript engineering rules (strict typing, ESM-first, repo-aligned)
+description: TypeScript engineering rules (strict typing, ESM-first, repo-aligned, LLM-safe)
 globs:
   - "**/*.ts"
   - "**/*.tsx"
@@ -9,17 +9,24 @@ globs:
 alwaysApply: true
 ---
 
-## 0) Prime Directive: No Guessing
+## 0) Prime Directive: No Guessing (LLM Safety)
 - **In the face of ambiguity, refuse the temptation to guess.**
-- If required context is missing (caller expectations, types, invariants, runtime environment), **stop** and ask for what's missing rather than inventing it.
+- If required context is missing (runtime: server vs client, caller expectations, types, invariants), **stop** and ask targeted questions rather than inventing it.
 - Never invent modules, functions, env vars, CLI commands, or APIs that are not already present in the repo.
+- Search before implementing:
+  - Find an existing example in `frontend/src/**` that matches the task.
+  - Reuse repo patterns (imports, naming, error handling, folder structure).
 
 ## 1) Type System First (Strictness & Boundaries)
-- Prefer strict mode (`strict: true`) and keep these on when `tsconfig` is in scope: `noImplicitAny`, `noImplicitReturns`, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, `noFallthroughCasesInSwitch`.
+- Prefer strict mode (`strict: true`). Do not loosen `frontend/tsconfig.json` (or add type escapes) unless explicitly asked.
+- When introducing new TS config, keep these enabled: `noImplicitAny`, `noImplicitReturns`, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, `noFallthroughCasesInSwitch`.
 - Use explicit types at module boundaries (exported functions/types, public methods, component props). Allow inference for locals.
 - Prefer `unknown` over `any`; narrow with type guards. Avoid `as` unless the narrowing is proven; prefer `satisfies` and user-defined type predicates.
 - Model nullability explicitly (`--strictNullChecks`). Avoid non-null assertions (`!`); narrow via control flow.
-- Prefer discriminated unions over flag enums. Avoid `enum`; use literal unions, or `const enum` only when safe and tree-shakable.
+- Prefer discriminated unions over flag enums.
+- Avoid `enum` by default in frontend code (runtime output + `isolatedModules` concerns). Prefer:
+  - literal unions (`type Status = "open" | "closed"`)
+  - `as const` objects (`const Status = { Open: "open" } as const`)
 - Use `never` exhaustiveness checks for discriminated unions in `switch`/`if` chains.
 - Use `readonly` for immutable props/tuples; use `as const` to stabilize literal inference where needed.
 - Avoid ambient/global augmentations; prefer module-scoped types and explicit imports.
@@ -30,6 +37,8 @@ alwaysApply: true
 - One logical component or module per file; keep files focused and cohesive.
 - Export a minimal, documented public surface; avoid exporting internal helpers unless part of the contract.
 - Use index barrels only when they won't create circular deps; otherwise import directly.
+- Avoid default exports in shared libraries.
+  - Exception: Next.js App Router entrypoints commonly require/expect default exports (e.g. `src/app/**/page.tsx`, `layout.tsx`).
 
 ## 2.1) Repo Frontend Stack (frontend/)
 - **Package manager**: `pnpm` (workspace). Use `pnpm` scripts or Taskfile tasks; never use npm/yarn to modify `pnpm-lock.yaml`.
@@ -42,7 +51,8 @@ alwaysApply: true
 - **GraphQL**: Apollo Client + `@apollo/client-integration-nextjs`.
   - Server data: `frontend/src/lib/apolloClient.server.ts`; client data: `frontend/src/lib/apolloClient.ts`.
   - Keep operations in `.graphql` files; run `pnpm codegen` (or `task frontend:codegen`) to regenerate types.
-  - Use generated types from `frontend/src/lib/graphql`; do not hand-write GraphQL result types.
+  - Do not edit generated code under `frontend/src/lib/graphql/**`.
+  - Prefer generated documents + types from `@/lib/graphql/graphql` (e.g. `GetUserByIdDocument`, `GetUserByIdQuery`); do not hand-write GraphQL result types.
 - **Tooling**: Biome for lint/format (`pnpm check`). Typecheck with `pnpm check:types`.
 - **Testing**: Vitest (unit/component), Storybook 10 (`@storybook/nextjs-vite`) with story tests, Playwright for E2E.
 
@@ -69,7 +79,6 @@ alwaysApply: true
 - Functions: verb-noun; types/interfaces: noun/adjective.
 - Boolean flags start with `is`/`has`/`should`/`can`.
 - Casing: `camelCase` for vars/functions, `PascalCase` for types/classes, `UPPER_SNAKE` for constants.
-- Avoid default exports in shared libraries; prefer named exports for refactoring/tooling.
 
 ## 7) Documentation & Comments
 - JSDoc for public APIs (params/returns, units, side effects, throws).
@@ -83,7 +92,8 @@ alwaysApply: true
 
 ## 9) Tooling & tsconfig Hygiene
 - Use repo formatting/linting (Biome in `frontend/`). Don't introduce ESLint/Prettier unless explicitly required by the task.
-- `tsconfig` hygiene: exclude build artifacts, set `rootDir`/`outDir` when emitting, enable incremental builds.
+- Do not change `frontend/tsconfig.json` compiler options unless explicitly requested.
+- `tsconfig` hygiene (when creating new TS projects/packages): exclude build artifacts, set `rootDir`/`outDir` when emitting, enable incremental builds.
 - Avoid new path aliases that obscure module boundaries unless already established; keep them minimal and documented.
 - Emit targets/modules should match the runtime; don't downlevel features you don't test.
 - Keep tree-shaking friendly: avoid side-effectful top-level code; declare `"sideEffects": false` only when valid.
@@ -105,12 +115,10 @@ alwaysApply: true
 - Prefer platform APIs over polyfills; if polyfilling, be explicit about target environments and bundle size.
 
 ## 13) Generated Code Guidance (LLM)
+- Prefer small, localized diffs that match existing patterns in the repo.
 - Always include imports; avoid undeclared globals.
-- Emit strict, typed function signatures; narrow types instead of loosening.
-- Add minimal, relevant JSDoc for exported items.
-- Provide small, focused modules with cohesive responsibilities.
-- Keep error handling explicit; don't swallow errors.
-- Default to immutable patterns; avoid mutation unless justified.
-- Ensure code is lint-friendly (no unused vars/params, consistent return types).
-- Include type-safe async flows with `await` and proper error propagation.
+- Emit strict, typed signatures; narrow types instead of loosening (avoid `any`/broad assertions).
+- Do not edit generated code (e.g. `frontend/src/lib/graphql/**`) or manually edit lockfiles.
+- Do not introduce new tooling (ESLint/Prettier) or change `frontend/tsconfig.json` unless explicitly requested.
+- Keep error handling explicit; no swallowed errors, no floating promises.
 - Avoid `// @ts-ignore`; if a suppression is unavoidable, use `// @ts-expect-error` with a short reason.
