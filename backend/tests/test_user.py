@@ -1,12 +1,14 @@
+from argon2 import PasswordHasher
+
 from backend.apps.users.models import UserModel
-from backend.security.passwords import hash_password
 
 
 async def test_user_model_create_and_get(db_sessionmaker) -> None:
     async with db_sessionmaker() as session:
+        ph = PasswordHasher()
         user = UserModel(
             email="test@example.com",
-            password_hash=hash_password("TestPassword123"),
+            password_hash=ph.hash("TestPassword123"),
             first_name="Test",
             last_name="User",
             is_admin=False,

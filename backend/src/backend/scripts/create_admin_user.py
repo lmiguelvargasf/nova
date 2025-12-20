@@ -1,13 +1,13 @@
 import argparse
 import asyncio
 
+from argon2 import PasswordHasher
 from rich.console import Console
 from rich.prompt import Prompt
 from sqlalchemy import select
 
 from backend.apps.users.models import UserModel
 from backend.config.alchemy import alchemy_config
-from backend.security.passwords import hash_password
 
 
 async def _create_admin(*, email: str, password: str) -> bool:
@@ -19,10 +19,11 @@ async def _create_admin(*, email: str, password: str) -> bool:
         if existing:
             return False
 
+        ph = PasswordHasher()
         session.add(
             UserModel(
                 email=email,
-                password_hash=hash_password(password),
+                password_hash=ph.hash(password),
                 first_name="",
                 last_name="",
                 is_admin=True,

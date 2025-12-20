@@ -1,10 +1,10 @@
 import strawberry
 from advanced_alchemy.exceptions import DuplicateKeyError, RepositoryError
+from argon2 import PasswordHasher
 from graphql.error import GraphQLError
 from strawberry.types import Info
 
 from backend.apps.users.services import UserService
-from backend.security.passwords import hash_password
 
 from .inputs import UserInput
 from .types import UserType
@@ -21,10 +21,11 @@ class UserMutation:
             raise GraphQLError(f"User with email '{user_input.email}' already exists.")
 
         try:
+            ph = PasswordHasher()
             user = await user_service.create(
                 {
                     "email": user_input.email,
-                    "password_hash": hash_password(user_input.password),
+                    "password_hash": ph.hash(user_input.password),
                     "first_name": user_input.first_name,
                     "last_name": user_input.last_name,
                     "is_admin": False,
