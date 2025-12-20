@@ -41,16 +41,15 @@ A modern full-stack application template built for quick and efficient project s
 
 ### Prerequisites
 
-The only requirement for this project is **[mise][]**.
+- **[Docker Desktop][docker-desktop]**: Provides Docker Engine and Docker Compose.
+- **[mise][mise]**: Manages tools like `uv`, `pnpm`, and `task`.
 
-1. Install **[mise][mise]** by following the [official installation instructions](https://mise.jdx.dev/getting-started.html).
+### Environment Setup
 
-2. Install all project dependencies (Node.js, Task, uv, etc.):
+1. Install the project toolchain:
    ```bash
    mise install
    ```
-
-### Environment Setup
 
 1. Copy the example environment files:
    ```bash
@@ -59,9 +58,9 @@ The only requirement for this project is **[mise][]**.
    cp frontend/.env.local.example frontend/.env.local
    ```
 
-2. Edit the environment files (`.env`, `backend/.env`, and `frontend/.env.local`) to set the required secrets and configuration values (such as database URLs, API keys, etc.).
+1. Edit the environment files (`.env`, `backend/.env`, and `frontend/.env.local`) to set the required secrets and configuration values (such as database URLs, API keys, etc.).
 
-3. Install pre-commit hooks:
+1. Install pre-commit hooks:
    ```bash
    pre-commit install
    ```
@@ -164,6 +163,7 @@ This project is licensed under the [MIT License](./LICENSE).
 
 [advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/
 [chartjs]: https://www.chartjs.org/
+[docker-desktop]: https://www.docker.com/products/docker-desktop/
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
 [nextjs]: https://nextjs.org/
