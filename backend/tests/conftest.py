@@ -24,7 +24,7 @@ async def db_engine() -> AsyncIterator[AsyncEngine]:
         raise RuntimeError("Refusing to run tests against the development database.")
 
     engine = create_async_engine(
-        build_connection_string(use_test_db=True),
+        build_connection_string(db_name=settings.postgres_test_db),
         pool_pre_ping=True,
     )
 
