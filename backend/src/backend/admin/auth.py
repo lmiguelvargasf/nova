@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHash, VerificationError, VerifyMismatchError
 from sqlalchemy import select
