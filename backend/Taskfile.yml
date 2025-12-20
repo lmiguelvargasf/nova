@@ -23,28 +23,28 @@ tasks:
       - uv sync
 
   migrate:
-    desc: Apply database migrations (Advanced Alchemy / Alembic)
+    desc: Apply database migrations
     cmds:
       - uv run litestar database upgrade --no-prompt
 
   dev:
-    desc: Run Litestar dev server (migrate first)
+    desc: Run dev server
     deps: [migrate]
     cmds:
       - uv run litestar run --reload
 
   schema:export:
-    desc: Export GraphQL schema (prints SDL to stdout)
+    desc: Export GraphQL schema
     cmds:
       - uv run strawberry export-schema backend.schema:schema
 
   lint:fix:
-    desc: Run ruff and automatically fix violations
+    desc: Run ruff to fix code linting violations
     cmds:
       - "{{.RUFF}} check --force-exclude --fix"
 
   format:
-    desc: Run ruff's formatter
+    desc: Run ruff to format code
     cmds:
       - "{{.RUFF}} format --force-exclude"
 
