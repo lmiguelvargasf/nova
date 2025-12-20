@@ -13,6 +13,7 @@ env:
   POSTGRES_HOST: localhost
   POSTGRES_PORT: 5432
   POSTGRES_TEST_DB: db_test
+  ADMIN_SESSION_SECRET: just-for-ci
 
 jobs:
   generate-schema:
