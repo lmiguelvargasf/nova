@@ -166,6 +166,7 @@ This project is licensed under the [MIT License](./LICENSE).
 [docker-desktop]: https://www.docker.com/products/docker-desktop/
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
+[mise]: https://mise.jdx.dev/
 [nextjs]: https://nextjs.org/
 [postgresql]: https://www.postgresql.org/
 [pre-commit]: https://pre-commit.com/
@@ -174,4 +175,3 @@ This project is licensed under the [MIT License](./LICENSE).
 [tailwind]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
 [typescript]: https://www.typescriptlang.org/
-[mise]: https://mise.jdx.dev/
