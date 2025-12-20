@@ -41,34 +41,14 @@ A modern full-stack application template built for quick and efficient project s
 
 ### Prerequisites
 
-The primary prerequisites for this project are:
-- **[Python][python]:** Version 3.14 or later (required for the backend).
-- **[Docker Desktop][docker-desktop]:** Provides Docker Engine and Docker Compose.
-- **[Task][task]:** A task runner / build tool used for managing common development workflows.
-- **[pre-commit][]:** A tool for managing and running pre-commit hooks.
-- **[uv][]:** backend package manager.
-- **[nvm][]:** Manages your local Node.js versions.
-- **[pnpm][]:** frontend package manager.
+The only requirement for this project is **[mise][]**.
 
-#### Alternative Installation
+1. Install **[mise][mise]** by following the [official installation instructions](https://mise.jdx.dev/getting-started.html).
 
-Alternatively, install the components separately:
-- [**Docker Engine:**](https://docs.docker.com/engine/install/) Version 28 or later.
-- [**Docker Compose:**](https://docs.docker.com/compose/install/linux/#install-the-plugin-manually) Version 2 (V2) or later.
-
-#### Verifying Installation
-
-Verify the installation by running:
-```bash
-docker --version
-docker compose version
-task --version
-pre-commit --version
-uv --version
-nvm --version
-node --version
-pnpm --version
-```
+2. Install all project dependencies (Node.js, Python, Task, etc.):
+   ```bash
+   mise install
+   ```
 
 ### Environment Setup
 
@@ -184,12 +164,9 @@ This project is licensed under the [MIT License](./LICENSE).
 
 [advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/
 [chartjs]: https://www.chartjs.org/
-[docker-desktop]: https://www.docker.com/products/docker-desktop/
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
 [nextjs]: https://nextjs.org/
-[nvm]: https://github.com/nvm-sh/nvm
-[pnpm]: https://pnpm.io/
 [postgresql]: https://www.postgresql.org/
 [pre-commit]: https://pre-commit.com/
 [python]: https://www.python.org/
@@ -197,4 +174,4 @@ This project is licensed under the [MIT License](./LICENSE).
 [tailwind]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
 [typescript]: https://www.typescriptlang.org/
-[uv]: https://docs.astral.sh/uv/
+[mise]: https://mise.jdx.dev/
