@@ -27,11 +27,11 @@ def create_admin_handler(
         auth_provider=BackendAdminAuthProvider(engine=db_engine),
         middlewares=[
             Middleware(
-                SessionMiddleware,
+                SessionMiddleware,  # type: ignore[arg-type]
                 secret_key=settings.admin_session_secret,
                 same_site="lax",
             ),
-            Middleware(DBSessionMiddleware, engine=db_engine),
+            Middleware(DBSessionMiddleware, engine=db_engine),  # type: ignore[arg-type]
         ],
     )
 
