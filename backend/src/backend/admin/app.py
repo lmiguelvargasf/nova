@@ -45,8 +45,7 @@ def create_admin_app(
     admin.add_view(UserAdminView(UserModel))
 
     app = Starlette()
-    app.router.redirect_slashes = False
-    admin.mount_to(app, redirect_slashes=False)
+    admin.mount_to(app)
     return app
 
 
@@ -64,23 +63,12 @@ def create_admin_handler(
     @asgi(path="/admin", is_mount=True, copy_scope=True)
     async def admin_mount(scope: Scope, receive: Receive, send: Send) -> None:
         prefix = "/admin"
-        path = scope.get("path", "")
-        # Litestar mounts always include a trailing slash; normalize for Admin routes.
-        if path in ("", "/"):
-            normalized_path = f"{prefix}/"
-        else:
-            trimmed = path.rstrip("/")
-            if trimmed == prefix:
-                normalized_path = f"{prefix}/"
-            elif trimmed.startswith(prefix):
-                normalized_path = trimmed
-            else:
-                normalized_path = prefix + trimmed
-        if normalized_path != path:
-            scope["path"] = normalized_path
-            raw_path = scope.get("raw_path")
-            if isinstance(raw_path, (bytes, bytearray)):
-                scope["raw_path"] = normalized_path.encode()
+        path = scope.get("path", "") or "/"
+        if not path.startswith(prefix):
+            path = f"{prefix}{path}"
+        if path.endswith("/") and path != f"{prefix}/":
+            path = path[:-1]
+        scope["path"] = path
         await app(scope, receive, send)
 
     return admin_mount

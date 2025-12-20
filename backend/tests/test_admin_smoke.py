@@ -20,7 +20,6 @@ async def admin_test_client(db_engine) -> AsyncIterator[AsyncTestClient[Litestar
     admin_engine = create_async_engine(
         db_engine.url,
         poolclass=NullPool,
-        pool_pre_ping=True,
     )
     admin_starlette_app = create_admin_app(
         engine=admin_engine, session_secret="test-admin-session-secret"
