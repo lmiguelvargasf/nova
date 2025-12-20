@@ -60,8 +60,6 @@ def create_admin_handler(
         if path.endswith("/") and path != "/admin/":
             path = path[:-1]
         scope["path"] = path
-        # Clear Litestar's router so Starlette can use its own for URL generation
-        scope.pop("router", None)
         await app(scope, receive, send)
 
     return admin_mount
