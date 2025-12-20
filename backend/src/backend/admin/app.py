@@ -52,11 +52,11 @@ def create_admin_handler(
 
     @asgi(path="/admin", is_mount=True, copy_scope=True)
     async def admin_mount(scope: Scope, receive: Receive, send: Send) -> None:
-        # Litestar strips /admin prefix; restore it for Starlette Admin
+        # Restore /admin prefix (Litestar strips it with is_mount=True)
         path = scope.get("path") or "/"
         if not path.startswith("/admin"):
             path = f"/admin{path}"
-        # Normalize trailing slash (Starlette routes don't have trailing slashes)
+        # Strip trailing slash except for /admin/ (index)
         if path.endswith("/") and path != "/admin/":
             path = path[:-1]
         scope["path"] = path
