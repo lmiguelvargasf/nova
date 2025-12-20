@@ -26,7 +26,6 @@ class BackendAdminAuthProvider(AuthProvider):
         if not email or not password:
             raise LoginFailed("Invalid username or password")
 
-        ph = PasswordHasher()
         async with AsyncSession(self._engine, expire_on_commit=False) as session:
             user = await session.scalar(
                 select(UserModel).where(UserModel.email == email)
@@ -35,6 +34,7 @@ class BackendAdminAuthProvider(AuthProvider):
         if user is None or not user.is_admin or not user.is_active:
             raise LoginFailed("Invalid username or password")
 
+        ph = PasswordHasher()
         try:
             ok = ph.verify(user.password_hash, password)
         except (VerifyMismatchError, InvalidHash, VerificationError):

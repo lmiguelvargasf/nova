@@ -21,9 +21,7 @@ async def admin_test_client(db_engine) -> AsyncIterator[AsyncTestClient[Litestar
         db_engine.url,
         poolclass=NullPool,
     )
-    admin_starlette_app = create_admin_app(
-        engine=admin_engine, session_secret="test-admin-session-secret"
-    )
+    admin_starlette_app = create_admin_app(engine=admin_engine)
     test_app = create_app(
         graphql_context_getter=context_getter,
         use_sqlalchemy_plugin=False,

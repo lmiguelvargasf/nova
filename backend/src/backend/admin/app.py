@@ -19,15 +19,9 @@ from .views import UserAdminView
 def create_admin_app(
     *,
     engine: AsyncEngine | None = None,
-    session_secret: str | None = None,
 ) -> Starlette:
     """Create the Starlette Admin application."""
-    secret = (session_secret or settings.admin_session_secret or "").strip()
-    if not secret:
-        raise RuntimeError(
-            "ADMIN_SESSION_SECRET must be set to enable the Starlette-Admin UI."
-        )
-
+    secret = settings.admin_session_secret
     db_engine = engine or alchemy_config.get_engine()
     admin = BaseAdmin(
         title="Admin",
@@ -52,13 +46,10 @@ def create_admin_app(
 def create_admin_handler(
     *,
     engine: AsyncEngine | None = None,
-    session_secret: str | None = None,
     admin_asgi_app: ASGIApp | None = None,
 ) -> ASGIRouteHandler:
     """Create a Litestar ASGI handler that mounts the Starlette Admin app."""
-    app = admin_asgi_app or create_admin_app(
-        engine=engine, session_secret=session_secret
-    )
+    app = admin_asgi_app or create_admin_app(engine=engine)
 
     @asgi(path="/admin", is_mount=True, copy_scope=True)
     async def admin_mount(scope: Scope, receive: Receive, send: Send) -> None:
