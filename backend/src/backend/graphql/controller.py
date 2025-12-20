@@ -15,6 +15,13 @@ class BackendGraphQLContext(TypedDict):
     user_service: UserService
 
 
+type GraphQLContext = dict[str, object] | BackendGraphQLContext
+type GraphQLContextGetter = (
+    Callable[[], Awaitable[GraphQLContext]]
+    | Callable[[AsyncSession], Awaitable[GraphQLContext]]
+)
+
+
 async def default_graphql_context_getter(
     db_session: AsyncSession,
 ) -> BackendGraphQLContext:
@@ -23,8 +30,7 @@ async def default_graphql_context_getter(
 
 def create_graphql_controller(
     *,
-    context_getter: Callable[[], Awaitable[dict[str, object] | BackendGraphQLContext]]
-    | Callable[[AsyncSession], Awaitable[dict[str, object] | BackendGraphQLContext]],
+    context_getter: GraphQLContextGetter,
 ):
     return make_graphql_controller(
         schema=schema,
