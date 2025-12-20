@@ -123,6 +123,10 @@ pnpm --version
    ```bash
    task frontend:dev
    ```
+1. Create an initial admin user:
+   ```bash
+   task backend:create-user
+   ```
 
 1. The services will be available at:
    - [Frontend Application](http://localhost:3000)
