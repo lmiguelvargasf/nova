@@ -132,8 +132,6 @@ To list all available tasks, run:
 task --list
 ```
 
-Refer to the `README.md` files in the [`backend`](./backend/README.md) and [`frontend`](./frontend/README.md) directories for service-specific task details.
-
 ## 🧰 Troubleshooting
 
 ### Frontend
