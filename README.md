@@ -32,7 +32,7 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 
 ### Frontend
 - **[TypeScript][typescript]** – Core programming language for frontend.
-- **[Next.js][nextjs]** – React framework for production-ready applications (v16.x).
+- **[Next.js][nextjs]** – React framework for production-ready applications.
 - **[Tailwind CSS][tailwind]** – Utility-first CSS framework for rapid UI development.
 
 ## 🚀 Getting Started
