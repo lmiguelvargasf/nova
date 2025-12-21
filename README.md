@@ -117,7 +117,7 @@ The services will be available at:
 
 This is an opinionated deployment recommendation that has worked well in production, but you are free to deploy this template using any providers or infrastructure that fit your needs.
 
-See the full checklist in [`docs/deployment.md`](docs/deployment.md).
+See full deployment details in [`docs/deployment.md`](docs/deployment.md).
 
 ### Frontend (Vercel)
 
