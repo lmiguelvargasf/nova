@@ -32,12 +32,12 @@ jobs:
           mkdir -p ../frontend/schema
           uv run strawberry export-schema backend.schema:schema > ../frontend/schema/schema.graphql
 
-      - name: Upload Schema Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: graphql-schema
-          path: frontend/schema/schema.graphql
-          retention-days: 1
+      - name: Check Schema is up-to-date
+        run: |
+          if ! git diff --exit-code frontend/schema/schema.graphql; then
+            echo "::error::GraphQL schema is out of sync!"
+            exit 1
+          fi
 
   frontend-lint-and-test:
     name: Frontend Lint and Test
@@ -79,12 +79,6 @@ jobs:
 
       - name: Install Dependencies
         run: pnpm install
-
-      - name: Download Schema Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: graphql-schema
-          path: frontend/schema
 
       - name: Generate GraphQL Code
         run: pnpm codegen

@@ -160,7 +160,6 @@ tasks:
   frontend:codegen:
     desc: Run frontend codegen
     cmds:
-      - task: backend:schema:export
       - "{{.FRONTEND_TASK}} codegen"
 
   frontend:storybook:build:

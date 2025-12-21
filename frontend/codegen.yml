@@ -1,4 +1,5 @@
-schema: ${NEXT_PUBLIC_GRAPHQL_ENDPOINT:./schema/schema.graphql}
+# yaml-language-server: $schema=./codegen.schema.json
+schema: ./schema/schema.graphql
 documents: "src/**/*.graphql"
 generates:
   src/lib/graphql/:
