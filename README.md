@@ -2,9 +2,9 @@
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 ![Python](https://img.shields.io/badge/python-3.14-blue?style=for-the-badge&logo=python)
-![Node.js](https://img.shields.io/badge/node.js-24.0-brightgreen?style=for-the-badge&logo=node.js)
-![Next.js](https://img.shields.io/badge/Next.js-16.x-black?style=for-the-badge&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript)
+![Node.js](https://img.shields.io/badge/node.js-24-brightgreen?style=for-the-badge&logo=node.js)
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-0074D9?style=for-the-badge&logo=postgresql&logoColor=white)
 ![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-0074D9?style=for-the-badge&logo=docker&logoColor=white)
