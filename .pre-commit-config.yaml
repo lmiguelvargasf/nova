@@ -11,7 +11,7 @@ repos:
     hooks:
       - id: backend-code-quality
         name: "backend: code quality"
-        entry: task backend:lint:fix backend:format
+        entry: task backend:format backend:lint:fix
         language: system
         pass_filenames: false
         files: ^backend/
