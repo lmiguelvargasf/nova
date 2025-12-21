@@ -10,7 +10,7 @@
 ![Docker](https://img.shields.io/badge/Docker-0074D9?style=for-the-badge&logo=docker&logoColor=white)
 ![Task](https://img.shields.io/badge/Task-43B883?style=for-the-badge&logo=task&logoColor=white)
 
-A modern full-stack application template for building web applications with a Python/GraphQL backend and a Next.js frontend. Designed as a starting point for new projects with authentication, admin UI, and a clean architecture out of the box.
+A full-stack application template with a Python (Litestar) backend and a TypeScript (Next.js) frontend, connected via GraphQL. Ideal for quickly bootstrapping proof-of-concept projects.
 
 ## 📚 Table of Contents
 
