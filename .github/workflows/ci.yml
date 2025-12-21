@@ -39,13 +39,6 @@ jobs:
             exit 1
           fi
 
-      - name: Upload Schema Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: graphql-schema
-          path: frontend/schema/schema.graphql
-          retention-days: 1
-
   frontend-lint-and-test:
     name: Frontend Lint and Test
     needs: [generate-schema]
@@ -86,12 +79,6 @@ jobs:
 
       - name: Install Dependencies
         run: pnpm install
-
-      - name: Download Schema Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: graphql-schema
-          path: frontend/schema
 
       - name: Generate GraphQL Code
         run: pnpm codegen
