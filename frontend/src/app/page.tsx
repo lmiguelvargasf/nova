@@ -6,6 +6,8 @@ import {
   type GetUserByIdQueryVariables,
 } from "@/lib/graphql/graphql";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   let userData: GetUserByIdQuery["user"] | null = null;
   let fetchError: string | null = null;
@@ -19,9 +21,18 @@ export default async function Home() {
     });
     userData = data?.user ?? null;
   } catch (err) {
-    console.error("Failed to fetch user data:", err);
+    const e = err as { message?: unknown; errors?: unknown };
+    const graphQLErrors = Array.isArray(e?.errors) ? e.errors : null;
     fetchError =
-      err instanceof Error ? err.message : "An unexpected error occurred";
+      graphQLErrors && graphQLErrors.length > 0
+        ? (graphQLErrors as Array<{ message?: unknown }>)
+            .map((ge) =>
+              typeof ge?.message === "string" ? ge.message : "Error",
+            )
+            .join("; ")
+        : typeof e?.message === "string"
+          ? e.message
+          : "An unexpected error occurred";
   }
 
   return (
