@@ -1,39 +1,24 @@
 # Backend
 
-This service runs locally using `uv`.
-Docker Compose is used only for the database service.
-See the [project root README](../README.md) for setup and running instructions.
+Runs locally using `uv`. Docker Compose is used only for the database.
+See the [project root README](../README.md) for setup instructions.
 
-## Access Backend
+## Access
 
-- [Backend Health Check](http://localhost:8000/health)
+- [Health Check](http://localhost:8000/health)
 - [Admin UI](http://localhost:8000/admin)
-- [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
+- [GraphQL (GraphiQL)](http://localhost:8000/graphql)
 
 ## Tooling
 
-The following tools are used in this project:
+- **[Advanced Alchemy][]** – ORM and database migrations
+- **[ruff][]** – Linting and formatting
+- **[pytest][]** – Testing
+- **[pytest-cov][]** – Test coverage
+- **[ty][]** – Static type checking
 
-- **[Advanced Alchemy][advanced-alchemy]:** Used as ORM and database migration tool.
-- **[ruff][]:** Used for code linting and formatting.
-- **[pytest][]:** Used for running tests.
-- **[pytest-cov][]:** Used for measuring test coverage.
-- **[ty][]:** Used for static type checking.
-
-
-## Development Tasks
-
-This project uses [Task][task] as a task runner to simplify common development workflows like linting, formatting, and testing.
-
-To see all available tasks and their descriptions, run:
-
-```bash
-task --list
-```
-
-[advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/latest/
+[Advanced Alchemy]: https://docs.advanced-alchemy.litestar.dev/latest/
 [pytest]: https://docs.pytest.org/
 [pytest-cov]: https://pytest-cov.readthedocs.io/en/latest/readme.html
 [ruff]: https://docs.astral.sh/ruff/
-[task]: https://taskfile.dev/
 [ty]: https://docs.astral.sh/ty/
