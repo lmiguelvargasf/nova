@@ -119,21 +119,6 @@ This is an opinionated deployment recommendation that has worked well in product
 
 See full deployment details in [`docs/deployment.md`](docs/deployment.md).
 
-### Frontend (Vercel)
-
-- **Root Directory**: `frontend`
-- **Environment Variables**: add all variables defined in `frontend/.env.local.example` to your Vercel project settings.
-
-### Database (Supabase)
-
-- **Important**: use the **Session Pooler** connection string (Render connects via IPv4).
-
-### Backend (Render)
-
-- **Root Directory**: `backend`
-- **Build Command**: `uv sync`
-- **Environment Variables**: add all variables defined in `.env.example` and `backend/.env.example` to your Render service settings.
-
 ## ⚙️ Development Tasks
 
 This project uses [Task][] to simplify common development workflows. The main `Taskfile.yml` in the project root provides commands for:
