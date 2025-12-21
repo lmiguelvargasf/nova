@@ -18,7 +18,7 @@ The following tools are used in this project:
 - **[ruff][]:** Used for code linting and formatting.
 - **[pytest][]:** Used for running tests.
 - **[pytest-cov][]:** Used for measuring test coverage.
-- **[pyrefly][]:** Used for static type checking.
+- **[ty][]:** Used for static type checking.
 
 
 ## Development Tasks
@@ -32,8 +32,8 @@ task --list
 ```
 
 [advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/latest/
-[pyrefly]: https://pyrefly.org/
 [pytest]: https://docs.pytest.org/
 [pytest-cov]: https://pytest-cov.readthedocs.io/en/latest/readme.html
 [ruff]: https://docs.astral.sh/ruff/
 [task]: https://taskfile.dev/
+[ty]: https://docs.astral.sh/ty/

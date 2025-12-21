@@ -18,7 +18,7 @@ alwaysApply: false
 - **Framework**: Litestar (`litestar[standard]`). Prefer `async def` handlers for request/IO code.
 - **ORM**: SQLAlchemy via **Advanced Alchemy** (async, Postgres via `asyncpg`).
 - **GraphQL**: Strawberry + `strawberry.litestar` integration.
-- **Python**: `>=3.14` (use modern typing; keep type hints accurate for `pyrefly`).
+- **Python**: `>=3.14` (use modern typing; keep type hints accurate for `ty`).
 - **Settings/Validation**: `pydantic-settings` (Pydantic v2) for configuration; use Pydantic models when validation is non-trivial.
 - **Package manager**: `uv` (`uv.lock` exists).
 - **Dependencies**: Managed with `uv`. Do not add packages without explicit permission.

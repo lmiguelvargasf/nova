@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "anysphere.cursorpyright",
+    "astral-sh.ty",
     "biomejs.biome",
     "bradlc.vscode-tailwindcss",
     "charliermarsh.ruff",
