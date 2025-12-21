@@ -5,6 +5,7 @@
   "scripts": {
     "// --- LIFECYCLE ---": "",
     "dev": "next dev --turbopack",
+    "prebuild": "pnpm codegen",
     "build": "next build",
     "start": "next start",
     "validate": "pnpm check && pnpm check:types && pnpm test:unit:run && pnpm test:story:run && pnpm build",
