@@ -130,11 +130,11 @@ jobs:
       - name: Backend Dependencies
         uses: ./.github/actions/backend-setup
 
-      - name: Lint with ruff
-        run: uv run ruff check --force-exclude --fix
-
       - name: Format check with ruff
-        run: uv run ruff format --force-exclude
+        run: uv run ruff format --force-exclude --check
+
+      - name: Lint with ruff
+        run: uv run ruff check --force-exclude
 
       - name: Type check with ty
         run: uv run ty check
