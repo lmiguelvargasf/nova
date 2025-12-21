@@ -1,6 +1,6 @@
 # Frontend
 
-Runs locally using Node.js, Next.js, and pnpm.
+Runs locally using `pnpm`.
 See the [project root README](../README.md) for setup instructions.
 
 ## Access
