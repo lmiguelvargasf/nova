@@ -55,6 +55,3 @@ node_modules/
 
 # GraphQL Codegen
 /src/lib/graphql/
-
-# Generated GraphQL schema
-/schema/
