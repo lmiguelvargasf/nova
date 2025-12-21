@@ -32,6 +32,14 @@ jobs:
           mkdir -p ../frontend/schema
           uv run strawberry export-schema backend.schema:schema > ../frontend/schema/schema.graphql
 
+      - name: Check Schema is up-to-date
+        run: |
+          if ! git diff --exit-code frontend/schema/schema.graphql; then
+            echo "::error::GraphQL schema is out of sync with backend!"
+            echo "Run 'cd backend && uv run strawberry export-schema backend.schema:schema > ../frontend/schema/schema.graphql' locally and commit the updated schema."
+            exit 1
+          fi
+
       - name: Upload Schema Artifact
         uses: actions/upload-artifact@v4
         with:
