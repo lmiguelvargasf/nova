@@ -35,8 +35,7 @@ jobs:
       - name: Check Schema is up-to-date
         run: |
           if ! git diff --exit-code frontend/schema/schema.graphql; then
-            echo "::error::GraphQL schema is out of sync with backend!"
-            echo "Run 'cd backend && uv run strawberry export-schema backend.schema:schema > ../frontend/schema/schema.graphql' locally and commit the updated schema."
+            echo "::error::GraphQL schema is out of sync!"
             exit 1
           fi
 
