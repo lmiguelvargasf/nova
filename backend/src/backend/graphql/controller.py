@@ -27,8 +27,9 @@ async def default_graphql_context_getter(
 
 def create_graphql_controller(
     *,
-    context_getter: GraphQLContextGetter = default_graphql_context_getter,
+    context_getter: GraphQLContextGetter | None = None,
 ):
+    context_getter = context_getter or default_graphql_context_getter
     return make_graphql_controller(
         schema=schema,
         path="/graphql",

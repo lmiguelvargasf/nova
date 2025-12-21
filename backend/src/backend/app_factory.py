@@ -6,7 +6,6 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 from .graphql.controller import (
     GraphQLContextGetter,
     create_graphql_controller,
-    default_graphql_context_getter,
 )
 from .health import health_check
 
@@ -18,11 +17,9 @@ def create_app(
     enable_admin: bool = True,
     admin_engine: AsyncEngine | None = None,
 ) -> Litestar:
-    context_getter = graphql_context_getter or default_graphql_context_getter
-
     route_handlers: list[ControllerRouterHandler] = [
         health_check,
-        create_graphql_controller(context_getter=context_getter),
+        create_graphql_controller(context_getter=graphql_context_getter),
     ]
 
     plugins: list[PluginProtocol] = []
