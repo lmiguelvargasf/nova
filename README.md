@@ -170,7 +170,7 @@ This project is licensed under the [MIT License](./LICENSE).
 [postgresql]: https://www.postgresql.org/
 [pre-commit]: https://pre-commit.com/
 [python]: https://www.python.org/
-[releases]: https://github.com/lmiguelvargasf/nova-stack/releases
+[releases]: https://github.com/lmiguelvargasf/nova/releases
 [tailwind]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
 [typescript]: https://www.typescriptlang.org/
