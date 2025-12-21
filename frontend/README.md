@@ -1,34 +1,20 @@
 # Frontend
 
-This service runs locally using Node.js (v24), Next.js 16, and pnpm. See the [project root README](../README.md) for setup and running instructions.
+Runs locally using `pnpm`.
+See the [project root README](../README.md) for setup instructions.
 
-## Access Frontend
+## Access
 
-- [Frontend Application](http://localhost:3000)
+- [Application](http://localhost:3000)
 
 ## Tooling
 
-The following tools are used in this project:
-
-- **[Biome][]:** Used for code linting and formatting.
-- **[Vitest][]:** Used for running unit and component tests.
-- **[Playwright][]:** Used for running end-to-end tests.
-- **[Storybook][]:** Used for UI component development and testing.
-
-## Development Tasks
-
-This project uses [Task][] as a task runner to simplify common development workflows like linting, formatting, testing, and running the application.
-
-To see all available tasks and their descriptions, run:
-
-```bash
-task --list
-```
-
-You can also run commands directly in the `frontend` directory with `pnpm`.
+- **[Biome][]** – Linting and formatting
+- **[Vitest][]** – Unit and component tests
+- **[Playwright][]** – End-to-end tests
+- **[Storybook][]** – UI component development
 
 [Biome]: https://biomejs.dev/
 [Playwright]: https://playwright.dev/
-[Task]: https://taskfile.dev/
 [Vitest]: https://vitest.dev/
 [Storybook]: https://storybook.js.org/
