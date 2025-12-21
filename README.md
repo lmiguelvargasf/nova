@@ -31,7 +31,7 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 - **[GraphQL][graphql]** – API query language providing a more efficient alternative to REST.
 
 ### Frontend
-- **[TypeScript][typescript]** – Core language for frontend, adding static types to JavaScript.
+- **[TypeScript][typescript]** – Core programming language for frontend.
 - **[Next.js][nextjs]** – React framework for production-ready applications (v16.x).
 - **[Tailwind CSS][tailwind]** – Utility-first CSS framework for rapid UI development.
 
