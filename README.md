@@ -112,8 +112,6 @@ The services will be available at:
 - [Admin UI](http://localhost:8000/admin)
 - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
-> **Tip:** To stop and remove the database service, run `task db:down`.
-
 ## ⚙️ Development Tasks
 
 This project uses [Task][] to simplify common development workflows. The main `Taskfile.yml` in the project root provides commands for:
