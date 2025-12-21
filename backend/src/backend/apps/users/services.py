@@ -1,12 +1,10 @@
-from advanced_alchemy.repository import SQLAlchemyAsyncRepository
-from advanced_alchemy.service import SQLAlchemyAsyncRepositoryService
+from advanced_alchemy.extensions.litestar import repository, service
 
 from .models import UserModel
 
 
-class UserRepository(SQLAlchemyAsyncRepository[UserModel]):
-    model_type = UserModel
+class UserService(service.SQLAlchemyAsyncRepositoryService[UserModel]):
+    class Repo(repository.SQLAlchemyAsyncRepository[UserModel]):
+        model_type = UserModel
 
-
-class UserService(SQLAlchemyAsyncRepositoryService[UserModel, UserRepository]):
-    repository_type = UserRepository
+    repository_type = Repo
