@@ -8,12 +8,11 @@ from ..apps.users.services import UserService
 from ..schema import schema
 
 
-class BackendGraphQLContext(TypedDict):
+class GraphQLContext(TypedDict):
     db_session: AsyncSession
     user_service: UserService
 
 
-type GraphQLContext = dict[str, object] | BackendGraphQLContext
 type GraphQLContextGetter = (
     Callable[[], Awaitable[GraphQLContext]]
     | Callable[[AsyncSession], Awaitable[GraphQLContext]]
@@ -22,13 +21,13 @@ type GraphQLContextGetter = (
 
 async def default_graphql_context_getter(
     db_session: AsyncSession,
-) -> BackendGraphQLContext:
+) -> GraphQLContext:
     return {"db_session": db_session, "user_service": UserService(db_session)}
 
 
 def create_graphql_controller(
     *,
-    context_getter: GraphQLContextGetter,
+    context_getter: GraphQLContextGetter = default_graphql_context_getter,
 ):
     return make_graphql_controller(
         schema=schema,

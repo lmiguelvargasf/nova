@@ -1,4 +1,5 @@
 from collections.abc import AsyncIterator
+from typing import cast
 
 import pytest
 from argon2 import PasswordHasher
@@ -9,12 +10,13 @@ from sqlalchemy.pool import NullPool
 
 from backend.app_factory import create_app
 from backend.apps.users.models import UserModel
+from backend.graphql.controller import GraphQLContext
 
 
 @pytest.fixture
 async def admin_test_client(db_engine) -> AsyncIterator[AsyncTestClient[Litestar]]:
-    async def context_getter() -> dict[str, object]:
-        return {"db_session": None, "user_service": None}
+    async def context_getter() -> GraphQLContext:
+        return cast(GraphQLContext, {"db_session": None, "user_service": None})
 
     admin_engine = create_async_engine(
         db_engine.url,
