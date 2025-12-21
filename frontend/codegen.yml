@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=./codegen.schema.json
 schema: ./schema/schema.graphql
 documents: "src/**/*.graphql"
 generates:
