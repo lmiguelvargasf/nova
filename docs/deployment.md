@@ -1,15 +1,17 @@
-## Production Deployment (Supabase + Render + Vercel)
+## Production Deployment
 
 This template has been verified running in production with:
-- **Database**: [Supabase][supabase] Postgres
+- **Database**: [Render][render] Postgres
 - **Backend**: [Render][render]
 - **Frontend**: [Vercel][vercel]
 
-## Database (Supabase)
+## Database (Render)
 
-- **Important**: use the **Session Pooler** connection string (Render connects via IPv4).
+Create a **Render Postgres** instance.
 
 ## Backend (Render)
+
+Deploy the backend as a **Render Web Service**.
 
 - **Root Directory**: `backend`
 - **Build Command**: `uv sync`
@@ -31,9 +33,10 @@ This template has been verified running in production with:
 
 ## Frontend (Vercel)
 
+Deploy the frontend as a **Vercel Project**.
+
 - **Root Directory**: `frontend`
 - **Environment Variables**: add all variables defined in `frontend/.env.local.example` to your Vercel project settings.
 
 [render]: https://render.com/
-[supabase]: https://supabase.com/
 [vercel]: https://vercel.com/

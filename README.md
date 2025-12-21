@@ -16,7 +16,7 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 
 - [Tech Stack](#️-tech-stack)
 - [Getting Started](#-getting-started)
-- [Production Deployment](#-production-deployment-supabase--render--vercel)
+- [Production Deployment](#-production-deployment)
 - [Development Tasks](#️-development-tasks)
 - [CI/CD Workflows](#-cicd-workflows)
 - [Releases](#-releases)
@@ -113,9 +113,11 @@ The services will be available at:
 - [Admin UI](http://localhost:8000/admin)
 - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
-## 🌐 Production Deployment (Supabase + Render + Vercel)
+## 🌐 Production Deployment
 
 This is an opinionated deployment recommendation that has worked well in production, but you are free to deploy this template using any providers or infrastructure that fit your needs.
+
+This template has been deployed successfully with the **frontend on Vercel** and the **backend + database on Render**.
 
 See full deployment details in [`docs/deployment.md`](docs/deployment.md).
 
