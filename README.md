@@ -10,14 +10,13 @@
 ![Docker](https://img.shields.io/badge/Docker-0074D9?style=for-the-badge&logo=docker&logoColor=white)
 ![Task](https://img.shields.io/badge/Task-43B883?style=for-the-badge&logo=task&logoColor=white)
 
-A modern full-stack application template built for quick and efficient project setup.
+A modern full-stack application template for building web applications with a Python/GraphQL backend and a Next.js frontend. Designed as a starting point for new projects with authentication, admin UI, and a clean architecture out of the box.
 
 ## 📚 Table of Contents
 
 - [Tech Stack](#️-tech-stack)
 - [Getting Started](#-getting-started)
 - [Development Tasks](#️-development-tasks)
-- [Troubleshooting](#-troubleshooting)
 - [CI/CD Workflows](#-cicd-workflows)
 - [Releases](#-releases)
 - [License](#-license)
@@ -35,7 +34,6 @@ A modern full-stack application template built for quick and efficient project s
 - **[TypeScript][typescript]** – Core language for frontend, adding static types to JavaScript.
 - **[Next.js][nextjs]** – React framework for production-ready applications (v16.x).
 - **[Tailwind CSS][tailwind]** – Utility-first CSS framework for rapid UI development.
-- **[Chart.js][chartjs]** – Simple yet flexible JavaScript charting library.
 
 ## 🚀 Getting Started
 
@@ -108,16 +106,13 @@ A modern full-stack application template built for quick and efficient project s
    task backend:create-admin-user
    ```
 
-1. The services will be available at:
-   - [Frontend Application](http://localhost:3000)
-   - [Backend Health Check](http://localhost:8000/health)
-   - [Admin UI](http://localhost:8000/admin)
-   - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
+The services will be available at:
+- [Frontend Application](http://localhost:3000)
+- [Backend Health Check](http://localhost:8000/health)
+- [Admin UI](http://localhost:8000/admin)
+- [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
-1. To stop and remove database service:
-   ```bash
-   task db:down
-   ```
+> **Tip:** To stop and remove the database service, run `task db:down`.
 
 ## ⚙️ Development Tasks
 
@@ -131,17 +126,6 @@ To list all available tasks, run:
 ```bash
 task --list
 ```
-
-## 🧰 Troubleshooting
-
-### Frontend
-
-If GraphQL codegen fails (or your generated types feel out of date):
-
-1. Regenerate the schema + frontend GraphQL types:
-   ```bash
-   task frontend:codegen
-   ```
 
 ## 🔄 CI/CD Workflows
 
@@ -161,7 +145,6 @@ All versioned changes are documented on the [GitHub Releases][releases] page.
 This project is licensed under the [MIT License](./LICENSE).
 
 [advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/
-[chartjs]: https://www.chartjs.org/
 [docker-desktop]: https://www.docker.com/products/docker-desktop/
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
