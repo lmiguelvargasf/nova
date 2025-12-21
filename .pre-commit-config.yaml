@@ -16,9 +16,23 @@ repos:
         pass_filenames: false
         files: ^backend/
 
+      - id: backend-typecheck
+        name: "backend: type check"
+        entry: task backend:typecheck
+        language: system
+        pass_filenames: false
+        files: ^backend/
+
       - id: frontend-code-quality
         name: "frontend: code quality"
         entry: task frontend:check
+        language: system
+        pass_filenames: false
+        files: ^frontend/
+
+      - id: frontend-typecheck
+        name: "frontend: type check"
+        entry: task frontend:check:types
         language: system
         pass_filenames: false
         files: ^frontend/
