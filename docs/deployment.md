@@ -5,11 +5,6 @@ This template has been verified running in production with:
 - **Backend**: [Render][render]
 - **Frontend**: [Vercel][vercel]
 
-## Frontend (Vercel)
-
-- **Root Directory**: `frontend`
-- **Environment Variables**: add all variables defined in `frontend/.env.local.example` to your Vercel project settings.
-
 ## Database (Supabase)
 
 - **Important**: use the **Session Pooler** connection string (Render connects via IPv4).
@@ -33,6 +28,11 @@ This template has been verified running in production with:
   - `uv run litestar database upgrade --no-prompt`
 - **Start Command**:
   - `uv run uvicorn backend:app --host 0.0.0.0 --port $PORT`
+
+## Frontend (Vercel)
+
+- **Root Directory**: `frontend`
+- **Environment Variables**: add all variables defined in `frontend/.env.local.example` to your Vercel project settings.
 
 [render]: https://render.com/
 [supabase]: https://supabase.com/
