@@ -16,6 +16,7 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 
 - [Tech Stack](#️-tech-stack)
 - [Getting Started](#-getting-started)
+- [Production Deployment](#-production-deployment-supabase--render--vercel)
 - [Development Tasks](#️-development-tasks)
 - [CI/CD Workflows](#-cicd-workflows)
 - [Releases](#-releases)
@@ -111,6 +112,27 @@ The services will be available at:
 - [Backend Health Check](http://localhost:8000/health)
 - [Admin UI](http://localhost:8000/admin)
 - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
+
+## 🌐 Production Deployment (Supabase + Render + Vercel)
+
+This is an opinionated deployment recommendation that has worked well in production, but you are free to deploy this template using any providers or infrastructure that fit your needs.
+
+See the full checklist in [`docs/deployment.md`](docs/deployment.md).
+
+### Frontend (Vercel)
+
+- **Root Directory**: `frontend`
+- **Environment Variables**: add all variables defined in `frontend/.env.local.example` to your Vercel project settings.
+
+### Database (Supabase)
+
+- **Important**: use the **Session Pooler** connection string (Render connects via IPv4).
+
+### Backend (Render)
+
+- **Root Directory**: `backend`
+- **Build Command**: `uv sync`
+- **Environment Variables**: add all variables defined in `.env.example` and `backend/.env.example` to your Render service settings.
 
 ## ⚙️ Development Tasks
 
