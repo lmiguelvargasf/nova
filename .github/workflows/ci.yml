@@ -42,7 +42,7 @@ jobs:
     name: Frontend Lint and Test
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.52.0-noble
+      image: mcr.microsoft.com/playwright:v1.57.0-noble
 
     defaults:
       run:
@@ -97,7 +97,7 @@ jobs:
     name: Storybook Tests
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.52.0-noble
+      image: mcr.microsoft.com/playwright:v1.57.0-noble
 
     defaults:
       run:
