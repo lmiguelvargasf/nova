@@ -1,7 +1,9 @@
+import datetime
+
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHash, VerificationError, VerifyMismatchError
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
 from starlette.responses import Response
 from starlette_admin.auth import AdminUser, AuthProvider, LoginFailed
@@ -10,10 +12,6 @@ from backend.apps.users.models import UserModel
 
 
 class BackendAdminAuthProvider(AuthProvider):
-    def __init__(self, *, engine: AsyncEngine) -> None:
-        super().__init__()
-        self._engine = engine
-
     async def login(
         self,
         username: str,
@@ -26,10 +24,8 @@ class BackendAdminAuthProvider(AuthProvider):
         if not email or not password:
             raise LoginFailed("Invalid username or password")
 
-        async with AsyncSession(self._engine, expire_on_commit=False) as session:
-            user = await session.scalar(
-                select(UserModel).where(UserModel.email == email)
-            )
+        session: AsyncSession = request.state.session
+        user = await session.scalar(select(UserModel).where(UserModel.email == email))
 
         if user is None or not user.is_admin or not user.is_active:
             raise LoginFailed("Invalid username or password")
@@ -45,6 +41,9 @@ class BackendAdminAuthProvider(AuthProvider):
         if not ok:
             raise LoginFailed("Invalid username or password")
 
+        user.last_login_at = datetime.datetime.now(datetime.UTC)
+        await session.commit()
+
         request.session.clear()
         request.session.update({"admin_user_id": user.id})
         return response
@@ -54,10 +53,8 @@ class BackendAdminAuthProvider(AuthProvider):
         if user_id is None:
             return False
 
-        async with AsyncSession(self._engine, expire_on_commit=False) as session:
-            user = await session.scalar(
-                select(UserModel).where(UserModel.id == user_id)
-            )
+        session: AsyncSession = request.state.session
+        user = await session.scalar(select(UserModel).where(UserModel.id == user_id))
 
         if user is None or not user.is_admin or not user.is_active:
             request.session.clear()
