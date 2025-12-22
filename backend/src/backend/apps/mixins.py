@@ -6,8 +6,6 @@ from sqlalchemy.orm import Mapped, declarative_mixin, mapped_column
 
 @declarative_mixin
 class SoftDeleteMixin:
-    """Soft delete mixin - deleted_at is None for active records."""
-
     deleted_at: Mapped[datetime.datetime | None] = mapped_column(
         DateTimeUTC(timezone=True),
         default=None,
