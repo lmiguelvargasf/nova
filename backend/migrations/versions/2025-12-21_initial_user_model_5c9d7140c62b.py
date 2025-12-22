@@ -1,4 +1,4 @@
-"""'initial user model'
+"""initial user model
 
 Revision ID: 5c9d7140c62b
 Revises:
