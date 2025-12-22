@@ -241,7 +241,6 @@ from backend.apps.{app_name}.models import EntityModel
 
 
 class EntityAdminView(ModelView):
-    icon = "fa fa-cube"
     label = "Entities"
     name = "Entity"
 
@@ -254,7 +253,7 @@ class EntityAdminView(ModelView):
     sortable_fields = ("id", "name", "created_at", "updated_at")
 
 
-view = EntityAdminView(EntityModel)
+view = EntityAdminView(EntityModel, icon="fa fa-cube")
 ```
 
 - Inherit from `ModelView`

@@ -4,7 +4,6 @@ from backend.apps.users.models import UserModel
 
 
 class UserAdminView(ModelView):
-    icon = "fa fa-user"
     label = "Users"
     name = "User"
 
@@ -26,4 +25,4 @@ class UserAdminView(ModelView):
     )
 
 
-view = UserAdminView(UserModel)
+view = UserAdminView(UserModel, icon="fa fa-user")
