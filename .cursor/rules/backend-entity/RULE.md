@@ -243,6 +243,7 @@ from backend.apps.{app_name}.models import EntityModel
 class EntityAdminView(ModelView):
     label = "Entities"
     name = "Entity"
+    identity = "entity"
 
     exclude_fields_from_list = ()
     exclude_fields_from_detail = ()

@@ -6,6 +6,7 @@ from backend.apps.users.models import UserModel
 class UserAdminView(ModelView):
     label = "Users"
     name = "User"
+    identity = "user"
 
     exclude_fields_from_list = ("password_hash",)
     exclude_fields_from_detail = ("password_hash",)
