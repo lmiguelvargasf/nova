@@ -4,17 +4,24 @@ import pytest
 from argon2 import PasswordHasher
 from litestar import Litestar
 from litestar.testing import AsyncTestClient
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.pool import NullPool
 
 from backend.app_factory import create_app
 from backend.apps.users.models import UserModel
+from backend.apps.users.services import UserService
+from backend.graphql.controller import GraphQLContext
 
 
 @pytest.fixture
-async def admin_test_client(db_engine) -> AsyncIterator[AsyncTestClient[Litestar]]:
-    async def context_getter() -> dict[str, object]:
-        return {"db_session": None, "user_service": None}
+async def admin_test_client(
+    db_engine, mocker
+) -> AsyncIterator[AsyncTestClient[Litestar]]:
+    async def context_getter() -> GraphQLContext:
+        return {
+            "db_session": mocker.Mock(spec=AsyncSession),
+            "user_service": mocker.Mock(spec=UserService),
+        }
 
     admin_engine = create_async_engine(
         db_engine.url,

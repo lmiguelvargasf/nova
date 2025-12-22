@@ -1,11 +1,13 @@
+from typing import Literal
+
 from litestar import get
-from pydantic import BaseModel
+from msgspec import Struct
 
 
-class HealthStatus(BaseModel):
-    status: str
+class HealthStatus(Struct):
+    status: Literal["ok"]
 
 
-@get("/health")
+@get("/health", tags=["System"], summary="Health check")
 async def health_check() -> HealthStatus:
     return HealthStatus(status="ok")

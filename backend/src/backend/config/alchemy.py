@@ -11,8 +11,6 @@ from .base import settings
 def build_connection_string(db_name: str | None = None) -> str:
     """
     Build the SQLAlchemy async Postgres connection string from existing settings.
-
-    We intentionally avoid introducing new required env vars (e.g. DATABASE_URL).
     """
     target_db = db_name or settings.postgres_db
     return (

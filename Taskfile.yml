@@ -46,6 +46,11 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} migrate"
 
+  backend:migrate:make:
+    desc: Generate a new migration
+    cmds:
+      - "{{.BACKEND_TASK}} migrate:make -- {{.CLI_ARGS}}"
+
   backend:dev:
     desc: Run backend
     cmds:
