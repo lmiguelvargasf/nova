@@ -53,6 +53,39 @@ alwaysApply: true
   - Keep operations in `.graphql` files; run `pnpm codegen` (or `task frontend:codegen`) to regenerate types.
   - Do not edit generated code under `frontend/src/lib/graphql/**`.
   - Prefer generated documents + types from `@/lib/graphql/graphql` (e.g. `GetUserByIdDocument`, `GetUserByIdQuery`); do not hand-write GraphQL result types.
+  - PreloadQuery pattern (doc-only example, uses real repo query):
+    ```tsx
+    // src/app/page.tsx (RSC)
+    import { Suspense } from "react";
+    import { PreloadQuery } from "@/lib/apolloClient.server";
+    import { GetUserByIdDocument } from "@/lib/graphql/graphql";
+    import UserCard from "@/components/UserCard.client";
+
+    export default function Page() {
+      return (
+        <PreloadQuery query={GetUserByIdDocument} variables={{ userId: "1" }}>
+          <Suspense fallback={<div>Loading user...</div>}>
+            <UserCard userId="1" />
+          </Suspense>
+        </PreloadQuery>
+      );
+    }
+    ```
+    ```tsx
+    // src/components/UserCard.client.tsx (Client Component)
+    "use client";
+
+    import { useSuspenseQuery } from "@apollo/client";
+    import { GetUserByIdDocument } from "@/lib/graphql/graphql";
+
+    export default function UserCard({ userId }: { userId: string }) {
+      const { data } = useSuspenseQuery(GetUserByIdDocument, {
+        variables: { userId },
+      });
+
+      return <div>{data.user?.email ?? "Unknown user"}</div>;
+    }
+    ```
 - **Tooling**: Biome for lint/format (`pnpm check`). Typecheck with `pnpm check:types`.
 - **Testing**: Vitest (unit/component), Storybook 10 (`@storybook/nextjs-vite`) with story tests, Playwright for E2E.
 

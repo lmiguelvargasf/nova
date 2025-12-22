@@ -1,40 +1,12 @@
 import Image from "next/image";
-import { getClient } from "@/lib/apolloClient.server";
-import {
-  GetUserByIdDocument,
-  type GetUserByIdQuery,
-  type GetUserByIdQueryVariables,
-} from "@/lib/graphql/graphql";
+import { Suspense } from "react";
+import UserCard from "@/components/UserProfile/UserCard.client";
+import { PreloadQuery } from "@/lib/apolloClient.server";
+import { GetUserByIdDocument } from "@/lib/graphql/graphql";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
-  let userData: GetUserByIdQuery["user"] | null = null;
-  let fetchError: string | null = null;
-  try {
-    const { data } = await getClient().query<
-      GetUserByIdQuery,
-      GetUserByIdQueryVariables
-    >({
-      query: GetUserByIdDocument,
-      variables: { userId: "1" },
-    });
-    userData = data?.user ?? null;
-  } catch (err) {
-    const e = err as { message?: unknown; errors?: unknown };
-    const graphQLErrors = Array.isArray(e?.errors) ? e.errors : null;
-    fetchError =
-      graphQLErrors && graphQLErrors.length > 0
-        ? (graphQLErrors as Array<{ message?: unknown }>)
-            .map((ge) =>
-              typeof ge?.message === "string" ? ge.message : "Error",
-            )
-            .join("; ")
-        : typeof e?.message === "string"
-          ? e.message
-          : "An unexpected error occurred";
-  }
-
+export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -91,17 +63,14 @@ export default async function Home() {
           </h2>
           <div className="border p-4 rounded bg-black/[.05] dark:bg-white/[.06]">
             <h3 className="text-lg font-semibold mb-2">User Data (ID: 1)</h3>
-            {fetchError ? (
-              <p className="text-red-500">Error: {fetchError}</p>
-            ) : userData ? (
-              <div className="text-sm">
-                <p>
-                  <strong>Email:</strong> {userData.email}
-                </p>
-              </div>
-            ) : (
-              <p>User with ID 1 is not created or could not be found.</p>
-            )}
+            <PreloadQuery
+              query={GetUserByIdDocument}
+              variables={{ userId: "1" }}
+            >
+              <Suspense fallback={<p>Loading user...</p>}>
+                <UserCard userId="1" />
+              </Suspense>
+            </PreloadQuery>
           </div>
         </div>
       </main>
