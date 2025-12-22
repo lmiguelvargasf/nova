@@ -42,7 +42,7 @@ tasks:
   schema:export:
     desc: Export GraphQL schema
     cmds:
-      - uv run strawberry export-schema backend.schema:schema
+      - uv run strawberry export-schema backend.graphql.schema:schema
 
   lint:fix:
     desc: Run ruff to fix code linting violations
