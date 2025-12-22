@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Suspense } from "react";
 import UserCard from "@/components/UserProfile/UserCard.client";
+import UserCreator from "@/components/UserProfile/UserCreator.client";
 import { PreloadQuery } from "@/lib/apolloClient.server";
 import { GetUserByIdDocument } from "@/lib/graphql/graphql";
 
@@ -71,6 +72,12 @@ export default function Home() {
                 <UserCard userId="1" />
               </Suspense>
             </PreloadQuery>
+            <div className="mt-6 border-t border-black/[.08] pt-4 dark:border-white/[.14]">
+              <h3 className="text-lg font-semibold mb-2">
+                Create User (Mutation)
+              </h3>
+              <UserCreator />
+            </div>
           </div>
         </div>
       </main>

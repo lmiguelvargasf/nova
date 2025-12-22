@@ -12,6 +12,10 @@ vi.mock("@/components/UserProfile/UserCard.client", () => ({
   default: () => <div>Mocked user card</div>,
 }));
 
+vi.mock("@/components/UserProfile/UserCreator.client", () => ({
+  default: () => <div>Mocked user creator</div>,
+}));
+
 // Mock Next.js Image component
 vi.mock("next/image", () => ({
   default: (
