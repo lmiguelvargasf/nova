@@ -10,8 +10,8 @@ class UserAdminView(ModelView):
 
     exclude_fields_from_list = ("password_hash",)
     exclude_fields_from_detail = ("password_hash",)
-    exclude_fields_from_create = ("password_hash",)
-    exclude_fields_from_edit = ("password_hash",)
+    exclude_fields_from_create = ("password_hash", "created_at", "updated_at")
+    exclude_fields_from_edit = ("password_hash", "created_at", "updated_at")
 
     searchable_fields = ("email", "first_name", "last_name")
     sortable_fields = (

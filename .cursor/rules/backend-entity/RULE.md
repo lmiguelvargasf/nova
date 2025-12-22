@@ -247,8 +247,8 @@ class EntityAdminView(ModelView):
 
     exclude_fields_from_list = ()
     exclude_fields_from_detail = ()
-    exclude_fields_from_create = ()
-    exclude_fields_from_edit = ()
+    exclude_fields_from_create = ("created_at", "updated_at")
+    exclude_fields_from_edit = ("created_at", "updated_at")
 
     searchable_fields = ("name",)
     sortable_fields = ("id", "name", "created_at", "updated_at")
