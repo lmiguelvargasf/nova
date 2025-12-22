@@ -33,7 +33,7 @@ jobs:
         working-directory: ./backend
         run: |
           mkdir -p ../frontend/schema
-          uv run strawberry export-schema backend.schema:schema > ../frontend/schema/schema.graphql
+          uv run strawberry export-schema backend.graphql.schema:schema > ../frontend/schema/schema.graphql
 
       - name: Check Schema is up-to-date
         run: |
