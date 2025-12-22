@@ -119,6 +119,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Create test database
+        run: PGPASSWORD=${{ env.POSTGRES_PASSWORD }} psql -h localhost -U ${{ env.POSTGRES_USER }} -c "CREATE DATABASE ${POSTGRES_DB}_test;"
+
       - name: Backend Dependencies
         uses: ./.github/actions/backend-setup
 
