@@ -14,7 +14,7 @@ services:
         - CMD-SHELL
         - >
           pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB &&
-          pg_isready -U $$POSTGRES_USER -d $$POSTGRES_TEST_DB
+          pg_isready -U $$POSTGRES_USER -d $${POSTGRES_DB}_test
       interval: 10s
       timeout: 5s
       retries: 5
