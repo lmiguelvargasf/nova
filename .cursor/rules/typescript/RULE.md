@@ -49,7 +49,7 @@ alwaysApply: true
 - **Dev server**: `next dev --turbopack`; avoid Webpack-specific assumptions unless explicitly configured.
 - **Styling**: Tailwind CSS 4 via `@tailwindcss/postcss` (`postcss.config.mjs`). Prefer utility classes; avoid custom CSS unless required.
 - **GraphQL**: Apollo Client + `@apollo/client-integration-nextjs`.
-  - Server data: `frontend/src/lib/apolloClient.server.ts`; client data: `frontend/src/lib/apolloClient.ts`.
+  - Server data: `frontend/src/lib/apolloClient.server.ts`; client data: `frontend/src/lib/ApolloClientProvider.client.tsx`.
   - Keep operations in `.graphql` files; run `pnpm codegen` (or `task frontend:codegen`) to regenerate types.
   - Do not edit generated code under `frontend/src/lib/graphql/**`.
   - Prefer generated documents + types from `@/lib/graphql/graphql` (e.g. `GetUserByIdDocument`, `GetUserByIdQuery`); do not hand-write GraphQL result types.
