@@ -4,7 +4,9 @@ from backend.apps.users.models import UserModel
 
 
 class UserAdminView(ModelView):
-    icon = "fa fa-user"
+    label = "Users"
+    name = "User"
+    identity = "user"
 
     exclude_fields_from_list = ("password_hash",)
     exclude_fields_from_detail = ("password_hash",)
@@ -24,4 +26,4 @@ class UserAdminView(ModelView):
     )
 
 
-view = UserAdminView(UserModel)
+view = UserAdminView(UserModel, icon="fa fa-user")

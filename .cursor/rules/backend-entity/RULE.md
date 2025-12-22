@@ -19,21 +19,26 @@ This rule defines how to create a new entity and wire it through all layers.
 | GraphQL Input | `{Entity}Input` | `UserInput` |
 | GraphQL Query | `{Entity}Query` | `UserQuery` |
 | GraphQL Mutation | `{Entity}Mutation` | `UserMutation` |
+| Admin View | `{Entity}AdminView` | `UserAdminView` |
 | Table name | lowercase singular | `"user"` |
 
 ## File Structure
 
 ```
-backend/src/backend/apps/{app_name}/
-├── __init__.py
-├── models.py           # SQLAlchemy models
-├── services.py         # Service + Repository
-└── graphql/
-    ├── __init__.py     # Exports Query/Mutation classes
-    ├── types.py        # Output types
-    ├── inputs.py       # Input types
-    ├── queries.py      # Query resolvers
-    └── mutations.py    # Mutation resolvers
+backend/src/backend/
+├── apps/{app_name}/
+│   ├── __init__.py
+│   ├── models.py           # SQLAlchemy models
+│   ├── services.py         # Service + Repository
+│   └── graphql/
+│       ├── __init__.py     # Exports Query/Mutation classes
+│       ├── types.py        # Output types
+│       ├── inputs.py       # Input types
+│       ├── queries.py      # Query resolvers
+│       └── mutations.py    # Mutation resolvers
+└── admin/views/
+    ├── __init__.py         # ADMIN_VIEWS registry
+    └── {entity}.py         # Admin view for entity
 ```
 
 ## 1. Model (`models.py`)
@@ -227,7 +232,48 @@ schema = strawberry.Schema(query=Query, mutation=Mutation)
 
 Ensure the service is available in GraphQL context. Register it in the Litestar app's dependency injection or GraphQL context factory.
 
-## 10. Migration
+## 10. Admin View (`backend/src/backend/admin/views/{entity}.py`)
+
+```python
+from starlette_admin.contrib.sqla import ModelView
+
+from backend.apps.{app_name}.models import EntityModel
+
+
+class EntityAdminView(ModelView):
+    label = "Entities"
+    name = "Entity"
+    identity = "entity"
+
+    exclude_fields_from_list = ()
+    exclude_fields_from_detail = ()
+    exclude_fields_from_create = ()
+    exclude_fields_from_edit = ()
+
+    searchable_fields = ("name",)
+    sortable_fields = ("id", "name", "created_at", "updated_at")
+
+
+view = EntityAdminView(EntityModel, icon="fa fa-cube")
+```
+
+- Inherit from `ModelView`
+- Set `label` (plural, shown in sidebar) and `name` (singular, used in forms)
+- Use `exclude_fields_from_*` to hide sensitive fields (e.g., `password_hash`)
+- Export as `view` for registration
+
+## 11. Admin Registration (`backend/src/backend/admin/views/__init__.py`)
+
+```python
+from .entity import view as entity_view
+
+ADMIN_VIEWS = [
+    entity_view,
+    # ... other views
+]
+```
+
+## 12. Migration
 
 After creating the model, generate a migration:
 
