@@ -28,6 +28,11 @@ tasks:
     cmds:
       - uv run litestar database upgrade --no-prompt
 
+  migrate:make:
+    desc: Generate a new migration
+    cmds:
+      - uv run litestar database make-migrations --autogenerate -m "{{.CLI_ARGS}}"
+
   dev:
     desc: Run dev server
     deps: [migrate]
