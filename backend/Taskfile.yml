@@ -26,18 +26,18 @@ tasks:
   migrate:
     desc: Apply database migrations
     cmds:
-      - uv run litestar database upgrade --no-prompt
+      - uv run litestar --app backend.application:create_app database upgrade --no-prompt
 
   migrate:make:
     desc: Generate a new migration
     cmds:
-      - uv run litestar database make-migrations --autogenerate -m "{{.CLI_ARGS}}"
+      - uv run litestar --app backend.application:create_app database make-migrations --autogenerate -m "{{.CLI_ARGS}}"
 
   dev:
     desc: Run dev server
     deps: [migrate]
     cmds:
-      - uv run litestar run --reload
+      - uv run litestar --app backend.application:create_app run --reload
 
   schema:export:
     desc: Export GraphQL schema
