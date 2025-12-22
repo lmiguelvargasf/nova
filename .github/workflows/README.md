@@ -19,21 +19,27 @@ This workflow runs automatically on:
 
 ### Jobs
 
-#### Generate GraphQL Schema
+#### Verify GraphQL Schema
 - Build the GraphQL schema from the backend
-- Upload it as an artifact for frontend use
+- Check that the committed schema is up-to-date
 
 #### Frontend Lint and Test
 - Run in a Playwright container
 - Use `pnpm` for dependency management with caching
 - Install dependencies
-- Download the GraphQL schema artifact
 - Generate GraphQL code
-- Run linting, format checking, and tests
+- Run linting, format checking, type checking, and unit tests
+
+#### Storybook Tests
+- Run in a Playwright container (Vitest browser mode)
+- Use `pnpm` for dependency management with caching
+- Install dependencies
+- Generate GraphQL code
+- Run Storybook story tests
 
 #### Backend Lint and Test
 - Use a PostgreSQL service container
 - Install Python dependencies
 - Run `ruff` for linting and formatting
 - Run `ty` for type checking
-- Run `pytest` for tests (without coverage)
+- Run `pytest` for tests
