@@ -94,6 +94,53 @@ jobs:
       - name: Run Tests
         run: pnpm test:unit:run
 
+  storybook-tests:
+    name: Storybook Tests
+    needs: [generate-schema]
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.52.0-noble
+
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: '10.8.1'
+
+      - name: Get pnpm store directory
+        id: pnpm-store
+        shell: bash
+        run: |
+          echo "store_path=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-store.outputs.store_path }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Generate GraphQL Code
+        run: pnpm codegen
+
+      - name: Run Storybook Tests
+        run: pnpm test:story:run
+
   backend-lint-and-test:
     name: Backend Lint and Test
     runs-on: ubuntu-latest
