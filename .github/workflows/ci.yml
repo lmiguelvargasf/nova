@@ -15,8 +15,8 @@ env:
   ADMIN_SESSION_SECRET: just-for-ci
 
 jobs:
-  generate-schema:
-    name: Generate GraphQL Schema
+  verify-schema:
+    name: Verify GraphQL Schema
     runs-on: ubuntu-latest
 
     steps:
@@ -40,7 +40,6 @@ jobs:
 
   frontend-lint-and-test:
     name: Frontend Lint and Test
-    needs: [generate-schema]
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.52.0-noble
@@ -96,7 +95,6 @@ jobs:
 
   storybook-tests:
     name: Storybook Tests
-    needs: [generate-schema]
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.52.0-noble
