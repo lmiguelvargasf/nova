@@ -85,7 +85,7 @@ jobs:
 
       - name: Comment on large PR
         if: ${{ steps.pr_size.outputs.is_large == 'true' }}
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
