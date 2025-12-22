@@ -24,7 +24,7 @@ def create_admin_handler(
 
     admin = BaseAdmin(
         title="Admin",
-        auth_provider=BackendAdminAuthProvider(engine=db_engine),
+        auth_provider=BackendAdminAuthProvider(),
         middlewares=[
             Middleware(
                 SessionMiddleware,  # type: ignore[arg-type]
