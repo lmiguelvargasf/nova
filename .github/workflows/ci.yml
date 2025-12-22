@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Backend Dependencies
         uses: ./.github/actions/backend-setup
@@ -51,7 +51,7 @@ jobs:
         working-directory: ./frontend
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Frontend Dependencies
         uses: ./.github/actions/frontend-setup
@@ -79,7 +79,7 @@ jobs:
         working-directory: ./frontend
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Frontend Dependencies
         uses: ./.github/actions/frontend-setup
@@ -110,7 +110,7 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Create test database
         run: PGPASSWORD=${{ env.POSTGRES_PASSWORD }} psql -h localhost -U ${{ env.POSTGRES_USER }} -c "CREATE DATABASE ${POSTGRES_DB}_test;"
