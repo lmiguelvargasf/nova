@@ -41,8 +41,6 @@ jobs:
   frontend-lint-and-test:
     name: Frontend Lint and Test
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.57.0-noble
 
     defaults:
       run:
