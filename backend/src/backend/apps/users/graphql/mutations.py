@@ -4,8 +4,7 @@ from argon2 import PasswordHasher
 from graphql.error import GraphQLError
 from strawberry.types import Info
 
-from backend.apps.users.services import UserService
-
+from ..services import UserService
 from .inputs import UserInput
 from .types import UserType
 
