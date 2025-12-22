@@ -10,7 +10,6 @@ class SoftDeleteMixin:
 
     deleted_at: Mapped[datetime.datetime | None] = mapped_column(
         DateTimeUTC(timezone=True),
-        nullable=True,
         default=None,
         index=True,
         sort_order=3004,

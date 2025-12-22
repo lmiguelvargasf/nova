@@ -1,3 +1,5 @@
+import datetime
+
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHash, VerificationError, VerifyMismatchError
 from sqlalchemy import select
@@ -44,6 +46,11 @@ class BackendAdminAuthProvider(AuthProvider):
 
         if not ok:
             raise LoginFailed("Invalid username or password")
+
+        async with AsyncSession(self._engine) as session:
+            user.last_login_at = datetime.datetime.now(datetime.UTC)
+            session.add(user)
+            await session.commit()
 
         request.session.clear()
         request.session.update({"admin_user_id": user.id})
