@@ -8,7 +8,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 from starlette_admin.auth import AdminUser, AuthProvider, LoginFailed
 
-from backend.apps.users.models import UserModel
+from ..apps.users.models import UserModel
 
 
 class BackendAdminAuthProvider(AuthProvider):

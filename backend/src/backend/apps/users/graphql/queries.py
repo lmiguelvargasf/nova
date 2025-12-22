@@ -3,8 +3,7 @@ from advanced_alchemy.exceptions import NotFoundError
 from graphql.error import GraphQLError
 from strawberry.types import Info
 
-from backend.apps.users.services import UserService
-
+from ..services import UserService
 from .types import UserType
 
 

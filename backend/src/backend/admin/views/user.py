@@ -1,6 +1,6 @@
 from starlette_admin.contrib.sqla import ModelView
 
-from backend.apps.users.models import UserModel
+from ...apps.users.models import UserModel
 
 
 class UserAdminView(ModelView):

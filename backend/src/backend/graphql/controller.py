@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.litestar import make_graphql_controller
 
 from ..apps.users.services import UserService
-from ..schema import schema
+from .schema import schema
 
 
 class GraphQLContext(TypedDict):

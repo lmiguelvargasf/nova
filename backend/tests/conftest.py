@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-from backend.app_factory import create_app
+from backend.application import create_app
 from backend.apps.users.services import UserService
 from backend.graphql.controller import GraphQLContext
 
