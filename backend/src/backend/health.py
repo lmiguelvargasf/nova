@@ -1,8 +1,8 @@
 from litestar import get
-from pydantic import BaseModel
+from msgspec import Struct
 
 
-class HealthStatus(BaseModel):
+class HealthStatus(Struct):
     status: str
 
 
