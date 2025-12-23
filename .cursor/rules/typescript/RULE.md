@@ -49,7 +49,7 @@ alwaysApply: true
 - **Dev server**: `next dev --turbopack`; avoid Webpack-specific assumptions unless explicitly configured.
 - **Styling**: Tailwind CSS 4 via `@tailwindcss/postcss` (`postcss.config.mjs`). Prefer utility classes; avoid custom CSS unless required.
 - **GraphQL**: Apollo Client + `@apollo/client-integration-nextjs`.
-  - Server data: `frontend/src/lib/apolloClient.server.ts`; client data: `frontend/src/lib/ApolloClientProvider.client.tsx`.
+  - Server data: `frontend/src/lib/apollo/client.server.ts`; client data: `frontend/src/lib/apollo/provider.client.tsx`.
   - Keep operations in `.graphql` files; run `pnpm codegen` (or `task frontend:codegen`) to regenerate types.
   - Do not edit generated code under `frontend/src/lib/graphql/**`.
   - Prefer generated documents + types from `@/lib/graphql/graphql` (e.g. `GetUserByIdDocument`, `GetUserByIdQuery`); do not hand-write GraphQL result types.
@@ -58,9 +58,9 @@ alwaysApply: true
     ```tsx
     // src/app/page.tsx (RSC)
     import { Suspense } from "react";
-    import { PreloadQuery } from "@/lib/apolloClient.server";
+    import { PreloadQuery } from "@/lib/apollo/client.server";
     import { GetUserByIdDocument } from "@/lib/graphql/graphql";
-    import UserCard from "@/components/UserProfile/UserCard.client";
+    import UserCard from "@/features/users/UserCard.client";
 
     export default function Page() {
       return (
@@ -73,7 +73,7 @@ alwaysApply: true
     }
     ```
     ```tsx
-    // src/components/UserProfile/UserCard.client.tsx (Client Component)
+    // src/features/users/UserCard.client.tsx (Client Component)
     "use client";
 
     import { useSuspenseQuery } from "@apollo/client/react";
@@ -103,7 +103,7 @@ alwaysApply: true
     ```
   - Mutation pattern (doc-only example, uses real repo mutation):
     ```tsx
-    // src/components/UserProfile/UserCreator.client.tsx (Client Component)
+    // src/features/users/UserCreator.client.tsx (Client Component)
     "use client";
 
     import { useMutation } from "@apollo/client/react";

@@ -2,7 +2,8 @@
 
 import { useMutation } from "@apollo/client/react";
 import { Suspense, useState } from "react";
-import UserCard from "@/components/UserProfile/UserCard.client";
+import { ErrorMessage } from "@/components/ui";
+import UserCard from "@/features/users/UserCard.client";
 import {
   CreateUserDocument,
   type CreateUserMutationVariables,
@@ -62,9 +63,7 @@ export default function UserCreator() {
       >
         {loading ? "Creating user..." : "Create random user"}
       </button>
-      {errorMessage ? (
-        <p className="text-sm text-red-500">Error: {errorMessage}</p>
-      ) : null}
+      {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
       {createdUser ? (
         <div className="text-sm">
           <p>

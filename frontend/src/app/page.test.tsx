@@ -4,15 +4,15 @@ import type { ReactNode } from "react";
 import Home from "@/app/page";
 
 // Mock the Apollo client module
-vi.mock("@/lib/apolloClient.server", () => ({
+vi.mock("@/lib/apollo/client.server", () => ({
   PreloadQuery: ({ children }: { children: ReactNode }) => children,
 }));
 
-vi.mock("@/components/UserProfile/UserCard.client", () => ({
+vi.mock("@/features/users/UserCard.client", () => ({
   default: () => <div>Mocked user card</div>,
 }));
 
-vi.mock("@/components/UserProfile/UserCreator.client", () => ({
+vi.mock("@/features/users/UserCreator.client", () => ({
   default: () => <div>Mocked user creator</div>,
 }));
 

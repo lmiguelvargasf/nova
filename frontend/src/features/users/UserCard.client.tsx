@@ -1,6 +1,7 @@
 "use client";
 
 import { useSuspenseQuery } from "@apollo/client/react";
+import { ErrorMessage } from "@/components/ui";
 import { GetUserByIdDocument } from "@/lib/graphql/graphql";
 
 function hasErrorCode(error: unknown, code: string): boolean {
@@ -24,7 +25,7 @@ export default function UserCard({ userId }: { userId: string }) {
   const isNotFoundError = hasErrorCode(error, "NOT_FOUND");
 
   if (error && !isNotFoundError) {
-    return <p className="text-red-500">Error: {error.message}</p>;
+    return <ErrorMessage message={error.message} />;
   }
 
   const user = data?.user;

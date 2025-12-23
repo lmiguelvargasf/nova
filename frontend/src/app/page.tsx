@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { Suspense } from "react";
-import UserCard from "@/components/UserProfile/UserCard.client";
-import UserCreator from "@/components/UserProfile/UserCreator.client";
-import { PreloadQuery } from "@/lib/apolloClient.server";
+import UserCard from "@/features/users/UserCard.client";
+import UserCreator from "@/features/users/UserCreator.client";
+import { PreloadQuery } from "@/lib/apollo/client.server";
 import { GetUserByIdDocument } from "@/lib/graphql/graphql";
 
 export const dynamic = "force-dynamic";
