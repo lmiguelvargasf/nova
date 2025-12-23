@@ -5,7 +5,6 @@ import { Suspense, useState } from "react";
 import UserCard from "@/components/UserProfile/UserCard.client";
 import {
   CreateUserDocument,
-  type CreateUserMutation,
   type CreateUserMutationVariables,
 } from "@/lib/graphql/graphql";
 
@@ -27,10 +26,12 @@ function buildRandomUserInput(): CreateUserInput {
 
 export default function UserCreator() {
   const [createdUserId, setCreatedUserId] = useState<string | null>(null);
-  const [createUser, { data, loading, error }] = useMutation<
-    CreateUserMutation,
-    CreateUserMutationVariables
-  >(CreateUserDocument, { errorPolicy: "all" });
+  const [createUser, { data, loading, error }] = useMutation(
+    CreateUserDocument,
+    {
+      errorPolicy: "all",
+    },
+  );
 
   const handleCreate = async () => {
     const userInput = buildRandomUserInput();

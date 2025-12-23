@@ -59,7 +59,7 @@ alwaysApply: true
     import { Suspense } from "react";
     import { PreloadQuery } from "@/lib/apolloClient.server";
     import { GetUserByIdDocument } from "@/lib/graphql/graphql";
-    import UserCard from "@/components/UserCard.client";
+    import UserCard from "@/components/UserProfile/UserCard.client";
 
     export default function Page() {
       return (
@@ -72,20 +72,69 @@ alwaysApply: true
     }
     ```
     ```tsx
-    // src/components/UserCard.client.tsx (Client Component)
+    // src/components/UserProfile/UserCard.client.tsx (Client Component)
     "use client";
 
-    import { useSuspenseQuery } from "@apollo/client";
+    import { useSuspenseQuery } from "@apollo/client/react";
     import { GetUserByIdDocument } from "@/lib/graphql/graphql";
 
+    function hasErrorCode(error: unknown, code: string): boolean {
+      if (!error || typeof error !== "object") return false;
+      const graphQLErrors = (error as { graphQLErrors?: unknown[] }).graphQLErrors;
+      if (!Array.isArray(graphQLErrors)) return false;
+      return graphQLErrors.some(
+        (e) => e?.extensions?.code === code,
+      );
+    }
+
     export default function UserCard({ userId }: { userId: string }) {
-      const { data } = useSuspenseQuery(GetUserByIdDocument, {
+      const { data, error } = useSuspenseQuery(GetUserByIdDocument, {
         variables: { userId },
+        errorPolicy: "all",
       });
 
-      return <div>{data.user?.email ?? "Unknown user"}</div>;
+      const isNotFound = hasErrorCode(error, "NOT_FOUND");
+      if (error && !isNotFound) return <p>Error: {error.message}</p>;
+      if (!data?.user) return <p>User not found.</p>;
+
+      return <div>{data.user.email}</div>;
     }
     ```
+  - Mutation pattern (doc-only example, uses real repo mutation):
+    ```tsx
+    // src/components/UserProfile/UserCreator.client.tsx (Client Component)
+    "use client";
+
+    import { useMutation } from "@apollo/client/react";
+    import {
+      CreateUserDocument,
+      type CreateUserMutationVariables,
+    } from "@/lib/graphql/graphql";
+
+    type CreateUserInput = CreateUserMutationVariables["userInput"];
+
+    export default function UserCreator() {
+      const [createUser, { data, loading, error }] = useMutation(CreateUserDocument, {
+        errorPolicy: "all",
+      });
+
+      const handleCreate = async (input: CreateUserInput) => {
+        try {
+          const result = await createUser({ variables: { userInput: input } });
+          return result.data?.createUser;
+        } catch {
+          // Hook's `error` state handles display; avoid unhandled rejections.
+        }
+      };
+
+      if (loading) return <p>Creating...</p>;
+      if (error) return <p>Error: {error.message}</p>;
+      if (data?.createUser) return <p>Created: {data.createUser.email}</p>;
+
+      return <button onClick={() => handleCreate({ ... })}>Create User</button>;
+    }
+    ```
+  - Note: There is no `PreloadMutation`. Mutations are side-effects and run only from user actions or server actions. For server-side mutations, use `getClient().mutate()` inside a server action.
 - **Tooling**: Biome for lint/format (`pnpm check`). Typecheck with `pnpm check:types`.
 - **Testing**: Vitest (unit/component), Storybook 10 (`@storybook/nextjs-vite`) with story tests, Playwright for E2E.
 

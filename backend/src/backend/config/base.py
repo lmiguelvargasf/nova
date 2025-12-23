@@ -1,5 +1,3 @@
-from functools import cached_property
-
 from pydantic_settings import BaseSettings
 
 
@@ -11,7 +9,9 @@ class Settings(BaseSettings):
     postgres_port: int
     admin_session_secret: str
 
-    @cached_property
+    cors_allow_origins: list[str]
+
+    @property
     def postgres_test_db(self) -> str:
         return f"{self.postgres_db}_test"
 
