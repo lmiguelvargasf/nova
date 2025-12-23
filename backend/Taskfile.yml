@@ -54,6 +54,12 @@ tasks:
     cmds:
       - "{{.RUFF}} format --force-exclude"
 
+  check:
+    desc: Run format and lint:fix
+    cmds:
+      - task format
+      - task lint:fix
+
   typecheck:
     desc: Run ty for static type checking
     cmds:
