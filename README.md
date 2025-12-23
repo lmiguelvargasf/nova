@@ -124,7 +124,7 @@ The services will be available at:
 
 This project is pre-configured for **VS Code** (or any fork like **Cursor** or **Windsurf**) to provide a seamless development experience:
 
-- **Type Checking**: Since we use `ty`, the `"python.languageServer"` setting is set to `"None"` in [`.vscode/settings.json`](.vscode/settings.json). This disables Pylance to avoid running two language servers simultaneously when the Python extension is enabled (see [official ty configuration][ty-editors]).
+- **Type Checking**: Since we use `ty`, the `"python.languageServer"` setting is set to `"None"` in [`.vscode/settings.json`](.vscode/settings.json). This avoids running two language servers simultaneously when the Python extension is enabled (see [official ty configuration][ty-editors]).
 
 ## 🌐 Production Deployment
 
