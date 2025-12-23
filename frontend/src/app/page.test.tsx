@@ -20,8 +20,11 @@ test("renders the nova home content", async () => {
   render(HomeComponent);
   expect(
     screen.getByRole("heading", {
-      name: /Ship a GraphQL-ready product faster/i,
+      name: /Build and ship faster/i,
     }),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(/GraphQL-first full-stack template/i),
   ).toBeInTheDocument();
   expect(
     screen.getByRole("heading", { name: /Live preview/i }),

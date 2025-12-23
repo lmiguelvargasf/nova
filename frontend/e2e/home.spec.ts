@@ -6,7 +6,7 @@ test.describe("Home Page", () => {
     await expect(page).toHaveTitle("Nova 🌟");
     await expect(
       page.getByRole("heading", {
-        name: /Ship a GraphQL-ready product faster/i,
+        name: /Build and ship faster/i,
       }),
     ).toBeVisible();
     await expect(

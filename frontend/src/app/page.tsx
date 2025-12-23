@@ -15,13 +15,12 @@ export default function Home() {
             Nova 🌟
           </p>
           <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-            Ship a GraphQL-ready product faster.
+            Build and ship faster
           </h1>
           <p className="max-w-2xl text-base text-slate-600 sm:text-lg dark:text-slate-300">
-            Nova is a full-stack application template with a Python (Litestar)
-            backend and a Next.js frontend, connected through GraphQL. It is
-            built for fast PoCs with typed operations, Docker-friendly
-            workflows, and a clean UI baseline.
+            Nova is a GraphQL-first full-stack template for fast PoCs that
+            evolve smoothly into clean, scalable, production-ready MVPs, without
+            rewrites.
           </p>
           <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">
             <span className="rounded-full border border-slate-200 px-3 py-1 dark:border-white/20">
