@@ -172,7 +172,7 @@ This project is licensed under the [MIT License](./LICENSE).
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
 [mise]: https://mise.jdx.dev/
-[nextjs]: https://nextjs.org/
+[next.js]: https://nextjs.org/
 [playwright]: https://playwright.dev/
 [pnpm]: https://pnpm.io/
 [postgresql]: https://www.postgresql.org/
