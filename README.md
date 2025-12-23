@@ -16,6 +16,7 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 
 - [Tech Stack](#️-tech-stack)
 - [Getting Started](#-getting-started)
+- [Developer Experience](#-developer-experience)
 - [Production Deployment](#-production-deployment)
 - [Development Tasks](#️-development-tasks)
 - [CI/CD Workflows](#-cicd-workflows)
@@ -25,23 +26,32 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 ## 🛠️ Tech Stack
 
 ### Backend
-- **[Python][python]** – Core programming language for backend.
-- **[Litestar][litestar]** – High-performance ASGI framework for modern Python web apps.
+- **[Python][]** – Core programming language for backend.
+- **[Litestar][]** – High-performance ASGI framework for modern Python web apps.
 - **[Advanced Alchemy][advanced-alchemy]** – SQLAlchemy integration (async) + migrations tooling.
-- **[PostgreSQL][postgresql]** – Advanced open-source relational database known for reliability.
-- **[GraphQL][graphql]** – API query language providing a more efficient alternative to REST.
+- **[GraphQL][]** – API query language providing a more efficient alternative to REST.
+- **[PostgreSQL][]** – Advanced open-source relational database known for reliability.
+- **The Astral Stack**:
+    - **[uv][]** – Ultra-fast Python package and project manager.
+    - **[Ruff][]** – Extremely fast Python linter and code formatter.
+    - **[ty][]** – Fast, type-safe Python type checker.
 
 ### Frontend
-- **[TypeScript][typescript]** – Core programming language for frontend.
-- **[Next.js][nextjs]** – React framework for production-ready applications.
+- **[TypeScript][]** – Core programming language for frontend.
+- **[Next.js][]** – React framework for production-ready applications.
 - **[Tailwind CSS][tailwind]** – Utility-first CSS framework for rapid UI development.
+- **Component Ecosystem**:
+    - **[pnpm][]** – Fast, disk space efficient package manager.
+    - **[Storybook][]** – Tool for building UI components and pages in isolation.
+    - **[Vitest][]** – Next generation testing framework.
+    - **[Playwright][]** – Reliable end-to-end testing for modern web apps.
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
 - **[Docker Desktop][docker-desktop]**: Provides Docker Engine and Docker Compose.
-- **[mise][mise]**: Manages tools like `uv`, `pnpm`, and `task`.
+- **[mise][]**: Manages tools like `uv`, `pnpm`, and `task`.
 
 ### Environment Setup
 
@@ -113,6 +123,15 @@ The services will be available at:
 - [Admin UI](http://localhost:8000/admin)
 - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
 
+## 💻 Developer Experience
+
+This project is built for a fast feedback loop and comes pre-configured for **VS Code**:
+
+- **Zero-Config Type Checking**: We use **ty** as the primary language server. To avoid conflicts and ensure maximum performance, the workspace is configured with `"python.languageServer": "None"`. This allows `ty` to handle all type checking and completions directly.
+- **Integrated Tooling**: **Ruff** (Python) and **Biome** (TypeScript) are configured to format and fix linting issues automatically on save.
+- **Story-First Development**: Develop components in isolation with **Storybook**, and run unit/story tests instantly using **Vitest**.
+- **Unified Task Runner**: All complex workflows—from database migrations to running E2E tests with **Playwright**—are simplified using **Task**. Run `task --list` to see available commands.
+
 ## 🌐 Production Deployment
 
 This is an opinionated deployment recommendation that has worked well in production, but you are free to deploy this template using any providers or infrastructure that fit your needs.
@@ -152,15 +171,24 @@ All versioned changes are documented on the [GitHub Releases][releases] page.
 This project is licensed under the [MIT License](./LICENSE).
 
 [advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/
+[astral]: https://astral.sh/
+[biome]: https://biomejs.dev/
 [docker-desktop]: https://www.docker.com/products/docker-desktop/
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
 [mise]: https://mise.jdx.dev/
 [nextjs]: https://nextjs.org/
+[playwright]: https://playwright.dev/
+[pnpm]: https://pnpm.io/
 [postgresql]: https://www.postgresql.org/
 [pre-commit]: https://pre-commit.com/
 [python]: https://www.python.org/
 [releases]: https://github.com/lmiguelvargasf/nova/releases
+[ruff]: https://docs.astral.sh/ruff/
+[storybook]: https://storybook.js.org/
 [tailwind]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
+[ty]: https://docs.astral.sh/ty/
 [typescript]: https://www.typescriptlang.org/
+[uv]: https://docs.astral.sh/uv/
+[vitest]: https://vitest.dev/
