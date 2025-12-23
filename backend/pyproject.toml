@@ -50,7 +50,7 @@ select = [
     "E",     # pycodestyle errors: basic correctness/style
     "ERA",   # eradicate: commented-out code
     "F",     # pyflakes: unused/undefined names
-    "FURB",  # refurb: modernizing idioms (perfect for py314)
+    "FURB",  # refurb: modernizing patterns and idioms
     "G",     # flake8-logging-format: performant and safe logging
     "I",     # isort: import ordering
     "ISC",   # flake8-implicit-str-concat: catch missing commas in lists
@@ -66,7 +66,7 @@ select = [
     "T20",   # flake8-print: disallow print()
     "TID",   # flake8-tidy-imports: cleaner import structures
     "TRY",   # tryceratops: better try/except patterns
-    "UP",    # pyupgrade: modernize for Python 3.14
+    "UP",    # pyupgrade: upgrade syntax for newer Python versions
     "W",     # pycodestyle warnings
 ]
 [tool.ruff.lint.per-file-ignores]
