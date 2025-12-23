@@ -8,8 +8,9 @@ from starlette.types import Receive, Scope, Send
 from starlette_admin import BaseAdmin
 from starlette_admin.contrib.sqla.middleware import DBSessionMiddleware
 
-from ..config.alchemy import alchemy_config
-from ..config.base import settings
+from backend.config.alchemy import alchemy_config
+from backend.config.base import settings
+
 from .auth import BackendAdminAuthProvider
 from .views import ADMIN_VIEWS
 
