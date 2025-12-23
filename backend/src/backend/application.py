@@ -1,8 +1,10 @@
 from litestar import Litestar
+from litestar.config.cors import CORSConfig
 from litestar.plugins import PluginProtocol
 from litestar.types import ControllerRouterHandler
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from .config.base import settings
 from .graphql.controller import (
     GraphQLContextGetter,
     create_graphql_controller,
@@ -17,6 +19,7 @@ def create_app(
     enable_admin: bool = True,
     admin_engine: AsyncEngine | None = None,
 ) -> Litestar:
+    cors_config = CORSConfig(allow_origins=settings.cors_allow_origins)
     route_handlers: list[ControllerRouterHandler] = [
         health_check,
         create_graphql_controller(context_getter=graphql_context_getter),
@@ -35,4 +38,8 @@ def create_app(
 
         route_handlers.append(create_admin_handler(engine=admin_engine))
 
-    return Litestar(route_handlers=route_handlers, plugins=plugins)
+    return Litestar(
+        route_handlers=route_handlers,
+        plugins=plugins,
+        cors_config=cors_config,
+    )

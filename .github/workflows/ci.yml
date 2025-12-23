@@ -17,6 +17,7 @@ env:
   POSTGRES_HOST: localhost
   POSTGRES_PORT: 5432
   ADMIN_SESSION_SECRET: just-for-ci
+  CORS_ALLOW_ORIGINS: '["http://localhost:3000"]'
 
 jobs:
   verify-schema:

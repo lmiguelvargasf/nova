@@ -16,5 +16,8 @@ class UserQuery:
         try:
             user = await user_service.get(user_id)
         except NotFoundError:
-            raise GraphQLError(f"User with id {user_id} not found") from None
+            raise GraphQLError(
+                f"User with id {user_id} not found",
+                extensions={"code": "NOT_FOUND"},
+            ) from None
         return UserType.from_model(user)

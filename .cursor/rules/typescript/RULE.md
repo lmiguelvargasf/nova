@@ -48,11 +48,108 @@ alwaysApply: true
   - Follow `src/app` conventions (`layout.tsx`, `page.tsx`, `loading.tsx`, `error.tsx`).
 - **Dev server**: `next dev --turbopack`; avoid Webpack-specific assumptions unless explicitly configured.
 - **Styling**: Tailwind CSS 4 via `@tailwindcss/postcss` (`postcss.config.mjs`). Prefer utility classes; avoid custom CSS unless required.
+- **Project structure**:
+  ```
+  src/
+  ├── app/          # Routing only (page, layout, loading, error)
+  ├── features/     # Domain modules with business logic + GraphQL
+  ├── components/   # Shared UI (no business logic, no GraphQL)
+  ├── lib/          # Utilities and providers
+  └── stories/      # Storybook stories (mirrors features/)
+  ```
+  - `features/` contains domain logic: GraphQL operations, state, business rules. Example: `features/users/`.
+  - `components/` contains pure UI: just props in, JSX out. Can be used by any feature. Example: `components/ui/ErrorMessage.tsx`.
+  - `components/` must NOT import from `features/`. Dependency flows: `features/ → components/`, never reverse.
+  - Colocate tests with components: `UserCard.client.tsx` + `UserCard.test.tsx` in same folder.
+  - Colocate GraphQL operations with features: `features/users/GetUserById.graphql`.
 - **GraphQL**: Apollo Client + `@apollo/client-integration-nextjs`.
-  - Server data: `frontend/src/lib/apolloClient.server.ts`; client data: `frontend/src/lib/apolloClient.ts`.
+  - Server data: `frontend/src/lib/apollo/client.server.ts`; client data: `frontend/src/lib/apollo/provider.client.tsx`.
   - Keep operations in `.graphql` files; run `pnpm codegen` (or `task frontend:codegen`) to regenerate types.
   - Do not edit generated code under `frontend/src/lib/graphql/**`.
   - Prefer generated documents + types from `@/lib/graphql/graphql` (e.g. `GetUserByIdDocument`, `GetUserByIdQuery`); do not hand-write GraphQL result types.
+  - Import hooks from `@apollo/client/react` (not `@apollo/client`) due to Turbopack bundler resolution issues.
+  - PreloadQuery pattern (doc-only example, uses real repo query):
+    ```tsx
+    // src/app/page.tsx (RSC)
+    import { Suspense } from "react";
+    import { PreloadQuery } from "@/lib/apollo/client.server";
+    import { GetUserByIdDocument } from "@/lib/graphql/graphql";
+    import UserCard from "@/features/users/UserCard.client";
+
+    export default function Page() {
+      return (
+        <PreloadQuery query={GetUserByIdDocument} variables={{ userId: "1" }}>
+          <Suspense fallback={<div>Loading user...</div>}>
+            <UserCard userId="1" />
+          </Suspense>
+        </PreloadQuery>
+      );
+    }
+    ```
+    ```tsx
+    // src/features/users/UserCard.client.tsx (Client Component)
+    "use client";
+
+    import { useSuspenseQuery } from "@apollo/client/react";
+    import { GetUserByIdDocument } from "@/lib/graphql/graphql";
+
+    function hasErrorCode(error: unknown, code: string): boolean {
+      if (!error || typeof error !== "object") return false;
+      const graphQLErrors = (error as { graphQLErrors?: unknown[] }).graphQLErrors;
+      if (!Array.isArray(graphQLErrors)) return false;
+      return graphQLErrors.some(
+        (e) => e?.extensions?.code === code,
+      );
+    }
+
+    export default function UserCard({ userId }: { userId: string }) {
+      const { data, error } = useSuspenseQuery(GetUserByIdDocument, {
+        variables: { userId },
+        errorPolicy: "all",
+      });
+
+      const isNotFound = hasErrorCode(error, "NOT_FOUND");
+      if (error && !isNotFound) return <p>Error: {error.message}</p>;
+      if (!data?.user) return <p>User not found.</p>;
+
+      return <div>{data.user.email}</div>;
+    }
+    ```
+  - Mutation pattern (doc-only example, uses real repo mutation):
+    ```tsx
+    // src/features/users/UserCreator.client.tsx (Client Component)
+    "use client";
+
+    import { useMutation } from "@apollo/client/react";
+    import {
+      CreateUserDocument,
+      type CreateUserMutationVariables,
+    } from "@/lib/graphql/graphql";
+
+    type CreateUserInput = CreateUserMutationVariables["userInput"];
+
+    export default function UserCreator() {
+      const [createUser, { data, loading, error }] = useMutation(CreateUserDocument, {
+        errorPolicy: "all",
+      });
+
+      const handleCreate = async (input: CreateUserInput) => {
+        try {
+          const result = await createUser({ variables: { userInput: input } });
+          return result.data?.createUser;
+        } catch {
+          // Hook's `error` state handles display; avoid unhandled rejections.
+        }
+      };
+
+      if (loading) return <p>Creating...</p>;
+      if (error) return <p>Error: {error.message}</p>;
+      if (data?.createUser) return <p>Created: {data.createUser.email}</p>;
+
+      return <button onClick={() => handleCreate({ ... })}>Create User</button>;
+    }
+    ```
+  - Note: There is no `PreloadMutation`. Mutations are side-effects and run only from user actions or server actions. For server-side mutations, use `getClient().mutate()` inside a server action.
 - **Tooling**: Biome for lint/format (`pnpm check`). Typecheck with `pnpm check:types`.
 - **Testing**: Vitest (unit/component), Storybook 10 (`@storybook/nextjs-vite`) with story tests, Playwright for E2E.
 

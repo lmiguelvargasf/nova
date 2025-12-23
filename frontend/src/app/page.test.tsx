@@ -1,19 +1,19 @@
 import { render, screen } from "@testing-library/react";
 import type { ImageProps } from "next/image";
+import type { ReactNode } from "react";
 import Home from "@/app/page";
 
 // Mock the Apollo client module
-vi.mock("@/lib/apolloClient.server", () => ({
-  getClient: () => ({
-    query: () =>
-      Promise.resolve({
-        data: {
-          user: {
-            email: "test@example.com",
-          },
-        },
-      }),
-  }),
+vi.mock("@/lib/apollo/client.server", () => ({
+  PreloadQuery: ({ children }: { children: ReactNode }) => children,
+}));
+
+vi.mock("@/features/users/UserCard.client", () => ({
+  default: () => <div>Mocked user card</div>,
+}));
+
+vi.mock("@/features/users/UserCreator.client", () => ({
+  default: () => <div>Mocked user creator</div>,
 }));
 
 // Mock Next.js Image component
