@@ -48,6 +48,20 @@ alwaysApply: true
   - Follow `src/app` conventions (`layout.tsx`, `page.tsx`, `loading.tsx`, `error.tsx`).
 - **Dev server**: `next dev --turbopack`; avoid Webpack-specific assumptions unless explicitly configured.
 - **Styling**: Tailwind CSS 4 via `@tailwindcss/postcss` (`postcss.config.mjs`). Prefer utility classes; avoid custom CSS unless required.
+- **Project structure**:
+  ```
+  src/
+  ├── app/          # Routing only (page, layout, loading, error)
+  ├── features/     # Domain modules with business logic + GraphQL
+  ├── components/   # Shared UI (no business logic, no GraphQL)
+  ├── lib/          # Utilities and providers
+  └── stories/      # Storybook stories (mirrors features/)
+  ```
+  - `features/` contains domain logic: GraphQL operations, state, business rules. Example: `features/users/`.
+  - `components/` contains pure UI: just props in, JSX out. Can be used by any feature. Example: `components/ui/ErrorMessage.tsx`.
+  - `components/` must NOT import from `features/`. Dependency flows: `features/ → components/`, never reverse.
+  - Colocate tests with components: `UserCard.client.tsx` + `UserCard.test.tsx` in same folder.
+  - Colocate GraphQL operations with features: `features/users/GetUserById.graphql`.
 - **GraphQL**: Apollo Client + `@apollo/client-integration-nextjs`.
   - Server data: `frontend/src/lib/apollo/client.server.ts`; client data: `frontend/src/lib/apollo/provider.client.tsx`.
   - Keep operations in `.graphql` files; run `pnpm codegen` (or `task frontend:codegen`) to regenerate types.
