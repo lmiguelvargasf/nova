@@ -125,12 +125,9 @@ The services will be available at:
 
 ## 💻 Developer Experience
 
-This project is built for a fast feedback loop and comes pre-configured for **VS Code**:
+This project is pre-configured for **VS Code** (or any fork like **Cursor** or **Windsurf**) to provide a seamless development experience:
 
-- **Zero-Config Type Checking**: We use **ty** as the primary language server. To avoid conflicts and ensure maximum performance, the workspace is configured with `"python.languageServer": "None"`. This allows `ty` to handle all type checking and completions directly.
-- **Integrated Tooling**: **Ruff** (Python) and **Biome** (TypeScript) are configured to format and fix linting issues automatically on save.
-- **Story-First Development**: Develop components in isolation with **Storybook**, and run unit/story tests instantly using **Vitest**.
-- **Unified Task Runner**: All complex workflows—from database migrations to running E2E tests with **Playwright**—are simplified using **Task**. Run `task --list` to see available commands.
+- **Type Checking**: Since we use **[ty][]**, the `"python.languageServer"` setting is set to `"None"` in `.vscode/settings.json`. This disables Pylance to avoid running two language servers simultaneously when the Python extension is enabled (see [official ty configuration][ty-editors]).
 
 ## 🌐 Production Deployment
 
@@ -189,6 +186,7 @@ This project is licensed under the [MIT License](./LICENSE).
 [tailwind]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
 [ty]: https://docs.astral.sh/ty/
+[ty-editors]: https://docs.astral.sh/ty/editors/
 [typescript]: https://www.typescriptlang.org/
 [uv]: https://docs.astral.sh/uv/
 [vitest]: https://vitest.dev/
