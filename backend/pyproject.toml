@@ -4,19 +4,19 @@ version = "0.1.0"
 description = "Backend service for the application"
 readme = "README.md"
 authors = [
-    { name = "M", email = "lmiguelvargasf@gmail.com" }
+  { name = "M", email = "lmiguelvargasf@gmail.com" }
 ]
 requires-python = ">=3.14"
 dependencies = [
-    "advanced-alchemy[argon2]>=1.8.2",
-    "asyncpg>=0.31.0",
-    "itsdangerous>=2.2.0",
-    "litestar[standard]>=2.19.0",
-    "loguru>=0.7.3",
-    "msgspec>=0.20.0",
-    "pydantic-settings>=2.12.0",
-    "starlette-admin>=0.16.0",
-    "strawberry-graphql>=0.287.3",
+  "advanced-alchemy[argon2]>=1.8.2",
+  "asyncpg>=0.31.0",
+  "itsdangerous>=2.2.0",
+  "litestar[standard]>=2.19.0",
+  "loguru>=0.7.3",
+  "msgspec>=0.20.0",
+  "pydantic-settings>=2.12.0",
+  "starlette-admin>=0.16.0",
+  "strawberry-graphql>=0.287.3",
 ]
 
 [build-system]
@@ -25,14 +25,14 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
-    "rich>=14.2.0",
-    "pytest>=9.0.2",
-    "pytest-asyncio>=1.3.0",
-    "pytest-cov>=7.0.0",
-    "pytest-mock>=3.15.1",
-    "ruff>=0.14.10",
-    "strawberry-graphql[debug-server]>=0.287.3",
-    "ty>=0.0.5",
+  "rich>=14.2.0",
+  "pytest>=9.0.2",
+  "pytest-asyncio>=1.3.0",
+  "pytest-cov>=7.0.0",
+  "pytest-mock>=3.15.1",
+  "ruff>=0.14.10",
+  "strawberry-graphql[debug-server]>=0.287.3",
+  "ty>=0.0.5",
 ]
 
 [tool.ruff]
@@ -40,48 +40,48 @@ line-length = 88
 target-version = "py314"
 [tool.ruff.lint]
 select = [
-    "A",     # flake8-builtins: avoid shadowing builtins like id/list
-    "ANN",   # flake8-annotations: ensure public APIs are typed
-    "ASYNC", # flake8-async: prevent blocking calls in async code
-    "B",     # flake8-bugbear: common bug patterns and footguns
-    "BLE",   # flake8-blind-except: avoid bare/overbroad excepts
-    "C4",    # flake8-comprehensions: clearer comprehensions
-    "DTZ",   # flake8-datetimez: enforce timezone-aware datetimes
-    "E",     # pycodestyle errors: basic correctness/style
-    "ERA",   # eradicate: commented-out code
-    "F",     # pyflakes: unused/undefined names
-    "FURB",  # refurb: modernizing patterns and idioms
-    "G",     # flake8-logging-format: performant and safe logging
-    "I",     # isort: import ordering
-    "ISC",   # flake8-implicit-str-concat: catch missing commas in lists
-    "LOG",   # flake8-logging: logging best practices
-    "N",     # pep8-naming: consistent naming conventions
-    "PIE",   # flake8-pie: misc clarity improvements
-    "PT",    # flake8-pytest-style: pytest conventions
-    "RET",   # flake8-return: consistent return behavior
-    "RSE",   # flake8-raise: better raise patterns
-    "RUF",   # Ruff-specific rules
-    "S",     # flake8-bandit: security checks
-    "SIM",   # flake8-simplify: simplify conditionals
-    "T20",   # flake8-print: disallow print()
-    "TID",   # flake8-tidy-imports: cleaner import structures
-    "TRY",   # tryceratops: better try/except patterns
-    "UP",    # pyupgrade: upgrade syntax for newer Python versions
-    "W",     # pycodestyle warnings
+  "A",     # flake8-builtins: avoid shadowing builtins like id/list
+  "ANN",   # flake8-annotations: ensure public APIs are typed
+  "ASYNC", # flake8-async: prevent blocking calls in async code
+  "B",     # flake8-bugbear: common bug patterns and footguns
+  "BLE",   # flake8-blind-except: avoid bare/overbroad excepts
+  "C4",    # flake8-comprehensions: clearer comprehensions
+  "DTZ",   # flake8-datetimez: enforce timezone-aware datetimes
+  "E",     # pycodestyle errors: basic correctness/style
+  "ERA",   # eradicate: commented-out code
+  "F",     # pyflakes: unused/undefined names
+  "FURB",  # refurb: modernizing patterns and idioms
+  "G",     # flake8-logging-format: performant and safe logging
+  "I",     # isort: import ordering
+  "ISC",   # flake8-implicit-str-concat: catch missing commas in lists
+  "LOG",   # flake8-logging: logging best practices
+  "N",     # pep8-naming: consistent naming conventions
+  "PIE",   # flake8-pie: misc clarity improvements
+  "PT",    # flake8-pytest-style: pytest conventions
+  "RET",   # flake8-return: consistent return behavior
+  "RSE",   # flake8-raise: better raise patterns
+  "RUF",   # Ruff-specific rules
+  "S",     # flake8-bandit: security checks
+  "SIM",   # flake8-simplify: simplify conditionals
+  "T20",   # flake8-print: disallow print()
+  "TID",   # flake8-tidy-imports: cleaner import structures
+  "TRY",   # tryceratops: better try/except patterns
+  "UP",    # pyupgrade: upgrade syntax for newer Python versions
+  "W",     # pycodestyle warnings
 ]
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [
-    "ANN",  # type annotations are often redundant in test suites
-    "S101", # pytest uses assert statements for test assertions
-    "S105", # hardcoded passwords are acceptable in test fixtures/data
-    "S106", # hardcoded passwords are acceptable in test fixtures/data
-    "S107", # hardcoded passwords are acceptable in test fixtures/data
+  "ANN",  # type annotations are often redundant in test suites
+  "S101", # pytest uses assert statements for test assertions
+  "S105", # hardcoded passwords are acceptable in test fixtures/data
+  "S106", # hardcoded passwords are acceptable in test fixtures/data
+  "S107", # hardcoded passwords are acceptable in test fixtures/data
 ]
 "migrations/**/*.py" = [
-    "N999", # migration filenames include timestamps/slugs by design
+  "N999", # migration filenames include timestamps/slugs by design
 ]
 "**/graphql/**/*.py" = [
-    "A002", # `id` is a standard GraphQL field name
+  "A002", # `id` is a standard GraphQL field name
 ]
 
 [tool.pytest.ini_options]
@@ -95,5 +95,5 @@ python-version = "3.14"
 
 [tool.ty.src]
 exclude = [
-    "migrations/**/*",
+  "migrations/**/*",
 ]

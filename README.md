@@ -54,66 +54,66 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 ### Environment Setup
 
 1. Install the project toolchain:
-   ```bash
-   mise install
-   ```
+  ```bash
+  mise install
+  ```
 
 1. Copy the example environment files:
-   ```bash
-   cp .env.example .env
-   cp backend/.env.example backend/.env
-   cp frontend/.env.local.example frontend/.env.local
-   ```
+  ```bash
+  cp .env.example .env
+  cp backend/.env.example backend/.env
+  cp frontend/.env.local.example frontend/.env.local
+  ```
 
 1. Edit the environment files (`.env`, `backend/.env`, and `frontend/.env.local`) to set the required secrets and configuration values (such as database URLs, API keys, etc.).
 
 1. Install pre-commit hooks:
-   ```bash
-   pre-commit install
-   ```
+  ```bash
+  pre-commit install
+  ```
 
 ### Starting the Application
 
 1. Pull database image:
-   ```bash
-   task db:pull
-   ```
+  ```bash
+  task db:pull
+  ```
 
 1. Start database service:
-   ```bash
-   task db:up
-   ```
+  ```bash
+  task db:up
+  ```
 
 1. Install backend dependencies:
-   ```bash
-   task backend:install
-   ```
+  ```bash
+  task backend:install
+  ```
 
 1. Install frontend dependencies:
-   ```bash
-   task frontend:install
-   ```
+  ```bash
+  task frontend:install
+  ```
 
 1. Start backend:
-   ```bash
-   task backend:dev
-   ```
+  ```bash
+  task backend:dev
+  ```
 
 1. Generate frontend code based on the backend API:
-   ```bash
-   task frontend:codegen
-   ```
-   **Note:** This exports the GraphQL schema from the backend into `frontend/schema/schema.graphql` and then runs code generation.
+  ```bash
+  task frontend:codegen
+  ```
+  **Note:** This exports the GraphQL schema from the backend into `frontend/schema/schema.graphql` and then runs code generation.
 
 1. Start frontend:
-   ```bash
-   task frontend:dev
-   ```
+  ```bash
+  task frontend:dev
+  ```
 
 1. Create an initial admin user:
-   ```bash
-   task backend:create-admin-user
-   ```
+  ```bash
+  task backend:create-admin-user
+  ```
 
 The services will be available at:
 - [Frontend Application](http://localhost:3000)
