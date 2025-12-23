@@ -103,7 +103,6 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
     ```bash
     task frontend:codegen
     ```
-    **Note:** This exports the GraphQL schema from the backend into `frontend/schema/schema.graphql` and then runs code generation.
 
 1. Start frontend:
     ```bash
