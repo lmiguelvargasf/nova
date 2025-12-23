@@ -22,26 +22,6 @@ export default function Home() {
             evolve smoothly into clean, scalable, production-ready MVPs, without
             rewrites.
           </p>
-          <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">
-            <span className="rounded-full border border-slate-200 px-3 py-1 dark:border-white/20">
-              Litestar
-            </span>
-            <span className="rounded-full border border-slate-200 px-3 py-1 dark:border-white/20">
-              GraphQL
-            </span>
-            <span className="rounded-full border border-slate-200 px-3 py-1 dark:border-white/20">
-              Next.js
-            </span>
-            <span className="rounded-full border border-slate-200 px-3 py-1 dark:border-white/20">
-              Tailwind
-            </span>
-            <span className="rounded-full border border-slate-200 px-3 py-1 dark:border-white/20">
-              PostgreSQL
-            </span>
-            <span className="rounded-full border border-slate-200 px-3 py-1 dark:border-white/20">
-              Docker
-            </span>
-          </div>
         </header>
 
         <section className="grid gap-6">
