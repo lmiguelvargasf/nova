@@ -16,13 +16,18 @@ from backend.apps.users.services import UserService
 from backend.graphql.controller import GraphQLContext
 
 
+class DevelopmentDatabaseError(RuntimeError):
+    def __init__(self) -> None:
+        super().__init__("Refusing to run tests against the development database.")
+
+
 @pytest.fixture
 async def db_engine() -> AsyncIterator[AsyncEngine]:
     from backend.config.alchemy import build_connection_string
     from backend.config.base import settings
 
     if settings.postgres_test_db == settings.postgres_db:
-        raise RuntimeError("Refusing to run tests against the development database.")
+        raise DevelopmentDatabaseError
 
     engine = create_async_engine(
         build_connection_string(db_name=settings.postgres_test_db),
@@ -82,7 +87,7 @@ def user_service_mock(mocker) -> UserService:
     return service
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 async def test_client(
     db_session_mock: AsyncSession,
     user_service_mock: UserService,

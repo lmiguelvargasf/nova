@@ -9,6 +9,11 @@ from .inputs import UserInput
 from .types import UserType
 
 
+class UserAlreadyExistsError(GraphQLError):
+    def __init__(self, email: str) -> None:
+        super().__init__(f"User with email '{email}' already exists.")
+
+
 @strawberry.type
 class UserMutation:
     @strawberry.mutation
@@ -17,7 +22,7 @@ class UserMutation:
         user_service: UserService = info.context["user_service"]
         existing_user = await user_service.get_one_or_none(email=user_input.email)
         if existing_user:
-            raise GraphQLError(f"User with email '{user_input.email}' already exists.")
+            raise UserAlreadyExistsError(user_input.email)
 
         try:
             ph = PasswordHasher()
@@ -34,9 +39,7 @@ class UserMutation:
             )
         except DuplicateKeyError:
             await db_session.rollback()
-            raise GraphQLError(
-                f"User with email '{user_input.email}' already exists."
-            ) from None
+            raise UserAlreadyExistsError(user_input.email) from None
         except RepositoryError as exc:
             await db_session.rollback()
             detail = exc.detail or "Unable to create user."

@@ -39,14 +39,43 @@ dev = [
 line-length = 88
 target-version = "py314"
 [tool.ruff.lint]
-select = ["B", "E", "ERA", "F", "I", "S", "RUF", "UP"]
+select = [
+    "A", # flake8-builtins: avoid shadowing builtins like id/list
+    "ASYNC", # flake8-async: prevent blocking calls in async code
+    "B", # flake8-bugbear: common bug patterns and footguns
+    "BLE", # flake8-blind-except: avoid bare/overbroad excepts
+    "C4", # flake8-comprehensions: clearer comprehensions
+    "DTZ", # flake8-datetimez: enforce timezone-aware datetimes
+    "E", # pycodestyle errors: basic correctness/style
+    "ERA", # eradicate: commented-out code
+    "F", # pyflakes: unused/undefined names
+    "I", # isort: import ordering
+    "N", # pep8-naming: consistent naming conventions
+    "PIE", # flake8-pie: misc clarity improvements
+    "PT", # flake8-pytest-style: pytest conventions
+    "RET", # flake8-return: consistent return behavior
+    "RSE", # flake8-raise: better raise patterns
+    "RUF", # Ruff-specific rules
+    "S", # flake8-bandit: security checks
+    "SIM", # flake8-simplify: simplify conditionals
+    "T20", # flake8-print: disallow print()
+    "TRY", # tryceratops: better try/except patterns
+    "UP", # pyupgrade: modernize for Python 3.14
+    "W", # pycodestyle warnings
+]
 ignore = ["E501"]
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [
-    "S101", # Use of assert detected (pytest uses it)
-    "S105", # Possible hardcoded password assigned to
-    "S106", # Possible hardcoded password assigned to argument
-    "S107", # Possible hardcoded password assigned to function default
+    "S101", # pytest uses assert statements for test assertions
+    "S105", # hardcoded passwords are acceptable in test fixtures/data
+    "S106", # hardcoded passwords are acceptable in test fixtures/data
+    "S107", # hardcoded passwords are acceptable in test fixtures/data
+]
+"migrations/**/*.py" = [
+    "N999", # migration filenames include timestamps/slugs by design
+]
+"**/graphql/**/*.py" = [
+    "A002", # `id` is a standard GraphQL field name
 ]
 
 [tool.pytest.ini_options]

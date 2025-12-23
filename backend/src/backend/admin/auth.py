@@ -11,6 +11,11 @@ from starlette_admin.auth import AdminUser, AuthProvider, LoginFailed
 from ..apps.users.models import UserModel
 
 
+class InvalidCredentialsError(LoginFailed):
+    def __init__(self) -> None:
+        super().__init__("Invalid username or password")
+
+
 class BackendAdminAuthProvider(AuthProvider):
     async def login(
         self,
@@ -22,24 +27,24 @@ class BackendAdminAuthProvider(AuthProvider):
     ) -> Response:
         email = (username or "").strip().lower()
         if not email or not password:
-            raise LoginFailed("Invalid username or password")
+            raise InvalidCredentialsError
 
         session: AsyncSession = request.state.session
         user = await session.scalar(select(UserModel).where(UserModel.email == email))
 
         if user is None or not user.is_admin or not user.is_active:
-            raise LoginFailed("Invalid username or password")
+            raise InvalidCredentialsError
 
         ph = PasswordHasher()
         try:
             ok = ph.verify(user.password_hash, password)
         except (VerifyMismatchError, InvalidHash, VerificationError):
             ok = False
-        except Exception:  # security boundary: do not leak verification errors
+        except Exception:  # noqa: BLE001 # security boundary: do not leak verification errors
             ok = False
 
         if not ok:
-            raise LoginFailed("Invalid username or password")
+            raise InvalidCredentialsError
 
         user.last_login_at = datetime.datetime.now(datetime.UTC)
         await session.commit()
