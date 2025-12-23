@@ -68,12 +68,7 @@ export default function Home() {
             </div>
 
             <div className="mt-8 border-t border-slate-200 pt-6 dark:border-white/10">
-              <h3 className="text-base font-semibold">Demo</h3>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-                Try the live queries and mutations powered by the backend.
-              </p>
-
-              <div className="mt-6 space-y-6">
+              <div className="space-y-6">
                 <div>
                   <h4 className="text-base font-semibold">User data (ID: 1)</h4>
                   <div className="mt-3 rounded-lg border border-slate-200 bg-white/80 p-4 dark:border-white/10 dark:bg-black/20">
@@ -89,7 +84,7 @@ export default function Home() {
                 </div>
 
                 <div className="border-t border-slate-200 pt-5 dark:border-white/10">
-                  <h4 className="text-base font-semibold">Mutation demo</h4>
+                  <h4 className="text-base font-semibold">Create user</h4>
                   <div className="mt-4">
                     <UserCreator />
                   </div>

@@ -12,6 +12,6 @@ test.describe("Home Page", () => {
     await expect(
       page.getByRole("heading", { name: /Core stack/i }),
     ).toBeVisible();
-    await expect(page.getByText(/Python \+ Litestar/i)).toBeVisible();
+    await expect(page.getByText(/Advanced Alchemy/i)).toBeVisible();
   });
 });
