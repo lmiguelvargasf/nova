@@ -1,30 +1,32 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-// Create a mock version of UserCreator for Storybook
-// (The real component requires Apollo context)
-function UserCreatorMock({
+interface CreatedUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
+interface UserCreatorUIProps {
+  loading?: boolean;
+  error?: string;
+  createdUser?: CreatedUser;
+  onCreateClick?: () => void;
+}
+
+function UserCreatorUI({
   loading,
   error,
   createdUser,
   onCreateClick,
-}: {
-  loading?: boolean;
-  error?: string;
-  createdUser?: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    id: string;
-  };
-  onCreateClick?: () => void;
-}) {
+}: UserCreatorUIProps) {
   return (
     <div className="space-y-3">
       <button
         type="button"
         onClick={onCreateClick}
         disabled={loading}
-        className="rounded-md border border-black/[.12] px-3 py-2 text-sm font-medium hover:bg-black/[.04] disabled:opacity-60 dark:border-white/[.2] dark:hover:bg-white/[.08]"
+        className="rounded-md border border-black/12 px-3 py-2 text-sm font-medium hover:bg-black/4 disabled:opacity-60 dark:border-white/20 dark:hover:bg-white/8"
       >
         {loading ? "Creating user..." : "Create random user"}
       </button>
@@ -48,19 +50,20 @@ function UserCreatorMock({
   );
 }
 
-const meta: Meta<typeof UserCreatorMock> = {
+const meta = {
   title: "Features/Users/UserCreator",
-  component: UserCreatorMock,
+  component: UserCreatorUI,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
   argTypes: {
-    loading: { control: "boolean" },
-    error: { control: "text" },
-    createdUser: { control: "object" },
+    loading: { control: "boolean", description: "Show loading state" },
+    error: { control: "text", description: "Error message to display" },
+    createdUser: { control: "object", description: "Created user data" },
+    onCreateClick: { action: "clicked", description: "Create button handler" },
   },
-};
+} satisfies Meta<typeof UserCreatorUI>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

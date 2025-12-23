@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-(family-name:--font-geist-sans)">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
@@ -19,10 +19,10 @@ export default function Home() {
           height={38}
           priority
         />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
+        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-(family-name:--font-geist-mono)">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
+            <code className="bg-black/5 dark:bg-white/6 px-1 py-0.5 rounded font-(family-name:--font-geist-mono) font-semibold">
               src/app/page.tsx
             </code>
             .
@@ -49,7 +49,7 @@ export default function Home() {
             Deploy now
           </a>
           <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
+            className="rounded-full border border-solid border-black/8 dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
             target="_blank"
             rel="noopener noreferrer"
@@ -62,7 +62,7 @@ export default function Home() {
           <h2 className="text-xl font-semibold mb-4 text-center sm:text-left">
             Using GraphQL
           </h2>
-          <div className="border p-4 rounded bg-black/[.05] dark:bg-white/[.06]">
+          <div className="border p-4 rounded bg-black/5 dark:bg-white/6">
             <h3 className="text-lg font-semibold mb-2">User Data (ID: 1)</h3>
             <PreloadQuery
               query={GetUserByIdDocument}
@@ -72,7 +72,7 @@ export default function Home() {
                 <UserCard userId="1" />
               </Suspense>
             </PreloadQuery>
-            <div className="mt-6 border-t border-black/[.08] pt-4 dark:border-white/[.14]">
+            <div className="mt-6 border-t border-black/8 pt-4 dark:border-white/[.14]">
               <h3 className="text-lg font-semibold mb-2">
                 Create User (Mutation)
               </h3>
