@@ -27,7 +27,7 @@ test("renders the nova home content", async () => {
     screen.getByText(/GraphQL-first full-stack template/i),
   ).toBeInTheDocument();
   expect(
-    screen.getByRole("heading", { name: /Live preview/i }),
+    screen.getByRole("heading", { name: /Core stack/i }),
   ).toBeInTheDocument();
   expect(screen.getByText("Mocked user card")).toBeInTheDocument();
   expect(screen.getByText("Mocked user creator")).toBeInTheDocument();

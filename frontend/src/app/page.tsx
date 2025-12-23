@@ -47,7 +47,7 @@ export default function Home() {
         <section className="grid gap-6">
           <div className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
             <div className="flex flex-col gap-2">
-              <h2 className="text-xl font-semibold">Live preview</h2>
+              <h2 className="text-xl font-semibold">Core stack</h2>
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -56,9 +56,11 @@ export default function Home() {
                   Backend
                 </p>
                 <ul className="mt-3 space-y-1 text-sm text-slate-600 dark:text-slate-300">
-                  <li>Python + Litestar</li>
-                  <li>PostgreSQL database</li>
-                  <li>GraphQL API</li>
+                  <li>Python</li>
+                  <li>uv</li>
+                  <li>Litestar</li>
+                  <li>Advanced Alchemy</li>
+                  <li>PostgreSQL</li>
                 </ul>
               </div>
               <div className="rounded-lg border border-slate-200 bg-white/80 p-4 dark:border-white/10 dark:bg-black/20">
@@ -66,9 +68,11 @@ export default function Home() {
                   Frontend
                 </p>
                 <ul className="mt-3 space-y-1 text-sm text-slate-600 dark:text-slate-300">
-                  <li>Next.js 16 + React</li>
-                  <li>TypeScript + Tailwind</li>
-                  <li>Typed GraphQL operations</li>
+                  <li>TypeScript</li>
+                  <li>pnpm</li>
+                  <li>Next.js</li>
+                  <li>Tailwind CSS</li>
+                  <li>Storybook</li>
                 </ul>
               </div>
               <div className="rounded-lg border border-slate-200 bg-white/80 p-4 dark:border-white/10 dark:bg-black/20">
@@ -76,9 +80,9 @@ export default function Home() {
                   Tooling
                 </p>
                 <ul className="mt-3 space-y-1 text-sm text-slate-600 dark:text-slate-300">
-                  <li>Task-based workflows</li>
-                  <li>Docker + Compose</li>
-                  <li>CI-ready checks</li>
+                  <li>Docker Compose</li>
+                  <li>mise</li>
+                  <li>Task</li>
                 </ul>
               </div>
             </div>

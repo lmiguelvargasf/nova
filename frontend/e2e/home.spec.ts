@@ -10,7 +10,7 @@ test.describe("Home Page", () => {
       }),
     ).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: /Live preview/i }),
+      page.getByRole("heading", { name: /Core stack/i }),
     ).toBeVisible();
     await expect(page.getByText(/Python \+ Litestar/i)).toBeVisible();
   });
