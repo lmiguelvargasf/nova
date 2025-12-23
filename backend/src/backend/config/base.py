@@ -1,3 +1,5 @@
+from functools import cached_property
+
 from pydantic_settings import BaseSettings
 
 
@@ -11,7 +13,7 @@ class Settings(BaseSettings):
 
     cors_allow_origins: list[str]
 
-    @property
+    @cached_property
     def postgres_test_db(self) -> str:
         return f"{self.postgres_db}_test"
 
