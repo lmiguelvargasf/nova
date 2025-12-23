@@ -14,8 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nova Starter Kit",
-  description: "GraphQL-ready starter kit with a Litestar backend and Next.js.",
+  title: "Nova 🌟",
+  description:
+    "GraphQL-ready application template with a Litestar backend and Next.js.",
 };
 
 export default function RootLayout({

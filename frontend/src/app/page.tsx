@@ -12,16 +12,16 @@ export default function Home() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 sm:px-10 sm:py-16">
         <header className="flex flex-col gap-5">
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-slate-500">
-            Nova starter kit
+            Nova 🌟
           </p>
           <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
             Ship a GraphQL-ready product faster.
           </h1>
           <p className="max-w-2xl text-base text-slate-600 sm:text-lg dark:text-slate-300">
-            Nova is a full-stack starter kit with a Python (Litestar) backend
-            and a Next.js frontend, connected through GraphQL. It is built for
-            fast PoCs with typed operations, Docker-friendly workflows, and a
-            clean UI baseline.
+            Nova is a full-stack application template with a Python (Litestar)
+            backend and a Next.js frontend, connected through GraphQL. It is
+            built for fast PoCs with typed operations, Docker-friendly
+            workflows, and a clean UI baseline.
           </p>
           <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">
             <span className="rounded-full border border-slate-200 px-3 py-1 dark:border-white/20">
