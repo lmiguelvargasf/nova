@@ -3,8 +3,17 @@ from advanced_alchemy.exceptions import NotFoundError
 from graphql.error import GraphQLError
 from strawberry.types import Info
 
-from ..services import UserService
+from backend.apps.users.services import UserService
+
 from .types import UserType
+
+
+class UserNotFoundError(GraphQLError):
+    def __init__(self, user_id: int) -> None:
+        super().__init__(
+            f"User with id {user_id} not found",
+            extensions={"code": "NOT_FOUND"},
+        )
 
 
 @strawberry.type
@@ -16,8 +25,5 @@ class UserQuery:
         try:
             user = await user_service.get(user_id)
         except NotFoundError:
-            raise GraphQLError(
-                f"User with id {user_id} not found",
-                extensions={"code": "NOT_FOUND"},
-            ) from None
+            raise UserNotFoundError(user_id) from None
         return UserType.from_model(user)

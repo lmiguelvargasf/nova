@@ -19,6 +19,9 @@ alwaysApply: true
 - **Formatting**: this repo uses **ruff format** (line length 88, target `py314`). Don’t hand-format to a different style.
 - **Linting**: prefer fixes that satisfy ruff rules rather than suppressing them.
   - Use `# noqa: <CODES>` only when justified and as narrow as possible.
+  - **Re-exports**: when `__init__.py` imports are used to define a package/module public interface, use Ruff’s redundant alias pattern (`from .module import X as X`) instead of suppressing `F401` or maintaining an `__all__` list solely to appease lint.
+  - **Imports**: Prefer absolute imports from the package root (e.g. `from backend.apps...`). Relative imports from parent modules (`..`) are discouraged to satisfy `TID252`, but sibling imports (`.`) are acceptable.
+  - **Exceptions (TRY003)**: Do not pass long, formatted strings to `raise`. Instead, define a custom exception class that encapsulates the message (e.g. `class UserNotFoundError(GraphQLError): ...`).
 - **Typing**: keep code **ty-clean**.
   - Avoid `Any` and `cast()` unless bridging an external/untyped boundary (ASGI scope, framework hooks).
   - If an ignore is unavoidable, use the narrowest form (e.g. `# type: ignore[code]`) and keep it close to the boundary.
@@ -90,6 +93,7 @@ alwaysApply: true
 
 ## 11) Tests & Completion Bar
 - Update/add tests when behavior changes (pytest + pytest-asyncio is in use).
+- **Type Annotations**: Not forced in `tests/` or development scripts; add them only when convenient.
 - Before calling work “done” for backend changes, prefer the repo workflows:
   - `task backend:format`
   - `task backend:lint:fix`

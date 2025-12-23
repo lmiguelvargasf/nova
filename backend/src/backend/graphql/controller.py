@@ -1,10 +1,12 @@
 from collections.abc import Awaitable, Callable
 from typing import TypedDict
 
+from litestar.types import ControllerRouterHandler
 from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.litestar import make_graphql_controller
 
-from ..apps.users.services import UserService
+from backend.apps.users.services import UserService
+
 from .schema import schema
 
 
@@ -28,7 +30,7 @@ async def default_graphql_context_getter(
 def create_graphql_controller(
     *,
     context_getter: GraphQLContextGetter | None = None,
-):
+) -> ControllerRouterHandler:
     context_getter = context_getter or default_graphql_context_getter
     return make_graphql_controller(
         schema=schema,

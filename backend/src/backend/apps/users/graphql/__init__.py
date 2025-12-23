@@ -1,2 +1,2 @@
-from .mutations import UserMutation
-from .queries import UserQuery
+from .mutations import UserMutation as UserMutation
+from .queries import UserQuery as UserQuery

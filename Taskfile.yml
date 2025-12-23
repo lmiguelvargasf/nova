@@ -66,6 +66,11 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} format"
 
+  backend:check:
+    desc: Run backend check (format + lint)
+    cmds:
+      - "{{.BACKEND_TASK}} check"
+
   backend:test:
     desc: Run backend test
     cmds:
@@ -118,7 +123,7 @@ tasks:
       - "{{.FRONTEND_TASK}} format"
 
   frontend:check:
-    desc: Run frontend check
+    desc: Run frontend check (format + lint)
     cmds:
       - "{{.FRONTEND_TASK}} check"
 

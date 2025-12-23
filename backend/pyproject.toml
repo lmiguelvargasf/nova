@@ -39,10 +39,50 @@ dev = [
 line-length = 88
 target-version = "py314"
 [tool.ruff.lint]
-select = ["E", "F", "B", "I", "UP", "RUF"]
-ignore = ["E501"]
+select = [
+    "A",     # flake8-builtins: avoid shadowing builtins like id/list
+    "ANN",   # flake8-annotations: ensure public APIs are typed
+    "ASYNC", # flake8-async: prevent blocking calls in async code
+    "B",     # flake8-bugbear: common bug patterns and footguns
+    "BLE",   # flake8-blind-except: avoid bare/overbroad excepts
+    "C4",    # flake8-comprehensions: clearer comprehensions
+    "DTZ",   # flake8-datetimez: enforce timezone-aware datetimes
+    "E",     # pycodestyle errors: basic correctness/style
+    "ERA",   # eradicate: commented-out code
+    "F",     # pyflakes: unused/undefined names
+    "FURB",  # refurb: modernizing patterns and idioms
+    "G",     # flake8-logging-format: performant and safe logging
+    "I",     # isort: import ordering
+    "ISC",   # flake8-implicit-str-concat: catch missing commas in lists
+    "LOG",   # flake8-logging: logging best practices
+    "N",     # pep8-naming: consistent naming conventions
+    "PIE",   # flake8-pie: misc clarity improvements
+    "PT",    # flake8-pytest-style: pytest conventions
+    "RET",   # flake8-return: consistent return behavior
+    "RSE",   # flake8-raise: better raise patterns
+    "RUF",   # Ruff-specific rules
+    "S",     # flake8-bandit: security checks
+    "SIM",   # flake8-simplify: simplify conditionals
+    "T20",   # flake8-print: disallow print()
+    "TID",   # flake8-tidy-imports: cleaner import structures
+    "TRY",   # tryceratops: better try/except patterns
+    "UP",    # pyupgrade: upgrade syntax for newer Python versions
+    "W",     # pycodestyle warnings
+]
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]
+"tests/**/*.py" = [
+    "ANN",  # type annotations are often redundant in test suites
+    "S101", # pytest uses assert statements for test assertions
+    "S105", # hardcoded passwords are acceptable in test fixtures/data
+    "S106", # hardcoded passwords are acceptable in test fixtures/data
+    "S107", # hardcoded passwords are acceptable in test fixtures/data
+]
+"migrations/**/*.py" = [
+    "N999", # migration filenames include timestamps/slugs by design
+]
+"**/graphql/**/*.py" = [
+    "A002", # `id` is a standard GraphQL field name
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

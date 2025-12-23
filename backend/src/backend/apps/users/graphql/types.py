@@ -3,7 +3,7 @@ from typing import Self
 
 import strawberry
 
-from ..models import UserModel
+from backend.apps.users.models import UserModel
 
 
 @strawberry.type

@@ -10,6 +10,16 @@ from backend.apps.users.models import UserModel
 from backend.config.alchemy import alchemy_config
 
 
+class InvalidEmailError(SystemExit):
+    def __init__(self) -> None:
+        super().__init__("Invalid --email (expected an email-like value).")
+
+
+class InvalidPasswordError(SystemExit):
+    def __init__(self) -> None:
+        super().__init__("Invalid --password (must be non-empty).")
+
+
 async def _create_admin(*, email: str, password: str) -> bool:
     email = email.strip().lower()
     async with alchemy_config.get_session() as session:
@@ -43,9 +53,7 @@ def _is_valid_email(email: str) -> bool:
     if "@" not in email:
         return False
     local, _, domain = email.partition("@")
-    if not local or not domain:
-        return False
-    return True
+    return bool(local and domain)
 
 
 def _prompt_non_empty(*, prompt: str, password: bool = False) -> str:
@@ -67,7 +75,7 @@ def main() -> None:
     email = (args.email or "").strip()
     if args.email is not None:
         if not _is_valid_email(email):
-            raise SystemExit("Invalid --email (expected an email-like value).")
+            raise InvalidEmailError
     else:
         while not _is_valid_email(email):
             email = _prompt_non_empty(prompt="Email").strip()
@@ -75,7 +83,7 @@ def main() -> None:
     password = (args.password or "").strip()
     if args.password is not None:
         if not password:
-            raise SystemExit("Invalid --password (must be non-empty).")
+            raise InvalidPasswordError
     else:
         if not password:
             password = _prompt_non_empty(prompt="Password", password=True)
