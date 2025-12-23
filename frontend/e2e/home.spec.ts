@@ -12,8 +12,6 @@ test.describe("Home Page", () => {
     await expect(
       page.getByRole("heading", { name: /Live preview/i }),
     ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: /Local checklist/i }),
-    ).toBeVisible();
+    await expect(page.getByText(/Python \+ Litestar/i)).toBeVisible();
   });
 });

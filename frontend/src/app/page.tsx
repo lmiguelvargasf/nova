@@ -18,9 +18,10 @@ export default function Home() {
             Ship a GraphQL-ready product faster.
           </h1>
           <p className="max-w-2xl text-base text-slate-600 sm:text-lg dark:text-slate-300">
-            A Litestar and Next.js template with typed GraphQL operations and a
-            clean UI baseline. This page doubles as a live sanity check for the
-            API wiring.
+            Nova is a full-stack starter kit with a Python (Litestar) backend
+            and a Next.js frontend, connected through GraphQL. It is built for
+            fast PoCs with typed operations, Docker-friendly workflows, and a
+            clean UI baseline.
           </p>
           <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">
             <span className="rounded-full border border-slate-200 px-3 py-1 dark:border-white/20">
@@ -35,10 +36,16 @@ export default function Home() {
             <span className="rounded-full border border-slate-200 px-3 py-1 dark:border-white/20">
               Tailwind
             </span>
+            <span className="rounded-full border border-slate-200 px-3 py-1 dark:border-white/20">
+              PostgreSQL
+            </span>
+            <span className="rounded-full border border-slate-200 px-3 py-1 dark:border-white/20">
+              Docker
+            </span>
           </div>
         </header>
 
-        <section className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+        <section className="grid gap-6">
           <div className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
             <div className="flex flex-col gap-2">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
@@ -51,7 +58,40 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="mt-6 space-y-6">
+            <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className="rounded-lg border border-slate-200 bg-white/80 p-4 dark:border-white/10 dark:bg-black/20">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                  Backend
+                </p>
+                <ul className="mt-3 space-y-1 text-sm text-slate-600 dark:text-slate-300">
+                  <li>Python + Litestar</li>
+                  <li>PostgreSQL database</li>
+                  <li>GraphQL API</li>
+                </ul>
+              </div>
+              <div className="rounded-lg border border-slate-200 bg-white/80 p-4 dark:border-white/10 dark:bg-black/20">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                  Frontend
+                </p>
+                <ul className="mt-3 space-y-1 text-sm text-slate-600 dark:text-slate-300">
+                  <li>Next.js 16 + React</li>
+                  <li>TypeScript + Tailwind</li>
+                  <li>Typed GraphQL operations</li>
+                </ul>
+              </div>
+              <div className="rounded-lg border border-slate-200 bg-white/80 p-4 dark:border-white/10 dark:bg-black/20">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                  Tooling
+                </p>
+                <ul className="mt-3 space-y-1 text-sm text-slate-600 dark:text-slate-300">
+                  <li>Task-based workflows</li>
+                  <li>Docker + Compose</li>
+                  <li>CI-ready checks</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-8 space-y-6">
               <div>
                 <h3 className="text-base font-semibold">User data (ID: 1)</h3>
                 <div className="mt-3 rounded-lg border border-slate-200 bg-white/80 p-4 dark:border-white/10 dark:bg-black/20">
@@ -77,48 +117,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-
-          <aside className="rounded-2xl border border-slate-200 bg-slate-50/80 p-6 dark:border-white/10 dark:bg-white/5">
-            <h2 className="text-lg font-semibold">Local checklist</h2>
-            <ul className="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <li>
-                <span className="font-semibold text-slate-700 dark:text-slate-200">
-                  Backend:
-                </span>{" "}
-                run{" "}
-                <code className="font-(family-name:--font-geist-mono)">
-                  task backend:dev
-                </code>
-              </li>
-              <li>
-                <span className="font-semibold text-slate-700 dark:text-slate-200">
-                  Frontend:
-                </span>{" "}
-                run{" "}
-                <code className="font-(family-name:--font-geist-mono)">
-                  task frontend:dev
-                </code>
-              </li>
-              <li>
-                <span className="font-semibold text-slate-700 dark:text-slate-200">
-                  GraphQL schema:
-                </span>{" "}
-                run{" "}
-                <code className="font-(family-name:--font-geist-mono)">
-                  task frontend:codegen
-                </code>
-              </li>
-              <li>
-                <span className="font-semibold text-slate-700 dark:text-slate-200">
-                  Endpoint:
-                </span>{" "}
-                set{" "}
-                <code className="font-(family-name:--font-geist-mono)">
-                  NEXT_PUBLIC_GRAPHQL_ENDPOINT
-                </code>
-              </li>
-            </ul>
-          </aside>
         </section>
       </div>
     </div>
