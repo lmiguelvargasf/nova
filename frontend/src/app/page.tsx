@@ -68,9 +68,10 @@ export default function Home() {
             </div>
 
             <div className="mt-8 border-t border-slate-200 pt-6 dark:border-white/10">
-              <div className="space-y-4">
+              <h2 className="text-xl font-semibold">Demo</h2>
+              <div className="mt-4 space-y-4">
                 <div>
-                  <h4 className="text-base font-semibold">User data (ID: 1)</h4>
+                  <h4 className="text-base font-semibold">Get user (ID: 1)</h4>
                   <div className="mt-3 rounded-lg border border-slate-200 bg-white/80 p-4 dark:border-white/10 dark:bg-black/20">
                     <PreloadQuery
                       query={GetUserByIdDocument}
