@@ -53,6 +53,7 @@ alwaysApply: true
   - Keep operations in `.graphql` files; run `pnpm codegen` (or `task frontend:codegen`) to regenerate types.
   - Do not edit generated code under `frontend/src/lib/graphql/**`.
   - Prefer generated documents + types from `@/lib/graphql/graphql` (e.g. `GetUserByIdDocument`, `GetUserByIdQuery`); do not hand-write GraphQL result types.
+  - Import hooks from `@apollo/client/react` (not `@apollo/client`) due to Turbopack bundler resolution issues.
   - PreloadQuery pattern (doc-only example, uses real repo query):
     ```tsx
     // src/app/page.tsx (RSC)
