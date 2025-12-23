@@ -39,10 +39,15 @@ dev = [
 line-length = 88
 target-version = "py314"
 [tool.ruff.lint]
-select = ["E", "F", "B", "I", "UP", "RUF"]
+select = ["B", "E", "ERA", "F", "I", "S", "RUF", "UP"]
 ignore = ["E501"]
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]
+"tests/**/*.py" = [
+    "S101", # Use of assert detected (pytest uses it)
+    "S105", # Possible hardcoded password assigned to
+    "S106", # Possible hardcoded password assigned to argument
+    "S107", # Possible hardcoded password assigned to function default
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
