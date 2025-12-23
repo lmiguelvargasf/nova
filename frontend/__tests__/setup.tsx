@@ -3,7 +3,11 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
+import { resetApolloClientSingletons } from "@apollo/client-integration-nextjs";
 import type React from "react";
+
+// Reset Apollo Client singletons between tests (recommended by official docs)
+afterEach(resetApolloClientSingletons);
 
 // Mock next/image to render a regular HTML <img> in tests
 vi.mock("next/image", () => ({
