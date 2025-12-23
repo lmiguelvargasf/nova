@@ -16,6 +16,7 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 
 - [Tech Stack](#️-tech-stack)
 - [Getting Started](#-getting-started)
+- [Developer Experience](#-developer-experience)
 - [Production Deployment](#-production-deployment)
 - [Development Tasks](#️-development-tasks)
 - [CI/CD Workflows](#-cicd-workflows)
@@ -25,93 +26,105 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 ## 🛠️ Tech Stack
 
 ### Backend
-- **[Python][python]** – Core programming language for backend.
-- **[Litestar][litestar]** – High-performance ASGI framework for modern Python web apps.
+- **[Python][]** – Core programming language for backend.
+- **[Litestar][]** – High-performance ASGI framework for modern Python web apps.
 - **[Advanced Alchemy][advanced-alchemy]** – SQLAlchemy integration (async) + migrations tooling.
-- **[PostgreSQL][postgresql]** – Advanced open-source relational database known for reliability.
-- **[GraphQL][graphql]** – API query language providing a more efficient alternative to REST.
+- **[GraphQL][]** – API query language providing a more efficient alternative to REST.
+- **[PostgreSQL][]** – Advanced open-source relational database known for reliability.
+- **[uv][]** – Ultra-fast Python package and project manager.
+- **[ruff][]** – Extremely fast Python linter and code formatter.
+- **[ty][]** – Fast, type-safe Python type checker.
 
 ### Frontend
-- **[TypeScript][typescript]** – Core programming language for frontend.
-- **[Next.js][nextjs]** – React framework for production-ready applications.
+- **[TypeScript][]** – Core programming language for frontend.
+- **[Next.js][]** – React framework for production-ready applications.
 - **[Tailwind CSS][tailwind]** – Utility-first CSS framework for rapid UI development.
+- **[pnpm][]** – Fast, disk space efficient package manager.
+- **[Storybook][]** – Tool for building UI components and pages in isolation.
+- **[Vitest][]** – Next generation testing framework.
+- **[Playwright][]** – Reliable end-to-end testing for modern web apps.
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
 - **[Docker Desktop][docker-desktop]**: Provides Docker Engine and Docker Compose.
-- **[mise][mise]**: Manages tools like `uv`, `pnpm`, and `task`.
+- **[mise][]**: Manages tools like `uv`, `pnpm`, and `task`.
 
 ### Environment Setup
 
 1. Install the project toolchain:
-   ```bash
-   mise install
-   ```
+    ```bash
+    mise install
+    ```
 
 1. Copy the example environment files:
-   ```bash
-   cp .env.example .env
-   cp backend/.env.example backend/.env
-   cp frontend/.env.local.example frontend/.env.local
-   ```
+    ```bash
+    cp .env.example .env
+    cp backend/.env.example backend/.env
+    cp frontend/.env.local.example frontend/.env.local
+    ```
 
 1. Edit the environment files (`.env`, `backend/.env`, and `frontend/.env.local`) to set the required secrets and configuration values (such as database URLs, API keys, etc.).
 
 1. Install pre-commit hooks:
-   ```bash
-   pre-commit install
-   ```
+    ```bash
+    pre-commit install
+    ```
 
 ### Starting the Application
 
 1. Pull database image:
-   ```bash
-   task db:pull
-   ```
+    ```bash
+    task db:pull
+    ```
 
 1. Start database service:
-   ```bash
-   task db:up
-   ```
+    ```bash
+    task db:up
+    ```
 
 1. Install backend dependencies:
-   ```bash
-   task backend:install
-   ```
+    ```bash
+    task backend:install
+    ```
 
 1. Install frontend dependencies:
-   ```bash
-   task frontend:install
-   ```
+    ```bash
+    task frontend:install
+    ```
 
 1. Start backend:
-   ```bash
-   task backend:dev
-   ```
+    ```bash
+    task backend:dev
+    ```
 
 1. Generate frontend code based on the backend API:
-   ```bash
-   task frontend:codegen
-   ```
-   **Note:** This exports the GraphQL schema from the backend into `frontend/schema/schema.graphql` and then runs code generation.
+    ```bash
+    task frontend:codegen
+    ```
 
 1. Start frontend:
-   ```bash
-   task frontend:dev
-   ```
+    ```bash
+    task frontend:dev
+    ```
 
 1. Create an initial admin user:
-   ```bash
-   task backend:create-admin-user
-   ```
+    ```bash
+    task backend:create-admin-user
+    ```
 
 The services will be available at:
 - [Frontend Application](http://localhost:3000)
 - [Backend Health Check](http://localhost:8000/health)
 - [Admin UI](http://localhost:8000/admin)
 - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
+
+## 💻 Developer Experience
+
+This project is pre-configured for **VS Code** (or any fork like **Cursor** or **Windsurf**) to provide a seamless development experience:
+
+- **Type Checking**: Since we use `ty`, the `"python.languageServer"` setting is set to `"None"` in [`.vscode/settings.json`](.vscode/settings.json). This avoids running two language servers simultaneously when the Python extension is enabled (see [official ty configuration][ty-editors]).
 
 ## 🌐 Production Deployment
 
@@ -152,15 +165,25 @@ All versioned changes are documented on the [GitHub Releases][releases] page.
 This project is licensed under the [MIT License](./LICENSE).
 
 [advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/
+[astral]: https://astral.sh/
+[biome]: https://biomejs.dev/
 [docker-desktop]: https://www.docker.com/products/docker-desktop/
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
 [mise]: https://mise.jdx.dev/
-[nextjs]: https://nextjs.org/
+[next.js]: https://nextjs.org/
+[playwright]: https://playwright.dev/
+[pnpm]: https://pnpm.io/
 [postgresql]: https://www.postgresql.org/
 [pre-commit]: https://pre-commit.com/
 [python]: https://www.python.org/
 [releases]: https://github.com/lmiguelvargasf/nova/releases
+[ruff]: https://docs.astral.sh/ruff/
+[storybook]: https://storybook.js.org/
 [tailwind]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
+[ty]: https://docs.astral.sh/ty/
+[ty-editors]: https://docs.astral.sh/ty/editors/
 [typescript]: https://www.typescriptlang.org/
+[uv]: https://docs.astral.sh/uv/
+[vitest]: https://vitest.dev/
