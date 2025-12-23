@@ -47,9 +47,6 @@ export default function Home() {
         <section className="grid gap-6">
           <div className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
             <div className="flex flex-col gap-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
-                GraphQL
-              </p>
               <h2 className="text-xl font-semibold">Live preview</h2>
               <p className="text-sm text-slate-600 dark:text-slate-300">
                 Data below is fetched from the backend using generated
