@@ -19,11 +19,7 @@ def create_app(
     enable_admin: bool = True,
     admin_engine: AsyncEngine | None = None,
 ) -> Litestar:
-    cors_config = CORSConfig(
-        allow_origins=settings.cors_allow_origins,
-        allow_methods=["GET", "POST", "OPTIONS"],
-        allow_headers=["*"],
-    )
+    cors_config = CORSConfig(allow_origins=settings.cors_allow_origins)
     route_handlers: list[ControllerRouterHandler] = [
         health_check,
         create_graphql_controller(context_getter=graphql_context_getter),
