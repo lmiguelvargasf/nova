@@ -1,20 +1,20 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-// Create a mock version of UserCard for Storybook
-// (The real component requires Apollo context)
-function UserCardMock({
-  userId,
-  email,
-  loading,
-  error,
-  notFound,
-}: {
+interface UserCardUIProps {
   userId: string;
   email?: string;
   loading?: boolean;
   error?: string;
   notFound?: boolean;
-}) {
+}
+
+function UserCardUI({
+  userId,
+  email,
+  loading,
+  error,
+  notFound,
+}: UserCardUIProps) {
   if (loading) {
     return <p>Loading user...</p>;
   }
@@ -36,21 +36,21 @@ function UserCardMock({
   );
 }
 
-const meta: Meta<typeof UserCardMock> = {
+const meta = {
   title: "Features/Users/UserCard",
-  component: UserCardMock,
+  component: UserCardUI,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
   argTypes: {
-    userId: { control: "text" },
-    email: { control: "text" },
-    loading: { control: "boolean" },
-    error: { control: "text" },
-    notFound: { control: "boolean" },
+    userId: { control: "text", description: "The user ID to display" },
+    email: { control: "text", description: "User email address" },
+    loading: { control: "boolean", description: "Show loading state" },
+    error: { control: "text", description: "Error message to display" },
+    notFound: { control: "boolean", description: "Show not found state" },
   },
-};
+} satisfies Meta<typeof UserCardUI>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

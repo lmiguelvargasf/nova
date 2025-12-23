@@ -52,15 +52,16 @@ alwaysApply: true
   ```
   src/
   ├── app/          # Routing only (page, layout, loading, error)
-  ├── features/     # Domain modules with business logic + GraphQL
+  ├── features/     # Domain modules with business logic + GraphQL + Stories
   ├── components/   # Shared UI (no business logic, no GraphQL)
   ├── lib/          # Utilities and providers
-  └── stories/      # Storybook stories (mirrors features/)
   ```
-  - `features/` contains domain logic: GraphQL operations, state, business rules. Example: `features/users/`.
+  - `features/` contains domain logic: GraphQL operations, state, business rules, stories. Example: `features/users/`.
   - `components/` contains pure UI: just props in, JSX out. Can be used by any feature. Example: `components/ui/ErrorMessage.tsx`.
   - `components/` must NOT import from `features/`. Dependency flows: `features/ → components/`, never reverse.
-  - Colocate tests with components: `UserCard.client.tsx` + `UserCard.test.tsx` in same folder.
+  - Colocate tests and stories with components: `UserCard.client.tsx`, `UserCard.test.tsx`, `UserCard.stories.tsx`.
+  - For Storybook structure recommendations, see: https://storybook.js.org/blog/structuring-your-storybook/
+  - For writing stories, see: https://storybook.js.org/docs/writing-stories
   - Colocate GraphQL operations with features: `features/users/GetUserById.graphql`.
 - **GraphQL**: Apollo Client + `@apollo/client-integration-nextjs`.
   - Server data: `frontend/src/lib/apollo/client.server.ts`; client data: `frontend/src/lib/apollo/provider.client.tsx`.
