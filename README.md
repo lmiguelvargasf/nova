@@ -31,20 +31,18 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 - **[Advanced Alchemy][advanced-alchemy]** – SQLAlchemy integration (async) + migrations tooling.
 - **[GraphQL][]** – API query language providing a more efficient alternative to REST.
 - **[PostgreSQL][]** – Advanced open-source relational database known for reliability.
-- **The Astral Stack**:
-    - **[uv][]** – Ultra-fast Python package and project manager.
-    - **[Ruff][]** – Extremely fast Python linter and code formatter.
-    - **[ty][]** – Fast, type-safe Python type checker.
+- **[uv][]** – Ultra-fast Python package and project manager.
+- **[ruff][]** – Extremely fast Python linter and code formatter.
+- **[ty][]** – Fast, type-safe Python type checker.
 
 ### Frontend
 - **[TypeScript][]** – Core programming language for frontend.
 - **[Next.js][]** – React framework for production-ready applications.
 - **[Tailwind CSS][tailwind]** – Utility-first CSS framework for rapid UI development.
-- **Component Ecosystem**:
-    - **[pnpm][]** – Fast, disk space efficient package manager.
-    - **[Storybook][]** – Tool for building UI components and pages in isolation.
-    - **[Vitest][]** – Next generation testing framework.
-    - **[Playwright][]** – Reliable end-to-end testing for modern web apps.
+- **[pnpm][]** – Fast, disk space efficient package manager.
+- **[Storybook][]** – Tool for building UI components and pages in isolation.
+- **[Vitest][]** – Next generation testing framework.
+- **[Playwright][]** – Reliable end-to-end testing for modern web apps.
 
 ## 🚀 Getting Started
 
