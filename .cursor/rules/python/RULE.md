@@ -19,6 +19,7 @@ alwaysApply: true
 - **Formatting**: this repo uses **ruff format** (line length 88, target `py314`). Don’t hand-format to a different style.
 - **Linting**: prefer fixes that satisfy ruff rules rather than suppressing them.
   - Use `# noqa: <CODES>` only when justified and as narrow as possible.
+  - **Re-exports**: when `__init__.py` imports are used to define a package/module public interface, use Ruff’s redundant alias pattern (`from .module import X as X`) instead of suppressing `F401` or maintaining an `__all__` list solely to appease lint.
 - **Typing**: keep code **ty-clean**.
   - Avoid `Any` and `cast()` unless bridging an external/untyped boundary (ASGI scope, framework hooks).
   - If an ignore is unavoidable, use the narrowest form (e.g. `# type: ignore[code]`) and keep it close to the boundary.
