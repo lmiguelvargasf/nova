@@ -7,6 +7,7 @@
   "python.testing.unittestEnabled": false,
   "python.testing.cwd": "${workspaceFolder}/backend",
   "python.testing.pytestArgs": ["tests"],
+  "python.languageServer": "None",
 
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
