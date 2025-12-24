@@ -43,7 +43,7 @@ alwaysApply: false
 Before declaring a backend task complete:
 - **Run**:
   - `task backend:format`
-  - `task backend:lint:fix`
+  - `task backend:lint`
   - `task backend:typecheck`
   - `task backend:test`
 - **If GraphQL was touched**: run `task frontend:codegen` and ensure `frontend/schema/schema.graphql` updates accordingly.

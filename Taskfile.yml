@@ -56,10 +56,10 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} dev"
 
-  backend:lint:fix:
-    desc: Run backend lint:fix
+  backend:lint:
+    desc: Run backend lint
     cmds:
-      - "{{.BACKEND_TASK}} lint:fix"
+      - "{{.BACKEND_TASK}} lint"
 
   backend:format:
     desc: Run backend format

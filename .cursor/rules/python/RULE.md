@@ -96,6 +96,6 @@ alwaysApply: true
 - **Type Annotations**: Not forced in `tests/` or development scripts; add them only when convenient.
 - Before calling work “done” for backend changes, prefer the repo workflows:
   - `task backend:format`
-  - `task backend:lint:fix`
+  - `task backend:lint`
   - `task backend:typecheck`
   - `task backend:test`

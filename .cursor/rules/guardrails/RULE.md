@@ -11,7 +11,7 @@ alwaysApply: true
 
 ## Validation before completion
 - Prefer running checks via **Taskfile** (repo default).
-  - Backend (if backend code touched): `task backend:format`, `task backend:lint:fix`, `task backend:typecheck`, `task backend:test`
+  - Backend (if backend code touched): `task backend:format`, `task backend:lint`, `task backend:typecheck`, `task backend:test`
   - Frontend (if frontend code touched): `task frontend:format`, `task frontend:lint`, `task frontend:check`, `task frontend:test:run`
   - GraphQL schema/ops touched: `task frontend:codegen` (includes schema export)
 - If changing behavior, add/update tests to cover the new behavior and regressions.
