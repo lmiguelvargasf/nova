@@ -112,7 +112,7 @@ Stop everything by pressing **q** (or **Q** to force quit) in `mprocs`.
     task db:pull
     ```
 
-1. Start database service (detached):
+1. Start database service:
     ```bash
     task db:up
     ```
