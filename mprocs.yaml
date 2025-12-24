@@ -7,8 +7,7 @@ procs:
       printf "Admin:     http://localhost:8000/admin   (admin@local.dev / admin)\n"
       printf "GraphQL:   http://localhost:8000/graphql\n"
       printf "\n"
-      printf "Stop:      Ctrl+C in mprocs\n"
-      printf "DB stop:   task db:down\n"
+      printf "Stop:      'q' (or 'Q' to force quit) in mprocs\n"
       printf "\n"
       tail -f /dev/null
   backend:

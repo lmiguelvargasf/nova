@@ -69,7 +69,7 @@ Run the scripted setup to start the dev environment:
 
 In `mprocs`, open the **`info`** process for the local URLs and default credentials.
 
-Stop everything with **Ctrl+C** in `mprocs`.
+Stop everything by pressing **q** (or **Q** to force quit) in `mprocs`.
 
 ### Step-by-step setup (manual)
 
