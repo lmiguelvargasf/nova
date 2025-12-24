@@ -16,11 +16,6 @@ pick_mise() {
   return 1
 }
 
-pick_mprocs() {
-  if have mprocs; then command -v mprocs; return 0; fi
-  return 1
-}
-
 ensure_docker_compose() {
   have docker || die "Docker is required. Install Docker Desktop (macOS) or Docker Engine (Linux)."
   docker compose version >/dev/null 2>&1 || die "'docker compose' is required. Install Docker Desktop (macOS) or the Docker Compose plugin (Linux)."
@@ -39,14 +34,6 @@ install_mise() {
   if ! pick_mise >/dev/null 2>&1; then
     die "mise install finished but mise was not found at expected locations (e.g. ~/.local/bin/mise). Verify with: ~/.local/bin/mise --version"
   fi
-}
-
-ensure_mprocs_via_mise() {
-  local mise_bin="$1"
-  if "${mise_bin}" exec -- mprocs --version >/dev/null 2>&1; then
-    return 0
-  fi
-  die "mprocs is required but not available via mise. Try re-running: mise install"
 }
 
 copy_if_missing() {
@@ -111,7 +98,6 @@ main() {
 
   info "Installing toolchain (mise)..."
   "${MISE_BIN}" install
-  ensure_mprocs_via_mise "${MISE_BIN}"
 
   info "Installing pre-commit hooks..."
   "${MISE_BIN}" exec -- pre-commit install || die "pre-commit install failed. Re-run with: mise exec -- pre-commit install"
