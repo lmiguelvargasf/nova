@@ -84,7 +84,7 @@ wait_for_db_healthy() {
       info "Postgres is healthy."
       return 0
     fi
-    sleep 2
+    sleep 1
   done
 }
 
@@ -121,11 +121,11 @@ main() {
   copy_if_missing "${ROOT_DIR}/backend/.env.example" "${ROOT_DIR}/backend/.env"
   copy_if_missing "${ROOT_DIR}/frontend/.env.local.example" "${ROOT_DIR}/frontend/.env.local"
 
-  info "Pulling database image (task db:pull)..."
+  info "Pulling database image"
   "${MISE_BIN}" exec -- task db:pull
 
-  info "Starting database (task db:up)..."
-  "${MISE_BIN}" exec -- task db:up
+  info "Starting database"
+  "${MISE_BIN}" exec -- task db:up -- -d
   wait_for_db_healthy 60
 
   info "Installing backend deps..."
@@ -137,7 +137,7 @@ main() {
   info "Running migrations..."
   "${MISE_BIN}" exec -- task -d backend migrate
 
-  info "Seeding admin user (admin@local.dev / admin)..."
+  info "Seeding admin user"
   "${MISE_BIN}" exec -- task -d backend create-admin-user -- --email admin@local.dev --password admin
 
   info "Running codegen..."
