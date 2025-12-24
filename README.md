@@ -57,25 +57,23 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 
 - **[Docker Desktop][docker-desktop]**
 
-### Quick start (recommended)
+### Scripted bootstrap (recommended)
 
-Run:
+Run the scripted setup to start the dev environment:
 
 ```bash
 ./dev.sh
 ```
 
-If you get `permission denied`, run:
-```bash
-chmod +x dev.sh
-./dev.sh
-```
+> **Note:** if you get _permission denied_, run `chmod +x dev.sh` then retry `./dev.sh`.
 
-Stop everything with **Ctrl+C** in `mprocs`. To stop Postgres: `task db:down`.
+In `mprocs`, open the **`info`** process for the local URLs and default credentials.
 
-Default local admin: `admin@local.dev` / `admin` (local-only; change it before any non-local use).
+Stop everything with **Ctrl+C** in `mprocs`.
 
-### Environment Setup
+### Step-by-step setup (manual)
+
+#### Local environment
 
 1. Verify Docker is available:
     ```bash
@@ -107,14 +105,14 @@ Default local admin: `admin@local.dev` / `admin` (local-only; change it before a
     cp frontend/.env.local.example frontend/.env.local
     ```
 
-### Starting the Application
+#### Start services
 
 1. Pull database image:
     ```bash
     task db:pull
     ```
 
-1. Start database service:
+1. Start database service (detached):
     ```bash
     task db:up
     ```

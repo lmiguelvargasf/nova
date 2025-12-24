@@ -88,13 +88,23 @@ wait_for_db_healthy() {
   done
 }
 
+MISE_BIN=""
+
+cleanup() {
+  local rc=$?
+  if [[ -n "${MISE_BIN:-}" ]]; then
+    info "Stopping database (task db:down)..."
+    "${MISE_BIN}" exec -- task db:down || true
+  fi
+  exit "$rc"
+}
+
 main() {
   cd "$ROOT_DIR"
 
   ensure_docker_compose
   install_mise
 
-  local MISE_BIN
   MISE_BIN="$(pick_mise)"
 
   info "Using mise: $("${MISE_BIN}" --version | head -n1)"
@@ -138,7 +148,9 @@ main() {
   info "Select the 'info' process to see URLs/credentials."
   printf "\n"
 
-  exec "${MISE_BIN}" exec -- mprocs -c "${ROOT_DIR}/mprocs.yaml"
+  trap cleanup EXIT
+
+  "${MISE_BIN}" exec -- mprocs -c "${ROOT_DIR}/mprocs.yaml"
 }
 
 main "$@"
