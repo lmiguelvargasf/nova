@@ -1,0 +1,5 @@
+procs:
+  backend:
+    shell: mise exec -- task backend:dev
+  frontend:
+    shell: mise exec -- task frontend:dev
