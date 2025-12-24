@@ -47,8 +47,8 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 ### Tooling
 - **[Docker Desktop][docker-desktop]** – Provides Docker Engine and Docker Compose for local database.
 - **[mise][]** – Manages tool versions (Node, pnpm, task, mprocs).
-- **[Task][task]** – Task runner used for consistent dev commands across the repo.
-- **[pre-commit][pre-commit]** – Git hook manager for running checks before commits.
+- **[Task][]** – Task runner used for consistent dev commands across the repo.
+- **[pre-commit][]** – Git hook manager for running checks before commits.
 - **[mprocs][]** – Runs backend/frontend in separate panes with independent logs.
 
 ## 🚀 Getting Started
