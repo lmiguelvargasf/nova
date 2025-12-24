@@ -29,10 +29,10 @@ install_mise() {
   if pick_mise >/dev/null 2>&1; then return 0; fi
 
   info "Installing mise via install script..."
-  curl -fsSL https://mise.run | sh
+  curl https://mise.run | sh
 
   if ! pick_mise >/dev/null 2>&1; then
-    die "mise install finished but mise was not found at expected locations (e.g. ~/.local/bin/mise). Verify with: ~/.local/bin/mise --version"
+    die "mise not found after installation. Check ~/.local/bin/mise or run: curl https://mise.run | sh"
   fi
 }
 
