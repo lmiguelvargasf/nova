@@ -17,8 +17,8 @@ pick_mise() {
 }
 
 ensure_docker_compose() {
-  have docker || die "Docker is required. Install Docker Desktop (macOS) or Docker Engine (Linux)."
-  docker compose version >/dev/null 2>&1 || die "'docker compose' is required. Install Docker Desktop (macOS) or the Docker Compose plugin (Linux)."
+  have docker || die "Docker is required. Install Docker Desktop."
+  docker compose version >/dev/null 2>&1 || die "'docker compose' is required. Install Docker Desktop."
 
   if ! docker info >/dev/null 2>&1; then
     die "Docker daemon not running. Please start Docker and re-run ./dev.sh."
