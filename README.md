@@ -49,7 +49,7 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 - **[mise][]** – Manages tool versions (Node, pnpm, task, mprocs).
 - **[Task][]** – Task runner used for consistent dev commands across the repo.
 - **[pre-commit][]** – Git hook manager for running checks before commits.
-- **[mprocs][]** – Runs backend/frontend in separate panes with independent logs.
+- **[mprocs][]** – Allows running multiple commands in parallel.
 
 ## 🚀 Getting Started
 
