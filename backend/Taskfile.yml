@@ -83,4 +83,4 @@ tasks:
   create-admin-user:
     desc: Create an admin user
     cmds:
-      - uv run python -m backend.scripts.create_admin_user
+      - uv run python -m backend.scripts.create_admin_user {{.CLI_ARGS}}
