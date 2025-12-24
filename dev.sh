@@ -55,7 +55,7 @@ wait_for_db_healthy() {
 
   local cid=""
   cid="$(docker compose -f "${ROOT_DIR}/compose.yaml" ps -q db 2>/dev/null || true)"
-  [[ -n "$cid" ]] || die "Database container not found. Try: docker compose up -d db"
+  [[ -n "$cid" ]] || die "Database container not found. Check your Docker setup with: docker compose ps"
 
   info "Waiting for Postgres healthcheck..."
   while true; do
