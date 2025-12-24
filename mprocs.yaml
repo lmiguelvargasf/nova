@@ -1,4 +1,16 @@
 procs:
+  info:
+    shell: |
+      printf "\n"
+      printf "Frontend:  http://localhost:3000\n"
+      printf "Backend:   http://localhost:8000/health\n"
+      printf "Admin:     http://localhost:8000/admin   (admin@local.dev / admin)\n"
+      printf "GraphQL:   http://localhost:8000/graphql\n"
+      printf "\n"
+      printf "Stop:      Ctrl+C in mprocs\n"
+      printf "DB stop:   task db:down\n"
+      printf "\n"
+      tail -f /dev/null
   backend:
     shell: mise exec -- task backend:dev
   frontend:

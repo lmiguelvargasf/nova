@@ -44,14 +44,51 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 - **[Vitest][]** – Next generation testing framework.
 - **[Playwright][]** – Reliable end-to-end testing for modern web apps.
 
+### Tooling
+- **[Docker Desktop][docker-desktop]** – Provides Docker Engine and Docker Compose for local database.
+- **[mise][]** – Manages tool versions (Node, pnpm, task, mprocs).
+- **[Task][task]** – Task runner used for consistent dev commands across the repo.
+- **[pre-commit][pre-commit]** – Git hook manager for running checks before commits.
+- **[mprocs][]** – Runs backend/frontend in separate panes with independent logs.
+
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- **[Docker Desktop][docker-desktop]**: Provides Docker Engine and Docker Compose.
-- **[mise][]**: Manages tools like `uv`, `pnpm`, and `task`.
+- **[Docker Desktop][docker-desktop]**
+
+### Quick start (recommended)
+
+Run:
+
+```bash
+./dev.sh
+```
+
+If you get `permission denied`, run:
+```bash
+chmod +x dev.sh
+./dev.sh
+```
+
+Stop everything with **Ctrl+C** in `mprocs`. To stop Postgres: `task db:down`.
+
+Default local admin: `admin@local.dev` / `admin` (local-only; change it before any non-local use).
 
 ### Environment Setup
+
+1. Verify Docker is available:
+    ```bash
+    docker --version
+    docker compose version
+    docker info
+    ```
+
+1. Install mise:
+    ```bash
+    curl https://mise.run | sh
+    ```
+    If this fails, see the official [install docs][mise-install].
 
 1. Install the project toolchain:
     ```bash
@@ -171,6 +208,8 @@ This project is licensed under the [MIT License](./LICENSE).
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
 [mise]: https://mise.jdx.dev/
+[mise-install]: https://mise.jdx.dev/getting-started.html
+[mprocs]: https://github.com/pvolok/mprocs
 [next.js]: https://nextjs.org/
 [playwright]: https://playwright.dev/
 [pnpm]: https://pnpm.io/
