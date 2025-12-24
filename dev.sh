@@ -10,18 +10,9 @@ die() { err "$*"; exit 1; }
 
 have() { command -v "$1" >/dev/null 2>&1; }
 
-os_name() {
-  case "$(uname -s 2>/dev/null || true)" in
-    Darwin) echo "mac" ;;
-    Linux) echo "linux" ;;
-    *) echo "other" ;;
-  esac
-}
-
 pick_mise() {
   if have mise; then command -v mise; return 0; fi
   if [[ -x "${HOME}/.local/bin/mise" ]]; then echo "${HOME}/.local/bin/mise"; return 0; fi
-  if [[ -x "${HOME}/.cargo/bin/mise" ]]; then echo "${HOME}/.cargo/bin/mise"; return 0; fi
   return 1
 }
 
@@ -35,10 +26,7 @@ ensure_docker_compose() {
   docker compose version >/dev/null 2>&1 || die "'docker compose' is required. Install Docker Desktop (macOS) or the Docker Compose plugin (Linux)."
 
   if ! docker info >/dev/null 2>&1; then
-    if [[ "$(os_name)" == "mac" ]]; then
-      die "Docker daemon not running. Start Docker Desktop, then re-run ./dev.sh."
-    fi
-    die "Docker daemon not running. Start Docker (e.g. systemctl start docker), then re-run ./dev.sh."
+    die "Docker daemon not running. Please start Docker and re-run ./dev.sh."
   fi
 }
 
@@ -65,7 +53,6 @@ copy_if_missing() {
   local src="$1"
   local dst="$2"
   if [[ -f "$dst" ]]; then
-    info "Keeping existing $(realpath "$dst" 2>/dev/null || echo "$dst")"
     return 0
   fi
   [[ -f "$src" ]] || die "Missing template file: $src"
@@ -116,14 +103,20 @@ main() {
   "${MISE_BIN}" install
   ensure_mprocs_via_mise "${MISE_BIN}"
 
+  info "Installing pre-commit hooks..."
+  "${MISE_BIN}" exec -- pre-commit install || die "pre-commit install failed. Re-run with: mise exec -- pre-commit install"
+
   info "Bootstrapping env files (copy-if-missing)..."
   copy_if_missing "${ROOT_DIR}/.env.example" "${ROOT_DIR}/.env"
   copy_if_missing "${ROOT_DIR}/backend/.env.example" "${ROOT_DIR}/backend/.env"
   copy_if_missing "${ROOT_DIR}/frontend/.env.local.example" "${ROOT_DIR}/frontend/.env.local"
 
-  info "Starting database (docker compose)..."
-  docker compose -f "${ROOT_DIR}/compose.yaml" up -d db
-  wait_for_db_healthy 180
+  info "Pulling database image (task db:pull)..."
+  "${MISE_BIN}" exec -- task db:pull
+
+  info "Starting database (task db:up)..."
+  "${MISE_BIN}" exec -- task db:up
+  wait_for_db_healthy 60
 
   info "Installing backend deps..."
   "${MISE_BIN}" exec -- task -d backend install

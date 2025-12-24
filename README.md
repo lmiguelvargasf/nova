@@ -95,18 +95,16 @@ Default local admin: `admin@local.dev` / `admin` (local-only; change it before a
     mise install
     ```
 
+1. Install pre-commit hooks:
+    ```bash
+    pre-commit install
+    ```
+
 1. Copy the example environment files:
     ```bash
     cp .env.example .env
     cp backend/.env.example backend/.env
     cp frontend/.env.local.example frontend/.env.local
-    ```
-
-1. Edit the environment files (`.env`, `backend/.env`, and `frontend/.env.local`) to set the required secrets and configuration values (such as database URLs, API keys, etc.).
-
-1. Install pre-commit hooks:
-    ```bash
-    pre-commit install
     ```
 
 ### Starting the Application

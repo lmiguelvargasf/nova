@@ -19,7 +19,7 @@ tasks:
   db:up:
     desc: Start database service
     cmds:
-      - "{{.DOCKER_COMPOSE}} up"
+      - "{{.DOCKER_COMPOSE}} up -d"
 
   db:down:
     desc: Stop database service
