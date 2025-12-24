@@ -44,21 +44,21 @@ tasks:
     cmds:
       - uv run strawberry export-schema backend.graphql.schema:schema
 
-  lint:fix:
-    desc: Run ruff to fix code linting violations
-    cmds:
-      - "{{.RUFF}} check --force-exclude --fix"
-
   format:
     desc: Run ruff to format code
     cmds:
       - "{{.RUFF}} format --force-exclude"
 
+  lint:
+    desc: Run ruff to fix code linting violations
+    cmds:
+      - "{{.RUFF}} check --force-exclude --fix"
+
   check:
-    desc: Run format and lint:fix
+    desc: Run format and lint
     cmds:
       - task format
-      - task lint:fix
+      - task lint
 
   typecheck:
     desc: Run ty for static type checking
