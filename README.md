@@ -45,8 +45,8 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 - **[Playwright][]** – Reliable end-to-end testing for modern web apps.
 
 ### Tooling
-- **[Docker Desktop][docker-desktop]** – Provides Docker Engine and Docker Compose for local database.
-- **[mise][]** – Manages tool versions (Node, pnpm, task, etc).
+- **[Docker Desktop][docker-desktop]** – Provides Docker Engine and Docker Compose.
+- **[mise][]** – Manages tool versions.
 - **[Task][]** – Task runner designed for modern workflows.
 - **[pre-commit][]** – Git hook manager for running checks before commits.
 - **[mprocs][]** – Allows running multiple commands in parallel.
