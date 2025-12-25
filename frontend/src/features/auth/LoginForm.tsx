@@ -1,12 +1,15 @@
 "use client";
 
-import { useMutation } from "@apollo/client/react";
+import { useApolloClient, useMutation } from "@apollo/client/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { ErrorMessage } from "@/components/ui";
 import { LoginDocument } from "@/lib/graphql/graphql";
 
 export default function LoginForm() {
+  const router = useRouter();
+  const client = useApolloClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -23,11 +26,8 @@ export default function LoginForm() {
       if (token && user) {
         localStorage.setItem("token", token);
         localStorage.setItem("userId", user.id);
-        // Force a reload or reset apollo store to ensure auth link picks up the token
-        // For now, router.push might be enough if we just need to go to home,
-        // but Apollo Client might need a reset.
-        // Simple way:
-        window.location.href = "/";
+        await client.resetStore();
+        router.push("/");
       }
     } catch {
       // Error handled by error state
