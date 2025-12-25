@@ -19,9 +19,9 @@ function makeClient() {
     uri: endpoint ?? "http://localhost:8000/graphql",
   });
 
-  const authLink = new SetContextLink(async ({ headers }) => {
+  const authLink = new SetContextLink(({ headers }) => {
     // get the authentication token from local storage if it exists
-    const token = await localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     // return the headers to the context so httpLink can read them
     return {
       headers: {
