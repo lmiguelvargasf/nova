@@ -18,7 +18,7 @@ services:
       interval: 2s
       timeout: 3s
       retries: 5
-      start_period: 3s
+      start_period: 2s
 
 volumes:
   db_data:
