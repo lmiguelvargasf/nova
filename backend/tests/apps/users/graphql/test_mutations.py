@@ -18,10 +18,13 @@ class TestUserMutations:
         mutation = """
         mutation CreateUser($userInput: UserInput!) {
             createUser(userInput: $userInput) {
-                id
-                firstName
-                lastName
-                email
+                token
+                user {
+                    id
+                    firstName
+                    lastName
+                    email
+                }
             }
         }
         """
@@ -43,7 +46,8 @@ class TestUserMutations:
             "lastName": "User",
             "email": "new@example.com",
         }
-        assert result["data"]["createUser"] == expected_user_data
+        assert result["data"]["createUser"]["user"] == expected_user_data
+        assert result["data"]["createUser"]["token"] is not None
 
         user_service_mock.get_one_or_none.assert_called_once_with(
             email="new@example.com"
@@ -72,8 +76,10 @@ class TestUserMutations:
         mutation = """
         mutation CreateUser($userInput: UserInput!) {
             createUser(userInput: $userInput) {
-                id
-                email
+                user {
+                    id
+                    email
+                }
             }
         }
         """
