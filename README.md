@@ -44,18 +44,58 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 - **[Vitest][]** – Next generation testing framework.
 - **[Playwright][]** – Reliable end-to-end testing for modern web apps.
 
+### Tooling
+- **[Docker Desktop][docker-desktop]** – Provides Docker Engine and Docker Compose.
+- **[mise][]** – Manages tool versions.
+- **[Task][]** – Task runner designed for modern workflows.
+- **[pre-commit][]** – Manages and runs automated Git hooks.
+- **[mprocs][]** – Allows running multiple commands in parallel.
+
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- **[Docker Desktop][docker-desktop]**: Provides Docker Engine and Docker Compose.
-- **[mise][]**: Manages tools like `uv`, `pnpm`, and `task`.
+- **[Docker Desktop][docker-desktop]**
 
-### Environment Setup
+### Scripted bootstrap (recommended)
+
+Run the scripted setup to start the dev environment:
+
+```bash
+./dev.sh
+```
+
+> **Note:** if you get _permission denied_, run `chmod +x dev.sh` then retry `./dev.sh`.
+
+In `mprocs`, open the **`info`** process for the local URLs and default credentials.
+
+Stop everything by pressing **q** (or **Q** to force quit) in `mprocs`.
+
+### Step-by-step setup (manual)
+
+#### Local environment
+
+1. Verify Docker is available:
+    ```bash
+    docker --version
+    docker compose version
+    docker info
+    ```
+
+1. Install mise:
+    ```bash
+    curl https://mise.run | sh
+    ```
+    If this fails, see the official [install docs][mise-install].
 
 1. Install the project toolchain:
     ```bash
     mise install
+    ```
+
+1. Install pre-commit hooks:
+    ```bash
+    pre-commit install
     ```
 
 1. Copy the example environment files:
@@ -65,14 +105,7 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
     cp frontend/.env.local.example frontend/.env.local
     ```
 
-1. Edit the environment files (`.env`, `backend/.env`, and `frontend/.env.local`) to set the required secrets and configuration values (such as database URLs, API keys, etc.).
-
-1. Install pre-commit hooks:
-    ```bash
-    pre-commit install
-    ```
-
-### Starting the Application
+#### Start services
 
 1. Pull database image:
     ```bash
@@ -171,6 +204,8 @@ This project is licensed under the [MIT License](./LICENSE).
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
 [mise]: https://mise.jdx.dev/
+[mise-install]: https://mise.jdx.dev/getting-started.html
+[mprocs]: https://github.com/pvolok/mprocs
 [next.js]: https://nextjs.org/
 [playwright]: https://playwright.dev/
 [pnpm]: https://pnpm.io/
