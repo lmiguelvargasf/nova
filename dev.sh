@@ -7,8 +7,8 @@ MISE_BIN=""
 cleanup() {
   local rc=$?
   if [[ -n "${MISE_BIN:-}" ]]; then
-    info "Stopping database (task db:down)..."
-    "${MISE_BIN}" exec -- task db:down || true
+    info "Stopping database..."
+    "${MISE_BIN}" exec -- task db:stop || true
   fi
   exit "$rc"
 }
