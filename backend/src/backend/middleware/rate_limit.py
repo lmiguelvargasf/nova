@@ -8,7 +8,7 @@ from litestar.security.jwt import Token
 
 from backend.config.base import settings
 
-_GRAPHQL_PATH = "/graphql"
+_EXCLUDED_PATHS = {"/health", "/schema"}
 
 
 def _get_cached_subject(request: Request) -> str | None:
@@ -35,18 +35,18 @@ def _get_cached_subject(request: Request) -> str | None:
     return subject
 
 
-def _is_graphql_request(request: Request) -> bool:
-    return request.url.path == _GRAPHQL_PATH
+def _is_path_excluded(request: Request) -> bool:
+    return request.url.path in _EXCLUDED_PATHS
 
 
-def _should_throttle_authenticated(request: Request) -> bool:
-    if not _is_graphql_request(request):
+def _is_authenticated(request: Request) -> bool:
+    if _is_path_excluded(request):
         return False
     return _get_cached_subject(request) is not None
 
 
-def _should_throttle_anonymous(request: Request) -> bool:
-    if not _is_graphql_request(request):
+def _is_anonymous(request: Request) -> bool:
+    if _is_path_excluded(request):
         return False
     return _get_cached_subject(request) is None
 
@@ -61,12 +61,12 @@ def _identifier_for_authenticated(request: Request) -> str:
 def get_rate_limit_middlewares() -> list[DefineMiddleware]:
     anonymous_config = RateLimitConfig(
         rate_limit=("minute", settings.rate_limit_per_minute_anonymous),
-        check_throttle_handler=_should_throttle_anonymous,
+        check_throttle_handler=_is_anonymous,
         identifier_for_request=get_remote_address,
     )
     authenticated_config = RateLimitConfig(
         rate_limit=("minute", settings.rate_limit_per_minute_authenticated),
-        check_throttle_handler=_should_throttle_authenticated,
+        check_throttle_handler=_is_authenticated,
         identifier_for_request=_identifier_for_authenticated,
     )
     return [anonymous_config.middleware, authenticated_config.middleware]
