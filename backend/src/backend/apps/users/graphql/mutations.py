@@ -31,20 +31,14 @@ class InvalidCredentialsError(GraphQLError):
         )
 
 
-class JWTTokenCreationError(RuntimeError):
-    def __init__(self) -> None:
-        super().__init__("JWTAuth does not expose a supported token creation method.")
-
-
 def _create_access_token(*, user_id: int, email: str, is_admin: bool) -> str:
-    token_extras = {"email": email, "is_admin": is_admin}
-    if hasattr(jwt_auth, "create_token"):
-        return str(
-            jwt_auth.create_token(identifier=str(user_id), token_extras=token_extras)
+    """Create a JWT token for the given user."""
+    return str(
+        jwt_auth.create_token(
+            identifier=str(user_id),
+            token_extras={"email": email, "is_admin": is_admin},
         )
-    if hasattr(jwt_auth, "encode"):
-        return str(jwt_auth.encode(identifier=str(user_id), token_extras=token_extras))
-    raise JWTTokenCreationError
+    )
 
 
 @strawberry.type
