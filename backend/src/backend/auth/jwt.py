@@ -7,21 +7,11 @@ from backend.apps.users.services import UserService
 from backend.config.base import settings
 
 
-def _get_db_session(connection: ASGIConnection) -> AsyncSession | None:
-    """Helper to safely retrieve the database session from connection state."""
-    session = getattr(connection.state, "db_session", None) or getattr(
-        connection.state, "session", None
-    )
-    if isinstance(session, AsyncSession):
-        return session
-    return None
-
-
 async def retrieve_user_handler(
     token: Token, connection: ASGIConnection
 ) -> UserModel | None:
-    session = _get_db_session(connection)
-    if session is None:
+    session = getattr(connection.state, "db_session", None)
+    if not isinstance(session, AsyncSession):
         return None
 
     try:
