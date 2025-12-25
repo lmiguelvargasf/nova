@@ -7,10 +7,7 @@ from strawberry.litestar import make_graphql_controller
 from .context import GraphQLContext, Services
 from .schema import schema
 
-type GraphQLContextGetter = (
-    Callable[[], Awaitable[GraphQLContext]]
-    | Callable[[AsyncSession], Awaitable[GraphQLContext]]
-)
+type GraphQLContextGetter = Callable[..., Awaitable[GraphQLContext]]
 
 
 async def default_graphql_context_getter(
