@@ -2,6 +2,13 @@ import { render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import Home from "@/app/page";
 
+// Mock useApolloClient
+vi.mock("@apollo/client/react", () => ({
+  useApolloClient: () => ({
+    clearStore: vi.fn(),
+  }),
+}));
+
 // Mock the Apollo client module
 vi.mock("@/lib/apollo/client.server", () => ({
   PreloadQuery: ({ children }: { children: ReactNode }) => children,
