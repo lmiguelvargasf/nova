@@ -98,8 +98,7 @@ main() {
   "${MISE_BIN}" exec -- task frontend:codegen
 
   printf "\n"
-  info "Starting services with mprocs (separate panes/logs)..."
-  info "Select the 'info' process to see URLs/credentials."
+  info "Starting services with mprocs..."
   printf "\n"
 
   trap cleanup EXIT
