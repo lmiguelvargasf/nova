@@ -59,15 +59,18 @@ wait_for_db_healthy() {
 
   info "Waiting for Postgres healthcheck..."
   while true; do
+    printf "."
     local now
     now="$(date +%s)"
     if (( now - start > timeout_s )); then
+      printf "\n"
       die "Postgres did not become healthy within ${timeout_s}s. Try: docker compose ps && docker logs db"
     fi
 
     local status=""
     status="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' "$cid" 2>/dev/null || true)"
     if [[ "$status" == "healthy" ]]; then
+      printf "\n"
       info "Postgres is healthy."
       return 0
     fi
@@ -107,8 +110,11 @@ main() {
   copy_if_missing "${ROOT_DIR}/backend/.env.example" "${ROOT_DIR}/backend/.env"
   copy_if_missing "${ROOT_DIR}/frontend/.env.local.example" "${ROOT_DIR}/frontend/.env.local"
 
-  info "Pulling database image"
-  "${MISE_BIN}" exec -- task db:pull
+  # Only pull the image if it doesn't exist locally
+  if [[ -z "$(docker images -q postgres:17 2>/dev/null)" ]]; then
+    info "Pulling database image..."
+    "${MISE_BIN}" exec -- task db:pull
+  fi
 
   info "Starting database"
   "${MISE_BIN}" exec -- task db:up -- -d

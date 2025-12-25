@@ -15,10 +15,10 @@ services:
         - >
           pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB &&
           pg_isready -U $$POSTGRES_USER -d $${POSTGRES_DB}_test
-      interval: 10s
-      timeout: 5s
+      interval: 2s
+      timeout: 3s
       retries: 5
-      start_period: 10s
+      start_period: 3s
 
 volumes:
   db_data:
