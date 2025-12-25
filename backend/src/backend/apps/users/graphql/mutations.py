@@ -13,6 +13,7 @@ from strawberry.types import Info
 
 from backend.apps.users.services import UserService
 from backend.auth.jwt import jwt_auth
+from backend.graphql.context import GraphQLContext
 
 from .inputs import UserInput
 from .types import LoginResponse, UserType
@@ -50,9 +51,11 @@ def _create_access_token(*, user_id: int, email: str, is_admin: bool) -> str:
 @strawberry.type
 class UserMutation:
     @strawberry.mutation
-    async def create_user(self, info: Info, user_input: UserInput) -> UserType:
-        db_session = info.context["db_session"]
-        user_service: UserService = info.context["user_service"]
+    async def create_user(
+        self, info: Info[GraphQLContext, None], user_input: UserInput
+    ) -> UserType:
+        db_session = info.context.db_session
+        user_service = info.context.services.users
         existing_user = await user_service.get_one_or_none(email=user_input.email)
         if existing_user:
             raise UserAlreadyExistsError(user_input.email)
