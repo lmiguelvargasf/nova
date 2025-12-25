@@ -1,13 +1,14 @@
 "use client";
 
+import { useApolloClient } from "@apollo/client/react";
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
-
 import UserCard from "@/features/users/UserCard.client";
 
 export default function Home() {
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const client = useApolloClient();
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -18,8 +19,8 @@ export default function Home() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    client.clearStore();
     setUserId(null);
-    window.location.reload();
   };
 
   if (loading) {
