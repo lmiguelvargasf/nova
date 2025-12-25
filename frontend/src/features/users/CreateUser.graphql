@@ -1,8 +1,11 @@
 mutation CreateUser($userInput: UserInput!) {
   createUser(userInput: $userInput) {
-    id
-    firstName
-    lastName
-    email
+    token
+    user {
+      id
+      firstName
+      lastName
+      email
+    }
   }
 }

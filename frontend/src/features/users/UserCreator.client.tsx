@@ -38,16 +38,16 @@ export default function UserCreator() {
     const userInput = buildRandomUserInput();
     try {
       const result = await createUser({ variables: { userInput } });
-      const user = result.data?.createUser;
-      if (user) {
-        setCreatedUserId(user.id);
+      const response = result.data?.createUser;
+      if (response?.user) {
+        setCreatedUserId(response.user.id);
       }
     } catch {
       // The hook's `error` state handles display; avoid unhandled rejections.
     }
   };
 
-  const createdUser = data?.createUser;
+  const createdUser = data?.createUser?.user;
   const errorMessage =
     error?.message === "Failed to fetch"
       ? "Failed to reach GraphQL. Check NEXT_PUBLIC_GRAPHQL_ENDPOINT and that the backend is running."
@@ -59,7 +59,7 @@ export default function UserCreator() {
         type="button"
         onClick={handleCreate}
         disabled={loading}
-        className="rounded-md border border-black/[.12] px-3 py-2 text-sm font-medium hover:bg-black/[.04] disabled:opacity-60 dark:border-white/[.2] dark:hover:bg-white/[.08]"
+        className="rounded-md border border-black/12 px-3 py-2 text-sm font-medium hover:bg-black/4 disabled:opacity-60 dark:border-white/20 dark:hover:bg-white/8"
       >
         {loading ? "Creating user..." : "Create random user"}
       </button>
@@ -80,7 +80,7 @@ export default function UserCreator() {
         </p>
       )}
       {createdUserId ? (
-        <div className="border-t border-black/[.08] pt-3 dark:border-white/[.14]">
+        <div className="border-t border-black/8 pt-3 dark:border-white/[.14]">
           <p className="text-sm font-semibold">Query created user</p>
           <Suspense fallback={<p className="text-sm">Loading user...</p>}>
             <UserCard userId={createdUserId} />

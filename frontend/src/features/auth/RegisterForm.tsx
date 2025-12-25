@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation } from "@apollo/client/react";
+import { useApolloClient, useMutation } from "@apollo/client/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -9,6 +9,7 @@ import { CreateUserDocument } from "@/lib/graphql/graphql";
 
 export default function RegisterForm() {
   const router = useRouter();
+  const client = useApolloClient();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -34,8 +35,13 @@ export default function RegisterForm() {
         },
       });
       if (result.data?.createUser) {
-        // Redirect to login page on success
-        router.push("/login");
+        const { token, user } = result.data.createUser;
+        if (token && user) {
+          localStorage.setItem("token", token);
+          localStorage.setItem("userId", user.id);
+          await client.resetStore();
+          router.push("/");
+        }
       }
     } catch {
       // Error handled by error state

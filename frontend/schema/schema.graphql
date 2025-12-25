@@ -4,7 +4,7 @@ type LoginResponse {
 }
 
 type Mutation {
-  createUser(userInput: UserInput!): UserType!
+  createUser(userInput: UserInput!): LoginResponse!
   login(email: String!, password: String!): LoginResponse!
 }
 
