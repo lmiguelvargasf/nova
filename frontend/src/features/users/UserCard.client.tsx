@@ -40,7 +40,9 @@ export default function UserCard({ userId }: { userId: string }) {
         <span className="font-medium text-black dark:text-white">
           {user.email}
         </span>{" "}
-        ({user.firstName} {user.lastName})
+        {user.firstName &&
+          user.lastName &&
+          `(${user.firstName} ${user.lastName})`}
       </p>
     </div>
   );
