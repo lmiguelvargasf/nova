@@ -85,7 +85,7 @@ main() {
     "${MISE_BIN}" exec -- task db:pull
   fi
 
-  info "Starting database (waiting for healthy status)..."
+  info "Starting database (waiting for it to be ready)..."
   "${MISE_BIN}" exec -- task db:up
 
   info "Installing backend deps..."
