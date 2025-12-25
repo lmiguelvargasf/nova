@@ -68,22 +68,16 @@ main() {
 
   info "Using mise: $("${MISE_BIN}" --version | head -n1)"
 
-  info "Installing toolchain (mise)..."
+  info "Installing toolchain..."
   "${MISE_BIN}" install
 
   info "Installing pre-commit hooks..."
   "${MISE_BIN}" exec -- pre-commit install || die "pre-commit install failed. Re-run with: mise exec -- pre-commit install"
 
-  info "Bootstrapping env files (copy-if-missing)..."
+  info "Bootstrapping env files..."
   copy_if_missing "${ROOT_DIR}/.env.example" "${ROOT_DIR}/.env"
   copy_if_missing "${ROOT_DIR}/backend/.env.example" "${ROOT_DIR}/backend/.env"
   copy_if_missing "${ROOT_DIR}/frontend/.env.local.example" "${ROOT_DIR}/frontend/.env.local"
-
-  # Only pull the image if it doesn't exist locally
-  if [[ -z "$(docker images -q postgres:17 2>/dev/null)" ]]; then
-    info "Pulling database image..."
-    "${MISE_BIN}" exec -- task db:pull
-  fi
 
   info "Starting database (waiting for it to be ready)..."
   "${MISE_BIN}" exec -- task db:up
