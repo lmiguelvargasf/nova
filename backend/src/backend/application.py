@@ -1,6 +1,7 @@
 from litestar import Litestar
 from litestar.config.cors import CORSConfig
 from litestar.plugins import PluginProtocol
+from litestar.stores.memory import MemoryStore
 from litestar.types import ControllerRouterHandler
 from sqlalchemy.ext.asyncio import AsyncEngine
 
@@ -11,6 +12,7 @@ from .graphql.controller import (
     create_graphql_controller,
 )
 from .health import health_check
+from .middleware.rate_limit import get_rate_limit_middlewares
 
 
 def create_app(
@@ -43,5 +45,9 @@ def create_app(
         route_handlers=route_handlers,
         plugins=plugins,
         cors_config=cors_config,
+        middleware=[
+            *get_rate_limit_middlewares(),
+        ],
+        stores={"rate_limit": MemoryStore()},
         on_app_init=[jwt_auth.on_app_init],
     )

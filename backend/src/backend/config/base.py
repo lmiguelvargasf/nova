@@ -13,6 +13,9 @@ class Settings(BaseSettings):
 
     cors_allow_origins: list[str]
     jwt_secret: str
+    rate_limit_per_minute_anonymous: int = 10
+    rate_limit_per_minute_authenticated: int = 100
+    graphql_max_depth: int = 10
 
     @cached_property
     def postgres_test_db(self) -> str:
