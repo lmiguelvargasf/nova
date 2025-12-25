@@ -94,7 +94,7 @@ tasks:
   backend:create-admin-user:
     desc: Create an admin user
     cmds:
-      - "{{.BACKEND_TASK}} create-admin-user"
+      - "{{.BACKEND_TASK}} create-admin-user -- {{.CLI_ARGS}}"
 
   backend:schema:export:
     desc: Export backend GraphQL schema to frontend/schema/schema.graphql

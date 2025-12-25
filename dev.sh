@@ -79,23 +79,23 @@ main() {
   copy_if_missing "${ROOT_DIR}/backend/.env.example" "${ROOT_DIR}/backend/.env"
   copy_if_missing "${ROOT_DIR}/frontend/.env.local.example" "${ROOT_DIR}/frontend/.env.local"
 
-  info "Starting database (waiting for it to be ready)..."
+  info "Starting database and waiting for it to be ready..."
   "${MISE_BIN}" exec -- task db:up
 
   info "Installing backend deps..."
-  "${MISE_BIN}" exec -- task -d backend install
+  "${MISE_BIN}" exec -- task backend:install
 
   info "Installing frontend deps..."
-  "${MISE_BIN}" exec -- task -d frontend install
+  "${MISE_BIN}" exec -- task frontend:install
 
   info "Running migrations..."
-  "${MISE_BIN}" exec -- task -d backend migrate
+  "${MISE_BIN}" exec -- task backend:migrate
 
   info "Seeding admin user"
-  "${MISE_BIN}" exec -- task -d backend create-admin-user -- --email admin@local.dev --password admin
+  "${MISE_BIN}" exec -- task backend:create-admin-user -- --email admin@local.dev --password admin
 
   info "Running codegen..."
-  "${MISE_BIN}" exec -- task -d frontend codegen
+  "${MISE_BIN}" exec -- task frontend:codegen
 
   printf "\n"
   info "Starting services with mprocs (separate panes/logs)..."
