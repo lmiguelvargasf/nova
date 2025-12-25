@@ -12,6 +12,7 @@ from sqlalchemy.ext.asyncio import (
 )
 
 from backend.application import create_app
+from backend.apps.users.models import UserModel
 from backend.apps.users.services import UserService
 from backend.graphql.context import GraphQLContext, Services
 
@@ -88,9 +89,15 @@ def user_service_mock(mocker) -> UserService:
 
 
 @pytest.fixture
+def current_user_mock(mocker):
+    return mocker.Mock(spec=UserModel)
+
+
+@pytest.fixture
 async def test_client(
     db_session_mock: AsyncSession,
     user_service_mock: UserService,
+    current_user_mock,
 ) -> AsyncIterator[AsyncTestClient[Litestar]]:
     async def context_getter() -> GraphQLContext:
         services = Services(db_session_mock)
@@ -98,6 +105,7 @@ async def test_client(
         return GraphQLContext(
             db_session=db_session_mock,
             services=services,
+            user=current_user_mock if current_user_mock.id else None,
         )
 
     test_app = create_app(
