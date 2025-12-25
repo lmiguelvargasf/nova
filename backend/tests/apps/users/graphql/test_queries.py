@@ -5,7 +5,9 @@ from backend.apps.users.models import UserModel
 
 class TestUserQueries:
     async def test_get_user_by_id(
-        self, user_service_mock, graphql_client, current_user_mock
+        self,
+        user_service_mock,
+        graphql_client,
     ):
         mock_user = UserModel(
             email="test@example.com",
@@ -69,10 +71,7 @@ class TestUserQueries:
         assert "User with id 999 not found" in result["errors"][0]["message"]
         user_service_mock.get.assert_called_once_with(999)
 
-    async def test_get_user_unauthenticated(
-        self, user_service_mock, graphql_client, current_user_mock
-    ):
-        # Simulate unauthenticated user
+    async def test_get_user_unauthenticated(self, graphql_client, current_user_mock):
         current_user_mock.id = None
 
         query = """
