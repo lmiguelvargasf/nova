@@ -69,7 +69,7 @@ main() {
   info "Using mise: $("${MISE_BIN}" --version | head -n1)"
 
   info "Installing toolchain..."
-  "${MISE_BIN}" install
+  "${MISE_BIN}" install -y
 
   info "Installing pre-commit hooks..."
   "${MISE_BIN}" exec -- pre-commit install || die "pre-commit install failed. Re-run with: mise exec -- pre-commit install"

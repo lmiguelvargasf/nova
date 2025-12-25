@@ -90,7 +90,7 @@ Stop everything by pressing **q** (or **Q** to force quit) in `mprocs`.
 
 1. Install the project toolchain:
     ```bash
-    mise install
+    mise install -y
     ```
 
 1. Install pre-commit hooks:
