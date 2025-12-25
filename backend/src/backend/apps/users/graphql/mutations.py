@@ -4,7 +4,7 @@ from argon2 import PasswordHasher
 from graphql.error import GraphQLError
 from strawberry.types import Info
 
-from backend.apps.users.services import UserService
+from backend.graphql.context import GraphQLContext
 
 from .inputs import UserInput
 from .types import UserType
@@ -18,9 +18,11 @@ class UserAlreadyExistsError(GraphQLError):
 @strawberry.type
 class UserMutation:
     @strawberry.mutation
-    async def create_user(self, info: Info, user_input: UserInput) -> UserType:
-        db_session = info.context["db_session"]
-        user_service: UserService = info.context["user_service"]
+    async def create_user(
+        self, info: Info[GraphQLContext, None], user_input: UserInput
+    ) -> UserType:
+        db_session = info.context.db_session
+        user_service = info.context.services.users
         existing_user = await user_service.get_one_or_none(email=user_input.email)
         if existing_user:
             raise UserAlreadyExistsError(user_input.email)
