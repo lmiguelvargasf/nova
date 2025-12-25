@@ -18,11 +18,7 @@ class GraphQLContext(TypedDict):
     current_user: UserModel | None
 
 
-type GraphQLContextGetter = (
-    Callable[[], Awaitable[GraphQLContext]]
-    | Callable[[AsyncSession], Awaitable[GraphQLContext]]
-    | Callable[[Request, AsyncSession], Awaitable[GraphQLContext]]
-)
+type GraphQLContextGetter = Callable[..., Awaitable[GraphQLContext]]
 
 
 async def default_graphql_context_getter(
@@ -32,7 +28,7 @@ async def default_graphql_context_getter(
     return {
         "db_session": db_session,
         "user_service": UserService(db_session),
-        "current_user": request.scope.get("user", None),
+        "current_user": request.scope.get("user"),
     }
 
 
