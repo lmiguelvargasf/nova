@@ -10,7 +10,7 @@ from sqlalchemy.pool import NullPool
 from backend.application import create_app
 from backend.apps.users.models import UserModel
 from backend.apps.users.services import UserService
-from backend.graphql.controller import GraphQLContext
+from backend.graphql.context import GraphQLContext, Services
 
 
 @pytest.fixture
@@ -18,10 +18,16 @@ async def admin_test_client(
     db_engine, mocker
 ) -> AsyncIterator[AsyncTestClient[Litestar]]:
     async def context_getter() -> GraphQLContext:
-        return {
-            "db_session": mocker.Mock(spec=AsyncSession),
-            "user_service": mocker.Mock(spec=UserService),
-        }
+        db_session_mock = mocker.Mock(spec=AsyncSession)
+        user_service_mock = mocker.Mock(spec=UserService)
+
+        services = Services(db_session_mock)
+        services.users = user_service_mock
+
+        return GraphQLContext(
+            db_session=db_session_mock,
+            services=services,
+        )
 
     admin_engine = create_async_engine(
         db_engine.url,

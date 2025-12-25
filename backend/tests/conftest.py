@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import (
 
 from backend.application import create_app
 from backend.apps.users.services import UserService
-from backend.graphql.controller import GraphQLContext
+from backend.graphql.context import GraphQLContext, Services
 
 
 class DevelopmentDatabaseError(RuntimeError):
@@ -93,10 +93,12 @@ async def test_client(
     user_service_mock: UserService,
 ) -> AsyncIterator[AsyncTestClient[Litestar]]:
     async def context_getter() -> GraphQLContext:
-        return {
-            "db_session": db_session_mock,
-            "user_service": user_service_mock,
-        }
+        services = Services(db_session_mock)
+        services.users = user_service_mock
+        return GraphQLContext(
+            db_session=db_session_mock,
+            services=services,
+        )
 
     test_app = create_app(
         graphql_context_getter=context_getter,
