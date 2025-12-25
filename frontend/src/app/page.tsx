@@ -90,24 +90,25 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="mt-8 pt-8">
-              <div className="flex w-full flex-col items-center justify-center">
+            <div className="mt-4 pt-8">
+              <div className="w-full flex flex-col items-center gap-6">
                 {userId ? (
-                  <div className="w-full max-w-md rounded-lg border border-slate-200 bg-white/80 p-6 shadow-sm dark:border-white/10 dark:bg-black/20 text-center">
-                    <h3 className="mb-4 text-2xl font-semibold">My Profile</h3>
-                    <Suspense fallback={<p>Loading profile...</p>}>
-                      <UserCard userId={userId} />
-                    </Suspense>
+                  <>
+                    <div className="w-full text-left">
+                      <Suspense fallback={<p>Loading profile...</p>}>
+                        <UserCard userId={userId} />
+                      </Suspense>
+                    </div>
                     <button
                       type="button"
                       onClick={handleLogout}
-                      className="mt-6 rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                      className="rounded-md bg-red-600 px-6 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                     >
                       Logout
                     </button>
-                  </div>
+                  </>
                 ) : (
-                  <div className="flex space-x-4">
+                  <div className="flex justify-center gap-4">
                     <Link
                       href="/login"
                       className="rounded-md bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
