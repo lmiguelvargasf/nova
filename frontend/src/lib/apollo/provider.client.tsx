@@ -1,7 +1,7 @@
 "use client";
 
 import { HttpLink } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
+import { SetContextLink } from "@apollo/client/link/context";
 import {
   ApolloClient,
   ApolloNextAppProvider,
@@ -19,9 +19,9 @@ function makeClient() {
     uri: endpoint ?? "http://localhost:8000/graphql",
   });
 
-  const authLink = setContext((_, { headers }) => {
+  const authLink = new SetContextLink(async ({ headers }) => {
     // get the authentication token from local storage if it exists
-    const token = localStorage.getItem("token");
+    const token = await localStorage.getItem("token");
     // return the headers to the context so httpLink can read them
     return {
       headers: {
