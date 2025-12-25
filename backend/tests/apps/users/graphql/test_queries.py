@@ -18,10 +18,6 @@ class TestUserQueries:
         mock_user.id = 1
         user_service_mock.get.return_value = mock_user
 
-        # Simulate authenticated user
-        current_user_mock.id = 1
-        current_user_mock.email = "test@example.com"
-
         query = """
         query GetUser($id: ID!) {
             user(id: $id) {
@@ -56,9 +52,6 @@ class TestUserQueries:
         user_service_mock.get.side_effect = NotFoundError(
             "No item found when one was expected"
         )
-
-        # Simulate authenticated user
-        current_user_mock.id = 1
 
         query = """
         query GetUser($id: ID!) {

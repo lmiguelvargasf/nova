@@ -90,7 +90,10 @@ def user_service_mock(mocker) -> UserService:
 
 @pytest.fixture
 def current_user_mock(mocker):
-    return mocker.Mock(spec=UserModel)
+    user = mocker.Mock(spec=UserModel)
+    user.id = 1
+    user.email = "test@example.com"
+    return user
 
 
 @pytest.fixture
