@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from litestar import Request
 from litestar.exceptions import NotAuthorizedException
-from litestar.middleware.base import DefineMiddleware
+from litestar.middleware import DefineMiddleware
 from litestar.middleware.rate_limit import RateLimitConfig, get_remote_address
 from litestar.security.jwt import Token
 
@@ -58,7 +58,7 @@ def _identifier_for_authenticated(request: Request) -> str:
     return get_remote_address(request)
 
 
-def build_rate_limit_middleware() -> list[DefineMiddleware]:
+def get_rate_limit_middlewares() -> list[DefineMiddleware]:
     anonymous_config = RateLimitConfig(
         rate_limit=("minute", settings.rate_limit_per_minute_anonymous),
         check_throttle_handler=_should_throttle_anonymous,

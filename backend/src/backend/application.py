@@ -12,7 +12,7 @@ from .graphql.controller import (
     create_graphql_controller,
 )
 from .health import health_check
-from .middleware.rate_limit import build_rate_limit_middleware
+from .middleware.rate_limit import get_rate_limit_middlewares
 
 
 def create_app(
@@ -45,7 +45,9 @@ def create_app(
         route_handlers=route_handlers,
         plugins=plugins,
         cors_config=cors_config,
-        middleware=build_rate_limit_middleware(),
+        middleware=[
+            *get_rate_limit_middlewares(),
+        ],
         stores={"rate_limit": MemoryStore()},
         on_app_init=[jwt_auth.on_app_init],
     )
