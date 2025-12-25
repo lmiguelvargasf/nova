@@ -1,7 +1,5 @@
-import secrets
 from functools import cached_property
 
-from pydantic import Field
 from pydantic_settings import BaseSettings
 
 
@@ -14,9 +12,7 @@ class Settings(BaseSettings):
     admin_session_secret: str
 
     cors_allow_origins: list[str]
-
-    jwt_secret: str = Field(default_factory=lambda: secrets.token_urlsafe(32))
-    jwt_expiration: int = 60 * 60
+    jwt_secret: str
 
     @cached_property
     def postgres_test_db(self) -> str:
