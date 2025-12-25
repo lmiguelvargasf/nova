@@ -100,3 +100,71 @@ class TestUserMutations:
             email="existing@example.com"
         )
         user_service_mock.create.assert_not_called()
+
+    async def test_login_success(self, user_service_mock, graphql_client):
+        from argon2 import PasswordHasher
+
+        ph = PasswordHasher()
+        password = "SecurePassword123!"
+        hashed = ph.hash(password)
+
+        mock_user = UserModel(
+            email="login@example.com",
+            password_hash=hashed,
+            first_name="Login",
+            last_name="User",
+            is_admin=False,
+            is_active=True,
+        )
+        mock_user.id = 1
+        user_service_mock.get_one_or_none.return_value = mock_user
+
+        mutation = """
+        mutation Login($email: String!, $password: String!) {
+            login(email: $email, password: $password) {
+                token
+                user {
+                    id
+                    email
+                }
+            }
+        }
+        """
+        variables = {"email": "login@example.com", "password": password}
+        result = await graphql_client.mutation(mutation, variables=variables)
+
+        assert "data" in result
+        assert "login" in result["data"]
+        login_data = result["data"]["login"]
+        assert login_data["token"] is not None
+        assert len(login_data["token"]) > 0
+        assert login_data["user"]["email"] == "login@example.com"
+
+    async def test_login_invalid_credentials(self, user_service_mock, graphql_client):
+        from argon2 import PasswordHasher
+
+        ph = PasswordHasher()
+        # Mock user exists but password will be wrong
+        mock_user = UserModel(
+            email="login@example.com",
+            password_hash=ph.hash("CorrectPassword"),
+            first_name="Login",
+            last_name="User",
+            is_admin=False,
+            is_active=True,
+        )
+        mock_user.id = 1
+        user_service_mock.get_one_or_none.return_value = mock_user
+
+        mutation = """
+        mutation Login($email: String!, $password: String!) {
+            login(email: $email, password: $password) {
+                token
+            }
+        }
+        """
+        variables = {"email": "login@example.com", "password": "WrongPassword"}
+        result = await graphql_client.mutation(mutation, variables=variables)
+
+        assert "errors" in result
+        assert result["errors"][0]["message"] == "Invalid credentials"

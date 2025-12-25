@@ -1,5 +1,11 @@
+type LoginResponse {
+  token: String!
+  user: UserType!
+}
+
 type Mutation {
   createUser(userInput: UserInput!): UserType!
+  login(email: String!, password: String!): LoginResponse!
 }
 
 type Query {

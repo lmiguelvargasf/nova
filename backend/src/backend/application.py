@@ -4,6 +4,7 @@ from litestar.plugins import PluginProtocol
 from litestar.types import ControllerRouterHandler
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from .auth.jwt import jwt_auth
 from .config.base import settings
 from .graphql.controller import (
     GraphQLContextGetter,
@@ -42,4 +43,5 @@ def create_app(
         route_handlers=route_handlers,
         plugins=plugins,
         cors_config=cors_config,
+        on_app_init=[jwt_auth.on_app_init],
     )

@@ -16,8 +16,9 @@ env:
   POSTGRES_PASSWORD: postgres
   POSTGRES_HOST: localhost
   POSTGRES_PORT: 5432
-  ADMIN_SESSION_SECRET: just-for-ci
   CORS_ALLOW_ORIGINS: '["http://localhost:3000"]'
+  ADMIN_SESSION_SECRET: just-for-ci
+  JWT_SECRET: just-for-ci
 
 jobs:
   verify-schema:

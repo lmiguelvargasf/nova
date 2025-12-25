@@ -174,9 +174,9 @@ from .types import EntityType
 @strawberry.type
 class EntityMutation:
     @strawberry.mutation
-    async def create_entity(self, info: Info, entity_input: EntityInput) -> EntityType:
-        db_session = info.context["db_session"]
-        entity_service: EntityService = info.context["entity_service"]
+    async def create_entity(self, info: Info[GraphQLContext, None], entity_input: EntityInput) -> EntityType:
+        db_session = info.context.db_session
+        entity_service: EntityService = info.context.entity_service
 
         try:
             entity = await entity_service.create(
