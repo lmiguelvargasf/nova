@@ -21,6 +21,11 @@ tasks:
     cmds:
       - "{{.DOCKER_COMPOSE}} up --wait"
 
+  db:stop:
+    desc: Stop database service
+    cmds:
+      - "{{.DOCKER_COMPOSE}} stop"
+
   db:down:
     desc: Stop database service
     cmds:
