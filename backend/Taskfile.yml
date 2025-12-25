@@ -68,7 +68,7 @@ tasks:
   test:
     desc: Run tests without coverage
     cmds:
-      - "{{.PYTEST}} --no-cov"
+      - "{{.PYTEST}} --no-cov {{.CLI_ARGS}}"
 
   test:cov:
     desc: Run tests with coverage and console report

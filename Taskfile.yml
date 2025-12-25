@@ -79,7 +79,7 @@ tasks:
   backend:test:
     desc: Run backend test
     cmds:
-      - "{{.BACKEND_TASK}} test"
+      - "{{.BACKEND_TASK}} test -- {{.CLI_ARGS}}"
 
   backend:test:cov:
     desc: Run backend test:cov
