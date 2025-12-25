@@ -2,6 +2,16 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+MISE_BIN=""
+
+cleanup() {
+  local rc=$?
+  if [[ -n "${MISE_BIN:-}" ]]; then
+    info "Stopping database (task db:down)..."
+    "${MISE_BIN}" exec -- task db:down || true
+  fi
+  exit "$rc"
+}
 
 info() { printf "\033[1;34m[info]\033[0m %s\n" "$*"; }
 warn() { printf "\033[1;33m[warn]\033[0m %s\n" "$*"; }
@@ -46,17 +56,6 @@ copy_if_missing() {
   mkdir -p "$(dirname "$dst")"
   cp "$src" "$dst"
   info "Created $(realpath "$dst" 2>/dev/null || echo "$dst")"
-}
-
-MISE_BIN=""
-
-cleanup() {
-  local rc=$?
-  if [[ -n "${MISE_BIN:-}" ]]; then
-    info "Stopping database (task db:down)..."
-    "${MISE_BIN}" exec -- task db:down || true
-  fi
-  exit "$rc"
 }
 
 main() {
