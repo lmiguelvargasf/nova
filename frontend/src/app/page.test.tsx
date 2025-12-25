@@ -29,7 +29,6 @@ test("renders the nova home content", async () => {
   expect(
     screen.getByRole("heading", { name: /Core stack/i }),
   ).toBeInTheDocument();
-  // We expect login/signup buttons by default now since no user is logged in
   expect(screen.getByRole("link", { name: /Login/i })).toBeInTheDocument();
   expect(screen.getByRole("link", { name: /Sign Up/i })).toBeInTheDocument();
 });
