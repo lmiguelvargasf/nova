@@ -1,6 +1,5 @@
 from collections.abc import Awaitable, Callable
 
-from litestar import Request
 from litestar.types import ControllerRouterHandler
 from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.litestar import make_graphql_controller
@@ -12,7 +11,6 @@ type GraphQLContextGetter = Callable[..., Awaitable[GraphQLContext]]
 
 
 async def default_graphql_context_getter(
-    request: Request,
     db_session: AsyncSession,
 ) -> GraphQLContext:
     return GraphQLContext(db_session=db_session, services=Services(db_session))
