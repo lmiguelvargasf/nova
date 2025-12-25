@@ -96,6 +96,7 @@ async def test_client(
         return {
             "db_session": db_session_mock,
             "user_service": user_service_mock,
+            "current_user": None,
         }
 
     test_app = create_app(

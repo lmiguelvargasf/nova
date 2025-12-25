@@ -22,3 +22,10 @@ class UserType:
             last_name=user.last_name,
             email=user.email,
         )
+
+
+@strawberry.type
+@dataclass
+class LoginResponse:
+    token: str
+    user: UserType

@@ -21,6 +21,7 @@ async def admin_test_client(
         return {
             "db_session": mocker.Mock(spec=AsyncSession),
             "user_service": mocker.Mock(spec=UserService),
+            "current_user": None,
         }
 
     admin_engine = create_async_engine(
