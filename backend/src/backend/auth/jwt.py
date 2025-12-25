@@ -1,5 +1,3 @@
-from typing import Any, cast
-
 from litestar.connection import ASGIConnection
 from litestar.security.jwt import JWTAuth, Token
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,11 +8,13 @@ from backend.config.base import settings
 
 
 def _get_db_session(connection: ASGIConnection) -> AsyncSession | None:
-    state: Any = getattr(connection, "state", None)
-    if state is None:
-        return None
-    session = getattr(state, "db_session", None) or getattr(state, "session", None)
-    return cast("AsyncSession | None", session)
+    """Helper to safely retrieve the database session from connection state."""
+    session = getattr(connection.state, "db_session", None) or getattr(
+        connection.state, "session", None
+    )
+    if isinstance(session, AsyncSession):
+        return session
+    return None
 
 
 async def retrieve_user_handler(
