@@ -17,7 +17,6 @@ vi.mock("@/features/users/UserCreator.client", () => ({
 
 test("renders the nova home content", async () => {
   render(<Home />);
-  // Wait for loading to finish
   expect(
     await screen.findByRole("heading", {
       name: /Build and ship faster/i,
