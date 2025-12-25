@@ -11,7 +11,6 @@ from argon2.exceptions import (
 from graphql.error import GraphQLError
 from strawberry.types import Info
 
-from backend.apps.users.services import UserService
 from backend.auth.jwt import jwt_auth
 from backend.graphql.context import GraphQLContext
 
@@ -84,13 +83,15 @@ class UserMutation:
         return UserType.from_model(user)
 
     @strawberry.mutation
-    async def login(self, info: Info, email: str, password: str) -> LoginResponse:
+    async def login(
+        self, info: Info[GraphQLContext, None], email: str, password: str
+    ) -> LoginResponse:
         email_clean = (email or "").strip().lower()
         if not email_clean or not password:
             raise InvalidCredentialsError
 
-        db_session = info.context["db_session"]
-        user_service: UserService = info.context["user_service"]
+        db_session = info.context.db_session
+        user_service = info.context.services.users
         user = await user_service.get_one_or_none(email=email_clean)
 
         if user is None or not user.is_active:
