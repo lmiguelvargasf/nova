@@ -46,7 +46,7 @@ class UserMutation:
     @strawberry.mutation
     async def create_user(
         self, info: Info[GraphQLContext, None], user_input: UserInput
-    ) -> UserType:
+    ) -> LoginResponse:
         db_session = info.context.db_session
         user_service = info.context.services.users
         existing_user = await user_service.get_one_or_none(email=user_input.email)
@@ -74,7 +74,12 @@ class UserMutation:
             detail = exc.detail or "Unable to create user."
             raise GraphQLError(detail) from None
 
-        return UserType.from_model(user)
+        token = _create_access_token(
+            user_id=user.id,
+            email=user.email,
+            is_admin=user.is_admin,
+        )
+        return LoginResponse(token=token, user=UserType.from_model(user))
 
     @strawberry.mutation
     async def login(

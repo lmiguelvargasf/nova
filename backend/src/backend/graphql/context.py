@@ -3,6 +3,7 @@ from functools import cached_property
 from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.litestar.controller import BaseContext
 
+from backend.apps.users.models import UserModel
 from backend.apps.users.services import UserService
 
 
@@ -18,3 +19,4 @@ class Services:
 class GraphQLContext(BaseContext, kw_only=True):
     db_session: AsyncSession
     services: Services
+    user: UserModel | None = None

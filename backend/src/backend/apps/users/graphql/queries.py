@@ -4,6 +4,7 @@ from graphql.error import GraphQLError
 from strawberry.types import Info
 
 from backend.graphql.context import GraphQLContext
+from backend.graphql.permissions import IsAuthenticated
 
 from .types import UserType
 
@@ -18,7 +19,7 @@ class UserNotFoundError(GraphQLError):
 
 @strawberry.type
 class UserQuery:
-    @strawberry.field
+    @strawberry.field(permission_classes=[IsAuthenticated])
     async def user(
         self, info: Info[GraphQLContext, None], id: strawberry.ID
     ) -> UserType:

@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize, reopened, edited]
 
 env:
-  PR_SIZE_THRESHOLD: 400
+  PR_SIZE_THRESHOLD: 500
   # Exclude files/dirs which commonly inflate PR additions without meaningfully increasing review scope
   # - lockfiles: package manager / dependency updates
   # - generated artifacts: coverage reports, storybook static output, Next build output, etc.

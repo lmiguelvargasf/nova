@@ -34,9 +34,15 @@ export default function UserCard({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="text-sm">
-      <p>
-        <strong>Email:</strong> {user.email}
+    <div className="flex flex-row items-baseline gap-2 text-left text-sm">
+      <p className="text-slate-700 dark:text-slate-300">
+        Logged in as{" "}
+        <span className="font-medium text-black dark:text-white">
+          {user.email}
+        </span>{" "}
+        {user.firstName &&
+          user.lastName &&
+          `(${user.firstName} ${user.lastName})`}
       </p>
     </div>
   );
