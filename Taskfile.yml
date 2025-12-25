@@ -17,9 +17,9 @@ tasks:
       - "{{.DOCKER_COMPOSE}} pull"
 
   db:up:
-    desc: Start database service
+    desc: Start database service and wait for it to be healthy
     cmds:
-      - "{{.DOCKER_COMPOSE}} up {{.CLI_ARGS}}"
+      - "{{.DOCKER_COMPOSE}} up --wait"
 
   db:down:
     desc: Stop database service

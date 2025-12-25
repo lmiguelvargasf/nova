@@ -48,36 +48,6 @@ copy_if_missing() {
   info "Created $(realpath "$dst" 2>/dev/null || echo "$dst")"
 }
 
-wait_for_db_healthy() {
-  local timeout_s="${1:-120}"
-  local start
-  start="$(date +%s)"
-
-  local cid=""
-  cid="$(docker compose -f "${ROOT_DIR}/compose.yaml" ps -q db 2>/dev/null || true)"
-  [[ -n "$cid" ]] || die "Database container not found. Check your Docker setup with: docker compose ps"
-
-  info "Waiting for Postgres healthcheck..."
-  while true; do
-    printf "."
-    local now
-    now="$(date +%s)"
-    if (( now - start > timeout_s )); then
-      printf "\n"
-      die "Postgres did not become healthy within ${timeout_s}s. Try: docker compose ps && docker logs db"
-    fi
-
-    local status=""
-    status="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' "$cid" 2>/dev/null || true)"
-    if [[ "$status" == "healthy" ]]; then
-      printf "\n"
-      info "Postgres is healthy."
-      return 0
-    fi
-    sleep 1
-  done
-}
-
 MISE_BIN=""
 
 cleanup() {
@@ -116,9 +86,8 @@ main() {
     "${MISE_BIN}" exec -- task db:pull
   fi
 
-  info "Starting database"
-  "${MISE_BIN}" exec -- task db:up -- -d
-  wait_for_db_healthy 60
+  info "Starting database (waiting for healthy status)..."
+  "${MISE_BIN}" exec -- task db:up
 
   info "Installing backend deps..."
   "${MISE_BIN}" exec -- task -d backend install
