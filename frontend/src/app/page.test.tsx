@@ -16,19 +16,21 @@ vi.mock("@/features/users/UserCreator.client", () => ({
 }));
 
 test("renders the nova home content", async () => {
-  const HomeComponent = await Home();
-  render(HomeComponent);
+  render(<Home />);
+  // Wait for loading to finish
   expect(
-    screen.getByRole("heading", {
+    await screen.findByRole("heading", {
       name: /Build and ship faster/i,
     }),
   ).toBeInTheDocument();
+
   expect(
     screen.getByText(/GraphQL-first full-stack template/i),
   ).toBeInTheDocument();
   expect(
     screen.getByRole("heading", { name: /Core stack/i }),
   ).toBeInTheDocument();
-  expect(screen.getByText("Mocked user card")).toBeInTheDocument();
-  expect(screen.getByText("Mocked user creator")).toBeInTheDocument();
+  // We expect login/signup buttons by default now since no user is logged in
+  expect(screen.getByRole("link", { name: /Login/i })).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: /Sign Up/i })).toBeInTheDocument();
 });
