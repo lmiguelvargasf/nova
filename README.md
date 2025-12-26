@@ -66,10 +66,9 @@ Run the scripted setup to bootstrap the dev environment:
 
 > **Note:** if you get _permission denied_, run `chmod +x dev.sh` then retry `./dev.sh`.
 
-After it finishes, start services in separate terminals (WezTerm, iTerm2, tmux, etc.):
+After it finishes, start services in separate terminals:
 
 ```bash
-task db:up
 task backend:dev
 task frontend:dev
 ```
