@@ -113,7 +113,6 @@ main() {
   printf "\n"
   cat <<EOF
 Start services in separate terminals:
-  task db:up
   task backend:dev
   task frontend:dev
 
