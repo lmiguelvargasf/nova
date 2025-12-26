@@ -61,10 +61,10 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 Run the scripted setup to bootstrap the dev environment:
 
 ```bash
-./dev.sh
+./setup.sh
 ```
 
-> **Note:** if you get _permission denied_, run `chmod +x dev.sh` then retry `./dev.sh`.
+> **Note:** if you get _permission denied_, run `chmod +x setup.sh` then retry `./setup.sh`.
 
 After it finishes, start services in separate terminals:
 
