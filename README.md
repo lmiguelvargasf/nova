@@ -10,7 +10,7 @@
 ![Docker](https://img.shields.io/badge/Docker-0074D9?style=for-the-badge&logo=docker&logoColor=white)
 ![Task](https://img.shields.io/badge/Task-43B883?style=for-the-badge&logo=task&logoColor=white)
 
-A full-stack application template with a Python (Litestar) backend and a TypeScript (Next.js) frontend, connected via GraphQL. Ideal for quickly bootstrapping proof-of-concept (PoC) projects.
+A full-stack application template with a Python (Litestar) backend and a TypeScript (Next.js) frontend, connected via GraphQL. Ideal for hackathons and rapid prototyping, designed to smoothly evolve from a PoC into an MVP.
 
 ## 📚 Table of Contents
 
@@ -56,9 +56,9 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 
 - **[Docker Desktop][docker-desktop]**
 
-### Scripted bootstrap (recommended)
+### Scripted setup (recommended)
 
-Run the scripted setup to bootstrap the dev environment:
+Run the setup script to install dependencies and configure the environment:
 
 ```bash
 ./setup.sh
