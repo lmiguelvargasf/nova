@@ -3,15 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 MISE_BIN=""
-
-cleanup() {
-  local rc=$?
-  if [[ -n "${MISE_BIN:-}" ]]; then
-    info "Stopping database..."
-    "${MISE_BIN}" exec -- task db:stop || true
-  fi
-  exit "$rc"
-}
+DB_STARTED=0
 
 info() { printf "\033[1;34m[info]\033[0m %s\n" "$*"; }
 warn() { printf "\033[1;33m[warn]\033[0m %s\n" "$*"; }
@@ -19,6 +11,20 @@ err() { printf "\033[1;31m[error]\033[0m %s\n" "$*"; }
 die() { err "$*"; exit 1; }
 
 have() { command -v "$1" >/dev/null 2>&1; }
+
+stop_db() {
+  if [[ "${DB_STARTED}" == "1" && -n "${MISE_BIN:-}" ]]; then
+    info "Stopping database..."
+    "${MISE_BIN}" exec -- task db:stop || true
+    DB_STARTED=0
+  fi
+}
+
+cleanup() {
+  local rc=$?
+  stop_db
+  exit "$rc"
+}
 
 pick_mise() {
   if have mise; then command -v mise; return 0; fi
@@ -68,6 +74,8 @@ main() {
 
   info "Using mise: $("${MISE_BIN}" --version | head -n1)"
 
+  trap cleanup EXIT
+
   info "Installing toolchain..."
   "${MISE_BIN}" install -y
 
@@ -80,6 +88,7 @@ main() {
   copy_if_missing "${ROOT_DIR}/frontend/.env.local.example" "${ROOT_DIR}/frontend/.env.local"
 
   info "Starting database and waiting for it to be ready..."
+  DB_STARTED=1
   "${MISE_BIN}" exec -- task db:up
 
   info "Installing backend deps..."
@@ -94,16 +103,25 @@ main() {
   info "Seeding admin user"
   "${MISE_BIN}" exec -- task backend:create-admin-user -- --email admin@local.dev --password admin
 
+  stop_db
+
   info "Running codegen..."
   "${MISE_BIN}" exec -- task frontend:codegen
 
   printf "\n"
-  info "Starting services with mprocs..."
+  info "Bootstrap complete."
   printf "\n"
+  cat <<EOF
+Start services in separate terminals:
+  task backend:dev
+  task frontend:dev
 
-  trap cleanup EXIT
-
-  "${MISE_BIN}" exec -- mprocs -c "${ROOT_DIR}/mprocs.yaml"
+URLs:
+  Frontend:  http://localhost:3000
+  Backend:   http://localhost:8000/health
+  Admin:     http://localhost:8000/admin (admin@local.dev / admin)
+  GraphQL:   http://localhost:8000/graphql
+EOF
 }
 
 main "$@"

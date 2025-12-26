@@ -53,11 +53,13 @@ tasks:
 
   backend:migrate:make:
     desc: Generate a new migration
+    deps: ["db:up"]
     cmds:
       - "{{.BACKEND_TASK}} migrate:make -- {{.CLI_ARGS}}"
 
   backend:dev:
     desc: Run backend
+    deps: ["db:up"]
     cmds:
       - "{{.BACKEND_TASK}} dev"
 
@@ -78,16 +80,19 @@ tasks:
 
   backend:test:
     desc: Run backend test
+    deps: ["db:up"]
     cmds:
       - "{{.BACKEND_TASK}} test -- {{.CLI_ARGS}}"
 
   backend:test:cov:
     desc: Run backend test:cov
+    deps: ["db:up"]
     cmds:
       - "{{.BACKEND_TASK}} test:cov"
 
   backend:test:cov:html:
     desc: Run backend test:cov:html
+    deps: ["db:up"]
     cmds:
       - "{{.BACKEND_TASK}} test:cov:html"
 
@@ -98,6 +103,7 @@ tasks:
 
   backend:create-admin-user:
     desc: Create an admin user
+    deps: ["db:up"]
     cmds:
       - "{{.BACKEND_TASK}} create-admin-user -- {{.CLI_ARGS}}"
 

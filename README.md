@@ -10,7 +10,7 @@
 ![Docker](https://img.shields.io/badge/Docker-0074D9?style=for-the-badge&logo=docker&logoColor=white)
 ![Task](https://img.shields.io/badge/Task-43B883?style=for-the-badge&logo=task&logoColor=white)
 
-A full-stack application template with a Python (Litestar) backend and a TypeScript (Next.js) frontend, connected via GraphQL. Ideal for quickly bootstrapping proof-of-concept (PoC) projects.
+A full-stack application template with a Python (Litestar) backend and a TypeScript (Next.js) frontend, connected via GraphQL. Ideal for hackathons and rapid prototyping, designed to smoothly evolve from a PoC into an MVP.
 
 ## 📚 Table of Contents
 
@@ -49,7 +49,6 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 - **[mise][]** – Manages tool versions.
 - **[Task][]** – Task runner designed for modern workflows.
 - **[pre-commit][]** – Manages and runs automated Git hooks.
-- **[mprocs][]** – Allows running multiple commands in parallel.
 
 ## 🚀 Getting Started
 
@@ -57,19 +56,22 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 
 - **[Docker Desktop][docker-desktop]**
 
-### Scripted bootstrap (recommended)
+### Scripted setup (recommended)
 
-Run the scripted setup to start the dev environment:
+Run the setup script to install dependencies and configure the environment:
 
 ```bash
-./dev.sh
+./setup.sh
 ```
 
-> **Note:** if you get _permission denied_, run `chmod +x dev.sh` then retry `./dev.sh`.
+> **Note:** if you get _permission denied_, run `chmod +x setup.sh` then retry `./setup.sh`.
 
-In `mprocs`, open the **`info`** process for the local URLs and default credentials.
+After it finishes, start services in separate terminals:
 
-Stop everything by pressing **q** (or **Q** to force quit) in `mprocs`.
+```bash
+task backend:dev
+task frontend:dev
+```
 
 ### Step-by-step setup (manual)
 
@@ -205,7 +207,6 @@ This project is licensed under the [MIT License](./LICENSE).
 [litestar]: https://litestar.dev/
 [mise]: https://mise.jdx.dev/
 [mise-install]: https://mise.jdx.dev/getting-started.html
-[mprocs]: https://github.com/pvolok/mprocs
 [next.js]: https://nextjs.org/
 [playwright]: https://playwright.dev/
 [pnpm]: https://pnpm.io/

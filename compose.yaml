@@ -8,7 +8,7 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./postgres-init:/docker-entrypoint-initdb.d
+      - ./db:/docker-entrypoint-initdb.d
     healthcheck:
       test:
         - CMD-SHELL
