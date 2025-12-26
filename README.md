@@ -49,7 +49,6 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 - **[mise][]** – Manages tool versions.
 - **[Task][]** – Task runner designed for modern workflows.
 - **[pre-commit][]** – Manages and runs automated Git hooks.
-- **[mprocs][]** – Allows running multiple commands in parallel.
 
 ## 🚀 Getting Started
 
@@ -59,7 +58,7 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 
 ### Scripted bootstrap (recommended)
 
-Run the scripted setup to start the dev environment:
+Run the scripted setup to bootstrap the dev environment:
 
 ```bash
 ./dev.sh
@@ -67,9 +66,13 @@ Run the scripted setup to start the dev environment:
 
 > **Note:** if you get _permission denied_, run `chmod +x dev.sh` then retry `./dev.sh`.
 
-In `mprocs`, open the **`info`** process for the local URLs and default credentials.
+After it finishes, start services in separate terminals (WezTerm, iTerm2, tmux, etc.):
 
-Stop everything by pressing **q** (or **Q** to force quit) in `mprocs`.
+```bash
+task db:up
+task backend:dev
+task frontend:dev
+```
 
 ### Step-by-step setup (manual)
 
@@ -205,7 +208,6 @@ This project is licensed under the [MIT License](./LICENSE).
 [litestar]: https://litestar.dev/
 [mise]: https://mise.jdx.dev/
 [mise-install]: https://mise.jdx.dev/getting-started.html
-[mprocs]: https://github.com/pvolok/mprocs
 [next.js]: https://nextjs.org/
 [playwright]: https://playwright.dev/
 [pnpm]: https://pnpm.io/
