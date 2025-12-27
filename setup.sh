@@ -87,10 +87,6 @@ main() {
   copy_if_missing "${ROOT_DIR}/backend/.env.example" "${ROOT_DIR}/backend/.env"
   copy_if_missing "${ROOT_DIR}/frontend/.env.local.example" "${ROOT_DIR}/frontend/.env.local"
 
-  info "Starting database and waiting for it to be ready..."
-  DB_STARTED=1
-  "${MISE_BIN}" exec -- task db:up
-
   info "Installing backend deps..."
   "${MISE_BIN}" exec -- task backend:install
 
@@ -98,6 +94,7 @@ main() {
   "${MISE_BIN}" exec -- task frontend:install
 
   info "Running migrations..."
+  DB_STARTED=1
   "${MISE_BIN}" exec -- task backend:migrate
 
   info "Seeding admin user"
