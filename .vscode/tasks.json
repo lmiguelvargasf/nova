@@ -64,7 +64,8 @@
         "backend:dev",
         "frontend:dev"
       ],
-      "dependsOrder": "parallel"
+      "dependsOrder": "parallel",
+      "problemMatcher": []
     }
   ]
 }
