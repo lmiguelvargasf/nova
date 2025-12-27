@@ -48,6 +48,7 @@ tasks:
 
   backend:migrate:
     desc: Run backend migrations
+    deps: ["db:up"]
     cmds:
       - "{{.BACKEND_TASK}} migrate"
 
