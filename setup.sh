@@ -22,7 +22,9 @@ stop_db() {
 
 cleanup() {
   local rc=$?
-  stop_db
+  if [[ "$rc" != "0" ]]; then
+    stop_db
+  fi
   exit "$rc"
 }
 
