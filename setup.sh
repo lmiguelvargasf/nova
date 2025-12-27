@@ -93,17 +93,15 @@ main() {
   info "Installing frontend deps..."
   "${MISE_BIN}" exec -- task frontend:install
 
+  info "Running codegen..."
+  "${MISE_BIN}" exec -- task frontend:codegen
+
   info "Running migrations..."
   DB_STARTED=1
   "${MISE_BIN}" exec -- task backend:migrate
 
   info "Seeding admin user"
   "${MISE_BIN}" exec -- task backend:create-admin-user -- --email admin@local.dev --password admin
-
-  stop_db
-
-  info "Running codegen..."
-  "${MISE_BIN}" exec -- task frontend:codegen
 
   printf "\n"
   info "Bootstrap complete."
