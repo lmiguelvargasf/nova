@@ -5,11 +5,19 @@ type LoginResponse {
 
 type Mutation {
   createUser(userInput: UserInput!): LoginResponse!
+  updateCurrentUser(userInput: UpdateUserInput!): UserType!
   login(email: String!, password: String!): LoginResponse!
 }
 
 type Query {
   user(id: ID!): UserType!
+}
+
+input UpdateUserInput {
+  email: String = null
+  password: String = null
+  firstName: String = null
+  lastName: String = null
 }
 
 input UserInput {

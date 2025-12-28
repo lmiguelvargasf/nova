@@ -107,6 +107,94 @@ class TestUserMutations:
         )
         user_service_mock.create.assert_not_called()
 
+    async def test_update_current_user_success(
+        self,
+        user_service_mock,
+        graphql_client,
+        current_user_mock,
+        db_session_mock,
+    ):
+        user_service_mock.get_one_or_none.return_value = None
+
+        mutation = """
+        mutation UpdateCurrentUser($userInput: UpdateUserInput!) {
+            updateCurrentUser(userInput: $userInput) {
+                id
+                email
+                firstName
+                lastName
+            }
+        }
+        """
+        variables = {
+            "userInput": {
+                "email": "updated@example.com",
+                "firstName": "Updated",
+                "lastName": "User",
+            }
+        }
+        result = await graphql_client.mutation(mutation, variables=variables)
+
+        assert "errors" not in result
+        assert "data" in result
+        expected_user_data = {
+            "id": "1",
+            "firstName": "Updated",
+            "lastName": "User",
+            "email": "updated@example.com",
+        }
+        assert result["data"]["updateCurrentUser"] == expected_user_data
+
+        user_service_mock.get_one_or_none.assert_called_once_with(
+            email="updated@example.com"
+        )
+        db_session_mock.commit.assert_called_once()
+        assert current_user_mock.email == "updated@example.com"
+        assert current_user_mock.first_name == "Updated"
+        assert current_user_mock.last_name == "User"
+
+    async def test_update_current_user_email_taken(
+        self,
+        user_service_mock,
+        graphql_client,
+        current_user_mock,
+    ):
+        existing_user = UserModel(
+            email="existing@example.com",
+            password_hash="hashed",
+            first_name="Existing",
+            last_name="User",
+            is_admin=False,
+            is_active=True,
+        )
+        existing_user.id = 2
+        user_service_mock.get_one_or_none.return_value = existing_user
+
+        mutation = """
+        mutation UpdateCurrentUser($userInput: UpdateUserInput!) {
+            updateCurrentUser(userInput: $userInput) {
+                id
+                email
+            }
+        }
+        """
+        variables = {
+            "userInput": {
+                "email": "existing@example.com",
+            }
+        }
+        result = await graphql_client.mutation(mutation, variables=variables)
+
+        assert "errors" in result
+        assert len(result["errors"]) == 1
+        assert (
+            "User with email 'existing@example.com' already exists"
+            in result["errors"][0]["message"]
+        )
+        user_service_mock.get_one_or_none.assert_called_once_with(
+            email="existing@example.com"
+        )
+
     async def test_login_success(self, user_service_mock, graphql_client):
         from argon2 import PasswordHasher
 

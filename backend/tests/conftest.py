@@ -75,6 +75,7 @@ def db_session_mock(mocker) -> AsyncSession:
     session.scalar = mocker.AsyncMock()
     session.flush = mocker.AsyncMock()
     session.add = mocker.Mock()
+    session.commit = mocker.AsyncMock()
     session.rollback = mocker.AsyncMock()
     return session
 
@@ -93,6 +94,9 @@ def current_user_mock(mocker):
     user = mocker.Mock(spec=UserModel)
     user.id = 1
     user.email = "test@example.com"
+    user.first_name = "Test"
+    user.last_name = "User"
+    user.password_hash = "hashed"
     return user
 
 

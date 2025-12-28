@@ -13,8 +13,9 @@ from strawberry.types import Info
 
 from backend.auth.jwt import jwt_auth
 from backend.graphql.context import GraphQLContext
+from backend.graphql.permissions import IsAuthenticated
 
-from .inputs import UserInput
+from .inputs import UpdateUserInput, UserInput
 from .types import LoginResponse, UserType
 
 
@@ -29,6 +30,36 @@ class InvalidCredentialsError(GraphQLError):
             "Invalid credentials",
             extensions={"code": "INVALID_CREDENTIALS"},
         )
+
+
+class EmptyUserFieldError(GraphQLError):
+    def __init__(self, field_name: str) -> None:
+        super().__init__(f"{field_name} cannot be empty.")
+
+
+class EmptyEmailError(GraphQLError):
+    def __init__(self) -> None:
+        super().__init__("Email cannot be empty.")
+
+
+class EmptyFirstNameError(GraphQLError):
+    def __init__(self) -> None:
+        super().__init__("First name cannot be empty.")
+
+
+class EmptyLastNameError(GraphQLError):
+    def __init__(self) -> None:
+        super().__init__("Last name cannot be empty.")
+
+
+class EmptyPasswordError(GraphQLError):
+    def __init__(self) -> None:
+        super().__init__("Password cannot be empty.")
+
+
+class UserNotAuthenticatedError(GraphQLError):
+    def __init__(self) -> None:
+        super().__init__("User is not authenticated")
 
 
 def _create_access_token(*, user_id: int, email: str, is_admin: bool) -> str:
@@ -80,6 +111,55 @@ class UserMutation:
             is_admin=user.is_admin,
         )
         return LoginResponse(token=token, user=UserType.from_model(user))
+
+    @strawberry.mutation(permission_classes=[IsAuthenticated])
+    async def update_current_user(
+        self, info: Info[GraphQLContext, None], user_input: UpdateUserInput
+    ) -> UserType:
+        db_session = info.context.db_session
+        user_service = info.context.services.users
+        user = info.context.user
+        if user is None:
+            raise UserNotAuthenticatedError
+
+        has_updates = False
+
+        if user_input.email is not None:
+            email = user_input.email.strip()
+            if not email:
+                raise EmptyEmailError
+            if email != user.email:
+                existing_user = await user_service.get_one_or_none(email=email)
+                if existing_user and existing_user.id != user.id:
+                    raise UserAlreadyExistsError(email)
+            user.email = email
+            has_updates = True
+
+        if user_input.first_name is not None:
+            first_name = user_input.first_name.strip()
+            if not first_name:
+                raise EmptyFirstNameError
+            user.first_name = first_name
+            has_updates = True
+
+        if user_input.last_name is not None:
+            last_name = user_input.last_name.strip()
+            if not last_name:
+                raise EmptyLastNameError
+            user.last_name = last_name
+            has_updates = True
+
+        if user_input.password is not None:
+            if not user_input.password:
+                raise EmptyPasswordError
+            ph = PasswordHasher()
+            user.password_hash = ph.hash(user_input.password)
+            has_updates = True
+
+        if has_updates:
+            await db_session.commit()
+
+        return UserType.from_model(user)
 
     @strawberry.mutation
     async def login(
