@@ -18,5 +18,6 @@
     "tamasfe.even-better-toml",
     "unifiedjs.vscode-mdx",
     "usernamehw.errorlens",
+    "vitest.explorer"
   ]
 }
