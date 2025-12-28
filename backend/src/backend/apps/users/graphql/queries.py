@@ -17,8 +17,20 @@ class UserNotFoundError(GraphQLError):
         )
 
 
+class UserNotAuthenticatedError(GraphQLError):
+    def __init__(self) -> None:
+        super().__init__("User is not authenticated")
+
+
 @strawberry.type
 class UserQuery:
+    @strawberry.field(permission_classes=[IsAuthenticated])
+    async def me(self, info: Info[GraphQLContext, None]) -> UserType:
+        user = info.context.user
+        if user is None:
+            raise UserNotAuthenticatedError
+        return UserType.from_model(user)
+
     @strawberry.field(permission_classes=[IsAuthenticated])
     async def user(
         self, info: Info[GraphQLContext, None], id: strawberry.ID

@@ -4,7 +4,7 @@ import { useApolloClient } from "@apollo/client/react";
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { Toast } from "@/components/ui";
-import UserCard from "@/features/users/UserCard.client";
+import CurrentUserCard from "@/features/users/CurrentUserCard.client";
 
 export default function Home() {
   const [userId, setUserId] = useState<string | null>(null);
@@ -113,7 +113,7 @@ export default function Home() {
                   <>
                     <div className="w-full text-left">
                       <Suspense fallback={<p>Loading profile...</p>}>
-                        <UserCard userId={userId} />
+                        <CurrentUserCard />
                       </Suspense>
                     </div>
                     <div className="flex flex-wrap items-center gap-3">

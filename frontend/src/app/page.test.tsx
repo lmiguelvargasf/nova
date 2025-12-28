@@ -14,7 +14,7 @@ vi.mock("@/lib/apollo/client.server", () => ({
   PreloadQuery: ({ children }: { children: ReactNode }) => children,
 }));
 
-vi.mock("@/features/users/UserCard.client", () => ({
+vi.mock("@/features/users/CurrentUserCard.client", () => ({
   default: () => <div>Mocked user card</div>,
 }));
 

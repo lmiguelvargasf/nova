@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 import { ConfirmDialog, ErrorMessage, Toast } from "@/components/ui";
 import {
-  GetUserByIdDocument,
+  GetMeDocument,
   SoftDeleteCurrentUserDocument,
   UpdateCurrentUserDocument,
   type UpdateCurrentUserMutationVariables,
@@ -52,17 +52,16 @@ export default function ProfilePage() {
     return () => window.clearTimeout(timeout);
   }, [toastMessage]);
 
-  const { data, loading, error } = useQuery(GetUserByIdDocument, {
-    variables: { userId: userId ?? "" },
+  const { data, loading, error } = useQuery(GetMeDocument, {
     skip: !userId,
   });
 
   useEffect(() => {
-    if (data?.user) {
+    if (data?.me) {
       setFormState({
-        firstName: data.user.firstName ?? "",
-        lastName: data.user.lastName ?? "",
-        email: data.user.email ?? "",
+        firstName: data.me.firstName ?? "",
+        lastName: data.me.lastName ?? "",
+        email: data.me.email ?? "",
         password: "",
       });
     }
@@ -145,7 +144,7 @@ export default function ProfilePage() {
     content = <p className="text-sm text-slate-600">Loading profile...</p>;
   } else if (error) {
     content = <ErrorMessage message={error.message} />;
-  } else if (!data?.user) {
+  } else if (!data?.me) {
     content = (
       <p className="text-sm text-slate-600">We could not load your profile.</p>
     );

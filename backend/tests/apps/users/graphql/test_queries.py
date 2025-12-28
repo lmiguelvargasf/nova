@@ -4,6 +4,48 @@ from backend.apps.users.models import UserModel
 
 
 class TestUserQueries:
+    async def test_me(self, graphql_client, current_user_mock, user_service_mock):
+        query = """
+        query Me {
+            me {
+                id
+                firstName
+                lastName
+                email
+            }
+        }
+        """
+
+        result = await graphql_client.query(query)
+
+        assert "errors" not in result
+        assert "data" in result
+        me_data = result["data"]["me"]
+        assert me_data == {
+            "id": "1",
+            "firstName": "Test",
+            "lastName": "User",
+            "email": "test@example.com",
+        }
+        user_service_mock.get.assert_not_called()
+
+    async def test_me_unauthenticated(self, graphql_client, current_user_mock):
+        current_user_mock.id = None
+
+        query = """
+        query Me {
+            me {
+                id
+                email
+            }
+        }
+        """
+
+        result = await graphql_client.query(query)
+
+        assert "errors" in result
+        assert result["errors"][0]["message"] == "User is not authenticated"
+
     async def test_get_user_by_id(
         self,
         user_service_mock,
