@@ -6,7 +6,7 @@ from litestar.stores.memory import MemoryStore
 from litestar.types import ControllerRouterHandler
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from .apps.users.rest import AuthController, UserController
+from .apps.users.controllers import AuthController, UserController
 from .auth.jwt import jwt_auth
 from .config.base import settings
 from .graphql.controller import (
