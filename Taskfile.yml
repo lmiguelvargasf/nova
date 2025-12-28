@@ -181,6 +181,7 @@ tasks:
 
   frontend:codegen:
     desc: Run frontend codegen
+    deps: ["backend:schema:export"]
     cmds:
       - "{{.FRONTEND_TASK}} codegen"
 
