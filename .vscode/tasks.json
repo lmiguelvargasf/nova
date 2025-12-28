@@ -1,0 +1,71 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "setup",
+      "type": "shell",
+      "command": "./setup.sh",
+      "options": {
+        "shell": {
+          "executable": "/bin/bash",
+          "args": [
+            "-lc"
+          ]
+        },
+        "env": {
+          "PATH": "${env:HOME}/.local/bin:${env:PATH}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "backend:dev",
+      "type": "shell",
+      "command": "mise x -- task backend:dev",
+      "isBackground": true,
+      "options": {
+        "shell": {
+          "executable": "/bin/bash",
+          "args": [
+            "-lc"
+          ]
+        },
+        "env": {
+          "PATH": "${env:HOME}/.local/bin:${env:PATH}"
+        }
+      },
+      "presentation": {
+        "panel": "new"
+      }
+    },
+    {
+      "label": "frontend:dev",
+      "type": "shell",
+      "command": "mise x -- task frontend:dev",
+      "isBackground": true,
+      "options": {
+        "shell": {
+          "executable": "/bin/bash",
+          "args": [
+            "-lc"
+          ]
+        },
+        "env": {
+          "PATH": "${env:HOME}/.local/bin:${env:PATH}"
+        }
+      },
+      "presentation": {
+        "panel": "new"
+      }
+    },
+    {
+      "label": "dev",
+      "dependsOn": [
+        "backend:dev",
+        "frontend:dev"
+      ],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    }
+  ]
+}
