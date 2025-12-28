@@ -15,6 +15,7 @@ from backend.auth.jwt import jwt_auth
 from backend.graphql.context import GraphQLContext
 from backend.graphql.permissions import IsAuthenticated
 
+from .errors import UserNotAuthenticatedError
 from .inputs import UpdateUserInput, UserInput
 from .types import LoginResponse, UserType
 
@@ -55,11 +56,6 @@ class EmptyLastNameError(GraphQLError):
 class EmptyPasswordError(GraphQLError):
     def __init__(self) -> None:
         super().__init__("Password cannot be empty.")
-
-
-class UserNotAuthenticatedError(GraphQLError):
-    def __init__(self) -> None:
-        super().__init__("User is not authenticated")
 
 
 def _create_access_token(*, user_id: int, email: str, is_admin: bool) -> str:

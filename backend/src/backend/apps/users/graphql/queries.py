@@ -6,6 +6,7 @@ from strawberry.types import Info
 from backend.graphql.context import GraphQLContext
 from backend.graphql.permissions import IsAuthenticated
 
+from .errors import UserNotAuthenticatedError
 from .types import UserType
 
 
@@ -15,11 +16,6 @@ class UserNotFoundError(GraphQLError):
             f"User with id {user_id} not found",
             extensions={"code": "NOT_FOUND"},
         )
-
-
-class UserNotAuthenticatedError(GraphQLError):
-    def __init__(self) -> None:
-        super().__init__("User is not authenticated")
 
 
 @strawberry.type
