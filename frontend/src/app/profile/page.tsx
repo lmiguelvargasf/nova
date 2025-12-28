@@ -2,11 +2,13 @@
 
 import { useApolloClient, useMutation, useQuery } from "@apollo/client/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { ErrorMessage } from "@/components/ui";
+import { ConfirmDialog, ErrorMessage, Toast } from "@/components/ui";
 import {
   GetUserByIdDocument,
+  SoftDeleteCurrentUserDocument,
   UpdateCurrentUserDocument,
   type UpdateCurrentUserMutationVariables,
 } from "@/lib/graphql/graphql";
@@ -28,17 +30,27 @@ const initialFormState: FormState = {
 };
 
 export default function ProfilePage() {
+  const router = useRouter();
   const client = useApolloClient();
   const [ready, setReady] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [formState, setFormState] = useState<FormState>(initialFormState);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     setUserId(storedUserId);
     setReady(true);
   }, []);
+
+  useEffect(() => {
+    if (!toastMessage) return undefined;
+    const timeout = window.setTimeout(() => {
+      setToastMessage(null);
+    }, 3000);
+    return () => window.clearTimeout(timeout);
+  }, [toastMessage]);
 
   const { data, loading, error } = useQuery(GetUserByIdDocument, {
     variables: { userId: userId ?? "" },
@@ -58,11 +70,13 @@ export default function ProfilePage() {
 
   const [updateCurrentUser, { loading: saving, error: updateError }] =
     useMutation(UpdateCurrentUserDocument);
+  const [softDeleteCurrentUser, { loading: deleting, error: deleteError }] =
+    useMutation(SoftDeleteCurrentUserDocument);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setFormState((prev) => ({ ...prev, [id]: value }));
-    setSuccessMessage(null);
+    setToastMessage(null);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -85,8 +99,24 @@ export default function ProfilePage() {
       });
       if (result.data?.updateCurrentUser) {
         setFormState((prev) => ({ ...prev, password: "" }));
-        setSuccessMessage("Profile updated.");
+        setToastMessage("Profile updated.");
         await client.resetStore();
+      }
+    } catch {
+      // Error handled by error state.
+    }
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!userId) return;
+    try {
+      const result = await softDeleteCurrentUser();
+      if (result.data?.softDeleteCurrentUser) {
+        setShowDeleteDialog(false);
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        await client.clearStore();
+        router.push("/");
       }
     } catch {
       // Error handled by error state.
@@ -189,9 +219,6 @@ export default function ProfilePage() {
           </p>
         </div>
         {updateError ? <ErrorMessage message={updateError.message} /> : null}
-        {successMessage ? (
-          <p className="text-sm text-emerald-600">{successMessage}</p>
-        ) : null}
         <button
           type="submit"
           disabled={saving}
@@ -199,12 +226,40 @@ export default function ProfilePage() {
         >
           {saving ? "Updating..." : "Update info"}
         </button>
+        <div className="border-t border-slate-200 pt-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+            Danger zone
+          </p>
+          <p className="mt-2 text-sm text-slate-600">
+            This action can be reversed by logging in again.
+          </p>
+          {deleteError ? <ErrorMessage message={deleteError.message} /> : null}
+          <button
+            type="button"
+            onClick={() => setShowDeleteDialog(true)}
+            disabled={deleting}
+            className="mt-3 inline-flex w-full justify-center rounded-md border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50"
+          >
+            {deleting ? "Deleting..." : "Delete account"}
+          </button>
+        </div>
       </form>
     );
   }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-10">
+      {toastMessage ? <Toast message={toastMessage} tone="success" /> : null}
+      <ConfirmDialog
+        isOpen={showDeleteDialog}
+        title="Delete account?"
+        description="This will remove your account from the app. You can reactivate by logging in again."
+        confirmLabel="Delete account"
+        confirmTone="danger"
+        isBusy={deleting}
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setShowDeleteDialog(false)}
+      />
       <main className="flex w-full flex-1 flex-col items-center justify-center px-6 text-center">
         <div className="w-full max-w-md space-y-6 text-left">
           <div className="space-y-2">

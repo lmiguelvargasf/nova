@@ -1,11 +1,13 @@
 type LoginResponse {
   token: String!
   user: UserType!
+  reactivated: Boolean!
 }
 
 type Mutation {
   createUser(userInput: UserInput!): LoginResponse!
   updateCurrentUser(userInput: UpdateUserInput!): UserType!
+  softDeleteCurrentUser: Boolean!
   login(email: String!, password: String!): LoginResponse!
 }
 

@@ -1,0 +1,3 @@
+mutation SoftDeleteCurrentUser {
+  softDeleteCurrentUser
+}

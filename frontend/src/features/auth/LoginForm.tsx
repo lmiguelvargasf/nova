@@ -23,9 +23,16 @@ export default function LoginForm() {
       });
       const token = result.data?.login.token;
       const user = result.data?.login.user;
+      const reactivated = result.data?.login.reactivated;
       if (token && user) {
         localStorage.setItem("token", token);
         localStorage.setItem("userId", user.id);
+        if (reactivated) {
+          sessionStorage.setItem(
+            "toastMessage",
+            "Account has been reactivated.",
+          );
+        }
         await client.resetStore();
         router.push("/");
       }

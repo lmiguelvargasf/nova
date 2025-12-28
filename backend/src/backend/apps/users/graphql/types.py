@@ -29,3 +29,4 @@ class UserType:
 class LoginResponse:
     token: str
     user: UserType
+    reactivated: bool

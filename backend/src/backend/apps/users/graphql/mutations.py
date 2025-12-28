@@ -110,7 +110,11 @@ class UserMutation:
             email=user.email,
             is_admin=user.is_admin,
         )
-        return LoginResponse(token=token, user=UserType.from_model(user))
+        return LoginResponse(
+            token=token,
+            user=UserType.from_model(user),
+            reactivated=False,
+        )
 
     @strawberry.mutation(permission_classes=[IsAuthenticated])
     async def update_current_user(
@@ -161,6 +165,17 @@ class UserMutation:
 
         return UserType.from_model(user)
 
+    @strawberry.mutation(permission_classes=[IsAuthenticated])
+    async def soft_delete_current_user(self, info: Info[GraphQLContext, None]) -> bool:
+        db_session = info.context.db_session
+        user = info.context.user
+        if user is None:
+            raise UserNotAuthenticatedError
+
+        user.soft_delete()
+        await db_session.commit()
+        return True
+
     @strawberry.mutation
     async def login(
         self, info: Info[GraphQLContext, None], email: str, password: str
@@ -187,6 +202,11 @@ class UserMutation:
         if not ok:
             raise InvalidCredentialsError
 
+        reactivated = False
+        if user.deleted_at is not None:
+            user.deleted_at = None
+            reactivated = True
+
         user.last_login_at = datetime.datetime.now(datetime.UTC)
         await db_session.commit()
 
@@ -195,4 +215,8 @@ class UserMutation:
             email=user.email,
             is_admin=user.is_admin,
         )
-        return LoginResponse(token=token, user=UserType.from_model(user))
+        return LoginResponse(
+            token=token,
+            user=UserType.from_model(user),
+            reactivated=reactivated,
+        )
