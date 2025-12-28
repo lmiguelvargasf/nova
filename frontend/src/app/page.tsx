@@ -3,18 +3,33 @@
 import { useApolloClient } from "@apollo/client/react";
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
+import { Toast } from "@/components/ui";
 import UserCard from "@/features/users/UserCard.client";
 
 export default function Home() {
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const client = useApolloClient();
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     setUserId(storedUserId);
+    const message = sessionStorage.getItem("toastMessage");
+    if (message) {
+      setToastMessage(message);
+      sessionStorage.removeItem("toastMessage");
+    }
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (!toastMessage) return undefined;
+    const timeout = window.setTimeout(() => {
+      setToastMessage(null);
+    }, 3000);
+    return () => window.clearTimeout(timeout);
+  }, [toastMessage]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -33,6 +48,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-linear-to-b from-slate-50 via-white to-slate-100 text-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-black dark:text-slate-50 font-(family-name:--font-geist-sans)">
+      {toastMessage ? <Toast message={toastMessage} tone="success" /> : null}
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 sm:px-10 sm:py-16">
         <header className="flex flex-col gap-5">
           <p className="text-sm font-semibold uppercase tracking-[0.32em] text-slate-500 sm:text-base">
