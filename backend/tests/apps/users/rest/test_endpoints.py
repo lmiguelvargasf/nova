@@ -31,6 +31,7 @@ async def _create_user(
     first_name: str = "Test",
     last_name: str = "User",
     is_admin: bool = False,
+    is_active: bool = True,
 ) -> UserModel:
     async with db_sessionmaker() as session:
         ph = PasswordHasher()
@@ -40,7 +41,7 @@ async def _create_user(
             first_name=first_name,
             last_name=last_name,
             is_admin=is_admin,
-            is_active=True,
+            is_active=is_active,
         )
         session.add(user_model)
         await session.commit()
@@ -188,3 +189,71 @@ async def test_rest_update_me_duplicate_email(
         json={"email": other_user.email},
     )
     assert response.status_code == HTTP_409_CONFLICT
+
+
+async def test_rest_register_duplicate_email(
+    rest_client: AsyncTestClient[Litestar],
+    user: UserModel,
+) -> None:
+    response = await rest_client.post(
+        "/api/auth/register",
+        json={
+            "email": user.email,
+            "password": "AnotherPassword123!",
+            "first_name": "Dup",
+            "last_name": "User",
+        },
+    )
+    assert response.status_code == HTTP_409_CONFLICT
+
+
+async def test_rest_update_me_password_success(
+    rest_client: AsyncTestClient[Litestar],
+    user: UserModel,
+    db_sessionmaker,
+) -> None:
+    old_hash = user.password_hash
+    new_password = "NewPassword123!"
+    token = jwt_auth.create_token(identifier=str(user.id))
+    response = await rest_client.patch(
+        "/api/users/me",
+        headers={"Authorization": f"Bearer {token}"},
+        json={"password": new_password},
+    )
+    assert response.status_code == HTTP_200_OK
+
+    async with db_sessionmaker() as session:
+        updated_user = await session.get(UserModel, user.id)
+
+    assert updated_user is not None
+    assert updated_user.password_hash != old_hash
+    ph = PasswordHasher()
+    assert ph.verify(updated_user.password_hash, new_password)
+
+
+async def test_rest_login_invalid_credentials(
+    rest_client: AsyncTestClient[Litestar],
+    user: UserModel,
+) -> None:
+    response = await rest_client.post(
+        "/api/auth/login",
+        json={"email": user.email, "password": "WrongPassword123!"},
+    )
+    assert response.status_code == HTTP_401_UNAUTHORIZED
+
+
+async def test_rest_login_inactive_user(
+    rest_client: AsyncTestClient[Litestar],
+    db_sessionmaker,
+) -> None:
+    user = await _create_user(
+        db_sessionmaker,
+        email="inactive@example.com",
+        password="InactivePassword123!",
+        is_active=False,
+    )
+    response = await rest_client.post(
+        "/api/auth/login",
+        json={"email": user.email, "password": "InactivePassword123!"},
+    )
+    assert response.status_code == HTTP_401_UNAUTHORIZED
