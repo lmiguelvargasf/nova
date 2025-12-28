@@ -12,6 +12,7 @@ type Mutation {
 }
 
 type Query {
+  me: UserType!
   user(id: ID!): UserType!
 }
 
