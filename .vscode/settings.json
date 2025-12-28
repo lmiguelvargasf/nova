@@ -44,5 +44,5 @@
     "source.fixAll.ruff": "explicit",
     "source.organizeImports.ruff": "explicit"
   },
-  "vitest.rootConfig": "${workspaceFolder}/frontend/vitest.config.ts"
+  "vitest.rootConfig": "frontend/vitest.config.ts"
 }
