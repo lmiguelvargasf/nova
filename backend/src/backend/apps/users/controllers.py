@@ -180,7 +180,10 @@ class UserController(Controller):
         ),
     ) -> OffsetPagination[UserResponse]:
         user = _require_user(request)
-        _require_admin(user)
+        db_user = await db_session.get(UserModel, user.id)
+        if db_user is None:
+            raise HTTPException(status_code=401, detail="User is not authenticated")
+        _require_admin(db_user)
 
         users_service = UserService(db_session)
         filters: list[StatementFilter] = [
@@ -219,8 +222,11 @@ class UserController(Controller):
         db_session: AsyncSession,
     ) -> UserResponse:
         user = _require_user(request)
+        db_user = await db_session.get(UserModel, user.id)
+        if db_user is None:
+            raise HTTPException(status_code=401, detail="User is not authenticated")
         users_service = UserService(db_session)
-        return users_service.to_schema(user, schema_type=UserResponse)
+        return users_service.to_schema(db_user, schema_type=UserResponse)
 
     @patch(path="/me")
     async def update_me(
@@ -230,17 +236,20 @@ class UserController(Controller):
         data: UserUpdate,
     ) -> UserResponse:
         user = _require_user(request)
+        db_user = await db_session.get(UserModel, user.id)
+        if db_user is None:
+            raise HTTPException(status_code=401, detail="User is not authenticated")
         users_service = UserService(db_session)
 
         if data.email is not None:
             email = data.email.strip()
             if not email:
                 raise HTTPException(status_code=400, detail="Email cannot be empty.")
-            if email != user.email:
+            if email != db_user.email:
                 existing_user = await users_service.get_one_or_none(email=email)
-                if existing_user and existing_user.id != user.id:
+                if existing_user and existing_user.id != db_user.id:
                     raise HTTPException(status_code=409, detail="User already exists.")
-            user.email = email
+            db_user.email = email
 
         if data.first_name is not None:
             first_name = data.first_name.strip()
@@ -248,7 +257,7 @@ class UserController(Controller):
                 raise HTTPException(
                     status_code=400, detail="First name cannot be empty."
                 )
-            user.first_name = first_name
+            db_user.first_name = first_name
 
         if data.last_name is not None:
             last_name = data.last_name.strip()
@@ -256,16 +265,16 @@ class UserController(Controller):
                 raise HTTPException(
                     status_code=400, detail="Last name cannot be empty."
                 )
-            user.last_name = last_name
+            db_user.last_name = last_name
 
         if data.password is not None:
             if not data.password:
                 raise HTTPException(status_code=400, detail="Password cannot be empty.")
             ph = PasswordHasher()
-            user.password_hash = ph.hash(data.password)
+            db_user.password_hash = ph.hash(data.password)
 
         await db_session.commit()
-        return users_service.to_schema(user, schema_type=UserResponse)
+        return users_service.to_schema(db_user, schema_type=UserResponse)
 
     @delete(path="/me", status_code=200)
     async def delete_me(
@@ -274,6 +283,9 @@ class UserController(Controller):
         db_session: AsyncSession,
     ) -> DeleteResponse:
         user = _require_user(request)
-        user.soft_delete()
+        db_user = await db_session.get(UserModel, user.id)
+        if db_user is None:
+            raise HTTPException(status_code=401, detail="User is not authenticated")
+        db_user.soft_delete()
         await db_session.commit()
         return DeleteResponse(deleted=True)

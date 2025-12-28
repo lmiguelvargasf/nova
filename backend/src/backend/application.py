@@ -1,6 +1,7 @@
 from advanced_alchemy.extensions.litestar import SQLAlchemyAsyncConfig
 from litestar import Litestar
 from litestar.config.cors import CORSConfig
+from litestar.datastructures.state import State
 from litestar.plugins import PluginProtocol
 from litestar.stores.memory import MemoryStore
 from litestar.types import ControllerRouterHandler
@@ -34,6 +35,7 @@ def create_app(
     ]
 
     plugins: list[PluginProtocol] = []
+    app_state: dict[str, object] = {}
     if use_sqlalchemy_plugin:
         from advanced_alchemy.extensions.litestar import SQLAlchemyPlugin
 
@@ -41,6 +43,7 @@ def create_app(
 
         config = alchemy_config_override or default_alchemy_config
         plugins.append(SQLAlchemyPlugin(config=config))
+        app_state["alchemy_config"] = config
 
     if enable_admin:
         from .admin.app import create_admin_handler
@@ -54,6 +57,7 @@ def create_app(
         middleware=[
             *get_rate_limit_middlewares(),
         ],
+        state=State(app_state),
         stores={"rate_limit": MemoryStore()},
         on_app_init=[jwt_auth.on_app_init],
     )

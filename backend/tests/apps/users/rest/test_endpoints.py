@@ -10,6 +10,7 @@ from sqlalchemy import select
 from backend.application import create_app
 from backend.apps import models as app_models
 from backend.apps.users.models import UserModel
+from backend.auth.jwt import jwt_auth
 from backend.config.alchemy import build_connection_string, session_config
 from backend.config.base import settings
 
@@ -17,7 +18,16 @@ from backend.config.base import settings
 @pytest.fixture
 async def rest_client(
     db_schema: None,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> AsyncIterator[AsyncTestClient[Litestar]]:
+    async def retrieve_user_handler(token, _connection):
+        try:
+            user_id = int(token.sub)
+        except (TypeError, ValueError):
+            return None
+        return UserModel(id=user_id)
+
+    monkeypatch.setattr(jwt_auth, "retrieve_user_handler", retrieve_user_handler)
     config = SQLAlchemyAsyncConfig(
         connection_string=build_connection_string(db_name=settings.postgres_test_db),
         session_config=session_config,
