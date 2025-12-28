@@ -2,8 +2,16 @@ from collections.abc import AsyncIterator
 
 import pytest
 from advanced_alchemy.extensions.litestar import SQLAlchemyAsyncConfig
+from argon2 import PasswordHasher
 from litestar import Litestar
-from litestar.status_codes import HTTP_200_OK, HTTP_201_CREATED
+from litestar.status_codes import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_400_BAD_REQUEST,
+    HTTP_401_UNAUTHORIZED,
+    HTTP_403_FORBIDDEN,
+    HTTP_409_CONFLICT,
+)
 from litestar.testing import AsyncTestClient
 from sqlalchemy import select
 
@@ -13,6 +21,31 @@ from backend.apps.users.models import UserModel
 from backend.auth.jwt import jwt_auth
 from backend.config.alchemy import build_connection_string, session_config
 from backend.config.base import settings
+
+
+async def create_user(
+    db_sessionmaker,
+    *,
+    email: str,
+    password: str = "SecurePassword123!",
+    first_name: str = "Test",
+    last_name: str = "User",
+    is_admin: bool = False,
+) -> UserModel:
+    async with db_sessionmaker() as session:
+        ph = PasswordHasher()
+        user = UserModel(
+            email=email,
+            password_hash=ph.hash(password),
+            first_name=first_name,
+            last_name=last_name,
+            is_admin=is_admin,
+            is_active=True,
+        )
+        session.add(user)
+        await session.commit()
+        await session.refresh(user)
+        return user
 
 
 @pytest.fixture
@@ -94,3 +127,57 @@ async def test_rest_soft_delete_reactivates_user(
         )
         assert user is not None
         assert user.deleted_at is None
+
+
+async def test_rest_me_unauthenticated(rest_client: AsyncTestClient[Litestar]) -> None:
+    response = await rest_client.get("/api/users/me")
+    assert response.status_code == HTTP_401_UNAUTHORIZED
+
+
+async def test_rest_list_users_unauthenticated(
+    rest_client: AsyncTestClient[Litestar],
+) -> None:
+    response = await rest_client.get("/api/users")
+    assert response.status_code == HTTP_401_UNAUTHORIZED
+
+
+async def test_rest_list_users_non_admin(
+    rest_client: AsyncTestClient[Litestar],
+    db_sessionmaker,
+) -> None:
+    user = await create_user(db_sessionmaker, email="nonadmin@example.com")
+    token = jwt_auth.create_token(identifier=str(user.id))
+    response = await rest_client.get(
+        "/api/users",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response.status_code == HTTP_403_FORBIDDEN
+
+
+async def test_rest_update_me_invalid_input(
+    rest_client: AsyncTestClient[Litestar],
+    db_sessionmaker,
+) -> None:
+    user = await create_user(db_sessionmaker, email="invalid@example.com")
+    token = jwt_auth.create_token(identifier=str(user.id))
+    response = await rest_client.patch(
+        "/api/users/me",
+        headers={"Authorization": f"Bearer {token}"},
+        json={"email": "   "},
+    )
+    assert response.status_code == HTTP_400_BAD_REQUEST
+
+
+async def test_rest_update_me_duplicate_email(
+    rest_client: AsyncTestClient[Litestar],
+    db_sessionmaker,
+) -> None:
+    user = await create_user(db_sessionmaker, email="owner@example.com")
+    other_user = await create_user(db_sessionmaker, email="taken@example.com")
+    token = jwt_auth.create_token(identifier=str(user.id))
+    response = await rest_client.patch(
+        "/api/users/me",
+        headers={"Authorization": f"Bearer {token}"},
+        json={"email": other_user.email},
+    )
+    assert response.status_code == HTTP_409_CONFLICT
