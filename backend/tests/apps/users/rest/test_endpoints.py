@@ -23,7 +23,7 @@ from backend.config.alchemy import build_connection_string, session_config
 from backend.config.base import settings
 
 
-async def create_user(
+async def _create_user(
     db_sessionmaker,
     *,
     email: str,
@@ -34,7 +34,7 @@ async def create_user(
 ) -> UserModel:
     async with db_sessionmaker() as session:
         ph = PasswordHasher()
-        user = UserModel(
+        user_model = UserModel(
             email=email,
             password_hash=ph.hash(password),
             first_name=first_name,
@@ -42,10 +42,20 @@ async def create_user(
             is_admin=is_admin,
             is_active=True,
         )
-        session.add(user)
+        session.add(user_model)
         await session.commit()
-        await session.refresh(user)
-        return user
+        await session.refresh(user_model)
+        return user_model
+
+
+@pytest.fixture
+async def user(db_sessionmaker) -> UserModel:
+    return await _create_user(db_sessionmaker, email="user@example.com")
+
+
+@pytest.fixture
+async def other_user(db_sessionmaker) -> UserModel:
+    return await _create_user(db_sessionmaker, email="other@example.com")
 
 
 @pytest.fixture
@@ -143,9 +153,8 @@ async def test_rest_list_users_unauthenticated(
 
 async def test_rest_list_users_non_admin(
     rest_client: AsyncTestClient[Litestar],
-    db_sessionmaker,
+    user: UserModel,
 ) -> None:
-    user = await create_user(db_sessionmaker, email="nonadmin@example.com")
     token = jwt_auth.create_token(identifier=str(user.id))
     response = await rest_client.get(
         "/api/users",
@@ -156,9 +165,8 @@ async def test_rest_list_users_non_admin(
 
 async def test_rest_update_me_invalid_input(
     rest_client: AsyncTestClient[Litestar],
-    db_sessionmaker,
+    user: UserModel,
 ) -> None:
-    user = await create_user(db_sessionmaker, email="invalid@example.com")
     token = jwt_auth.create_token(identifier=str(user.id))
     response = await rest_client.patch(
         "/api/users/me",
@@ -170,10 +178,9 @@ async def test_rest_update_me_invalid_input(
 
 async def test_rest_update_me_duplicate_email(
     rest_client: AsyncTestClient[Litestar],
-    db_sessionmaker,
+    user: UserModel,
+    other_user: UserModel,
 ) -> None:
-    user = await create_user(db_sessionmaker, email="owner@example.com")
-    other_user = await create_user(db_sessionmaker, email="taken@example.com")
     token = jwt_auth.create_token(identifier=str(user.id))
     response = await rest_client.patch(
         "/api/users/me",
