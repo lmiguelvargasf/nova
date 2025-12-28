@@ -5,18 +5,47 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { ErrorMessage } from "@/components/ui";
+import { useDataSource } from "@/lib/dataSource";
 import { LoginDocument } from "@/lib/graphql/graphql";
+import { restLogin } from "@/lib/restClient";
 
 export default function LoginForm() {
   const router = useRouter();
   const client = useApolloClient();
+  const { mode } = useDataSource();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [restError, setRestError] = useState<string | null>(null);
+  const [restLoading, setRestLoading] = useState(false);
 
   const [login, { loading, error }] = useMutation(LoginDocument);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (mode === "rest") {
+      setRestLoading(true);
+      setRestError(null);
+      try {
+        const result = await restLogin({ email, password });
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("userId", String(result.user.id));
+        if (result.reactivated) {
+          sessionStorage.setItem(
+            "toastMessage",
+            "Account has been reactivated.",
+          );
+        }
+        await client.resetStore();
+        router.push("/");
+      } catch (error: unknown) {
+        const message =
+          error instanceof Error ? error.message : "Login failed.";
+        setRestError(message);
+      } finally {
+        setRestLoading(false);
+      }
+      return;
+    }
     try {
       const result = await login({
         variables: { email, password },
@@ -41,7 +70,8 @@ export default function LoginForm() {
     }
   };
 
-  const errorMessage = error?.message;
+  const errorMessage = mode === "rest" ? restError : error?.message;
+  const isLoading = mode === "rest" ? restLoading : loading;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 max-w-sm mx-auto mt-10">
@@ -81,10 +111,10 @@ export default function LoginForm() {
       {errorMessage && <ErrorMessage message={errorMessage} />}
       <button
         type="submit"
-        disabled={loading}
+        disabled={isLoading}
         className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
       >
-        {loading ? "Logging in..." : "Login"}
+        {isLoading ? "Logging in..." : "Login"}
       </button>
     </form>
   );

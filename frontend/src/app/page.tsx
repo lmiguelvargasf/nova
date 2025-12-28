@@ -5,12 +5,14 @@ import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { Toast } from "@/components/ui";
 import CurrentUserCard from "@/features/users/CurrentUserCard.client";
+import { useDataSource } from "@/lib/dataSource";
 
 export default function Home() {
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const client = useApolloClient();
+  const { mode, setMode } = useDataSource();
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -67,7 +69,38 @@ export default function Home() {
         <section className="grid gap-6">
           <div className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
             <div className="flex flex-col gap-2">
-              <h2 className="text-xl font-semibold">Core stack</h2>
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <h2 className="text-xl font-semibold">Core stack</h2>
+                <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                  <span>Data source</span>
+                  <div className="inline-flex rounded-full border border-slate-200 bg-white/70 p-1 text-[11px] font-semibold tracking-wide text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+                    <button
+                      type="button"
+                      aria-pressed={mode === "graphql"}
+                      onClick={() => setMode("graphql")}
+                      className={`rounded-full px-3 py-1 transition ${
+                        mode === "graphql"
+                          ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
+                          : "hover:bg-slate-100 dark:hover:bg-white/10"
+                      }`}
+                    >
+                      GraphQL
+                    </button>
+                    <button
+                      type="button"
+                      aria-pressed={mode === "rest"}
+                      onClick={() => setMode("rest")}
+                      className={`rounded-full px-3 py-1 transition ${
+                        mode === "rest"
+                          ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
+                          : "hover:bg-slate-100 dark:hover:bg-white/10"
+                      }`}
+                    >
+                      REST
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">

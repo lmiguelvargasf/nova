@@ -11,7 +11,7 @@ from argon2.exceptions import (
 from graphql.error import GraphQLError
 from strawberry.types import Info
 
-from backend.auth.jwt import jwt_auth
+from backend.apps.users.auth import create_access_token
 from backend.graphql.context import GraphQLContext
 from backend.graphql.permissions import IsAuthenticated
 
@@ -58,16 +58,6 @@ class EmptyPasswordError(GraphQLError):
         super().__init__("Password cannot be empty.")
 
 
-def _create_access_token(*, user_id: int, email: str, is_admin: bool) -> str:
-    """Create a JWT token for the given user."""
-    return str(
-        jwt_auth.create_token(
-            identifier=str(user_id),
-            token_extras={"email": email, "is_admin": is_admin},
-        )
-    )
-
-
 @strawberry.type
 class UserMutation:
     @strawberry.mutation
@@ -101,11 +91,7 @@ class UserMutation:
             detail = exc.detail or "Unable to create user."
             raise GraphQLError(detail) from None
 
-        token = _create_access_token(
-            user_id=user.id,
-            email=user.email,
-            is_admin=user.is_admin,
-        )
+        token = create_access_token(user)
         return LoginResponse(
             token=token,
             user=UserType.from_model(user),
@@ -206,11 +192,7 @@ class UserMutation:
         user.last_login_at = datetime.datetime.now(datetime.UTC)
         await db_session.commit()
 
-        token = _create_access_token(
-            user_id=user.id,
-            email=user.email,
-            is_admin=user.is_admin,
-        )
+        token = create_access_token(user)
         return LoginResponse(
             token=token,
             user=UserType.from_model(user),
