@@ -73,6 +73,11 @@ alwaysApply: true
 - Resolvers should be thin; move multi-step workflows into a local `services.py` (within `backend/`) and call it.
 - For user-visible errors, raise `GraphQLError` with a safe message. Don’t leak internals/tracebacks into GraphQL errors.
 - Prefer typing the GraphQL context (e.g. `TypedDict`) over untyped stringly-typed dict access when practical.
+- **Relay IDs**:
+  - Public-facing object IDs in GraphQL are **Relay Global IDs** (schema scalar is `ID`).
+  - GraphQL types that represent persisted entities should implement `strawberry.relay.Node` and type their id attribute as `strawberry.relay.NodeID[int]`.
+  - For details lookup, prefer `*_by_id(id: strawberry.relay.GlobalID)` (or `Query.node(id: ID!)`) instead of `int(id)` parsing.
+  - For lists, prefer Relay connections (`@strawberry.relay.connection(...)`) and use `node.id` for list → details navigation.
 
 ## 8) Errors Must Not Disappear (With Narrow Exceptions)
 - Do not swallow exceptions.

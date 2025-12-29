@@ -69,6 +69,9 @@ alwaysApply: true
   - Do not edit generated code under `frontend/src/lib/graphql/**`.
   - Prefer generated documents + types from `@/lib/graphql/graphql` (e.g. `GetUserByIdDocument`, `GetUserByIdQuery`); do not hand-write GraphQL result types.
   - Import hooks from `@apollo/client/react` (not `@apollo/client`) due to Turbopack bundler resolution issues.
+  - **Relay IDs**:
+    - GraphQL `ID` values returned by Relay `Node` types are **Relay Global IDs** (base64 of `"TypeName:<node_id>"`), not raw DB ints.
+    - List → details: store `node.id` from a connection and pass that into `userById(id: $id)` / `node(id: $id)`.
   - PreloadQuery pattern (doc-only example, uses real repo query):
     ```tsx
     // src/app/page.tsx (RSC)
@@ -79,9 +82,12 @@ alwaysApply: true
 
     export default function Page() {
       return (
-        <PreloadQuery query={GetUserByIdDocument} variables={{ userId: "1" }}>
+        <PreloadQuery
+          query={GetUserByIdDocument}
+          variables={{ userId: "VXNlclR5cGU6MQ==" }}
+        >
           <Suspense fallback={<div>Loading user...</div>}>
-            <UserCard userId="1" />
+            <UserCard userId="VXNlclR5cGU6MQ==" />
           </Suspense>
         </PreloadQuery>
       );
@@ -111,9 +117,9 @@ alwaysApply: true
 
       const isNotFound = hasErrorCode(error, "NOT_FOUND");
       if (error && !isNotFound) return <p>Error: {error.message}</p>;
-      if (!data?.user) return <p>User not found.</p>;
+      if (!data?.userById) return <p>User not found.</p>;
 
-      return <div>{data.user.email}</div>;
+      return <div>{data.userById.email}</div>;
     }
     ```
   - Mutation pattern (doc-only example, uses real repo mutation):
