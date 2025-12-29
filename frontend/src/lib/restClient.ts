@@ -15,6 +15,15 @@ type RestDeleteResponse = {
   deleted: boolean;
 };
 
+type RestCursorPage<T> = {
+  items: T[];
+  page: {
+    next_cursor: string | null;
+    limit: number;
+    has_next: boolean;
+  };
+};
+
 const graphQLEndpoint =
   process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? "http://localhost:8000/graphql";
 const restBase = graphQLEndpoint.endsWith("/graphql")
@@ -114,7 +123,17 @@ export async function restGetUserById(userId: string): Promise<RestUser> {
   return restRequest(`/users/${encodeURIComponent(userId)}`);
 }
 
-export async function restGetLatestUsers(limit = 5): Promise<RestUser[]> {
-  const params = new URLSearchParams({ limit: String(limit) });
-  return restRequest(`/users/latest?${params.toString()}`);
+export async function restGetUsersPage(params: {
+  limit?: number;
+  cursor?: string | null;
+}): Promise<RestCursorPage<RestUser>> {
+  const searchParams = new URLSearchParams();
+  if (params.limit) {
+    searchParams.set("limit", String(params.limit));
+  }
+  if (params.cursor) {
+    searchParams.set("cursor", params.cursor);
+  }
+  const suffix = searchParams.toString();
+  return restRequest(`/users${suffix ? `?${suffix}` : ""}`);
 }

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { Toast } from "@/components/ui";
 import CurrentUserCard from "@/features/users/CurrentUserCard.client";
-import LatestUsersCard from "@/features/users/LatestUsersCard.client";
+import UsersPaginationCard from "@/features/users/UsersPaginationCard.client";
 import { useDataSource } from "@/lib/dataSource";
 
 export default function Home() {
@@ -71,7 +71,7 @@ export default function Home() {
           <div className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
             <div className="flex flex-col gap-3">
               <div className="flex flex-wrap items-center justify-between gap-4">
-                <h2 className="text-xl font-semibold">Latest registrations</h2>
+                <h2 className="text-xl font-semibold">Registration timeline</h2>
                 <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
                   <span>Data source</span>
                   <div className="inline-flex rounded-full border border-slate-200 bg-white/70 p-1 text-[11px] font-semibold tracking-wide text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
@@ -103,23 +103,23 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-sm text-slate-500 dark:text-slate-400">
-                A snapshot of the five most recent accounts.
+                Browse sign-ups in chronological order, five at a time.
               </p>
             </div>
 
             <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px]">
               <div className="rounded-lg border border-slate-200 bg-white/80 p-4 dark:border-white/10 dark:bg-black/20">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                  Newest sign-ups
+                  Sign-up order
                 </p>
                 <div className="mt-4">
                   {userId ? (
-                    <Suspense fallback={<p>Loading latest users...</p>}>
-                      <LatestUsersCard />
+                    <Suspense fallback={<p>Loading users...</p>}>
+                      <UsersPaginationCard />
                     </Suspense>
                   ) : (
                     <p className="text-sm text-slate-500 dark:text-slate-400">
-                      Sign in to see the newest registrations.
+                      Sign in to browse the registration timeline.
                     </p>
                   )}
                 </div>

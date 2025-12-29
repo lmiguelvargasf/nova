@@ -10,7 +10,6 @@ from argon2.exceptions import InvalidHash, VerificationError, VerifyMismatchErro
 from litestar import Controller, Request, delete, get, patch, post
 from litestar.exceptions import HTTPException
 from litestar.params import Parameter
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.api.pagination import CursorPage, CursorPageMeta
@@ -169,30 +168,6 @@ class UserController(Controller):
                 has_next=page.cursor is not None,
             ),
         )
-
-    @get(path="/latest")
-    async def latest_users(
-        self,
-        request: Request,
-        db_session: AsyncSession,
-        limit: int = Parameter(query="limit", ge=1, le=100, default=5),
-    ) -> list[UserResponse]:
-        user = _require_user(request)
-        db_user = await db_session.get(UserModel, user.id)
-        if db_user is None:
-            raise HTTPException(status_code=401, detail="User is not authenticated")
-
-        stmt = (
-            select(UserModel)
-            .where(UserModel.deleted_at.is_(None))
-            .order_by(UserModel.created_at.desc(), UserModel.id.desc())
-            .limit(limit)
-        )
-        result = await db_session.execute(stmt)
-        users = list(result.scalars())
-
-        users_service = UserService(db_session)
-        return [users_service.to_schema(u, schema_type=UserResponse) for u in users]
 
     @get(path="/{user_id:int}")
     async def get_user(
