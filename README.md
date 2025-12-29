@@ -6,6 +6,8 @@
 ![Node.js](https://img.shields.io/badge/node.js-24-brightgreen?style=for-the-badge&logo=node.js)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-0074D9?style=for-the-badge&logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-7-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+![Celery](https://img.shields.io/badge/Celery-5.6-37814A?style=for-the-badge&logo=celery&logoColor=white)
 ![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-0074D9?style=for-the-badge&logo=docker&logoColor=white)
 ![Task](https://img.shields.io/badge/Task-43B883?style=for-the-badge&logo=task&logoColor=white)
@@ -32,6 +34,8 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 - **[GraphQL][]** – API query language for flexible data fetching.
 - **[REST][]** – Stateless, resource-oriented APIs over HTTP using JSON and standard verbs
 - **[PostgreSQL][]** – Advanced open-source relational database known for reliability.
+- **[Redis][]** – In-memory data store used as a message broker for background tasks.
+- **[Celery][]** – Distributed task queue for handling asynchronous background jobs.
 - **[uv][]** – Ultra-fast Python package and project manager.
 - **[ruff][]** – Extremely fast Python linter and code formatter.
 - **[ty][]** – Fast, type-safe Python type checker.
@@ -176,6 +180,7 @@ This project uses [Task][] to simplify common development workflows. The main `T
 
 - Managing the Docker environment (for example, building, starting, or stopping services).
 - Running development tasks within the `backend` and `frontend` services (such as linting, formatting, or testing).
+- Managing background workers (Celery worker and beat).
 
 To list all available tasks, run:
 
@@ -203,6 +208,7 @@ This project is licensed under the [MIT License](./LICENSE).
 [advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/
 [astral]: https://astral.sh/
 [biome]: https://biomejs.dev/
+[celery]: https://docs.celeryq.dev/
 [docker-desktop]: https://www.docker.com/products/docker-desktop/
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
@@ -214,6 +220,7 @@ This project is licensed under the [MIT License](./LICENSE).
 [postgresql]: https://www.postgresql.org/
 [pre-commit]: https://pre-commit.com/
 [python]: https://www.python.org/
+[redis]: https://redis.io/
 [releases]: https://github.com/lmiguelvargasf/nova/releases
 [rest]: https://restfulapi.net/
 [ruff]: https://docs.astral.sh/ruff/
