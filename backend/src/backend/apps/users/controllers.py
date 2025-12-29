@@ -152,7 +152,6 @@ class UserController(Controller):
         db_user = await db_session.get(UserModel, user.id)
         if db_user is None:
             raise HTTPException(status_code=401, detail="User is not authenticated")
-        _require_admin(db_user)
 
         paginator = UserCursorPaginator(
             db_session=db_session,

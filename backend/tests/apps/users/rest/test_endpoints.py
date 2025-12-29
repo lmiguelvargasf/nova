@@ -9,7 +9,6 @@ from litestar.status_codes import (
     HTTP_201_CREATED,
     HTTP_400_BAD_REQUEST,
     HTTP_401_UNAUTHORIZED,
-    HTTP_403_FORBIDDEN,
     HTTP_409_CONFLICT,
 )
 from litestar.testing import AsyncTestClient
@@ -161,17 +160,15 @@ async def test_rest_list_users_non_admin(
         "/api/users",
         headers={"Authorization": f"Bearer {token}"},
     )
-    assert response.status_code == HTTP_403_FORBIDDEN
+    assert response.status_code == HTTP_200_OK
 
 
 async def test_rest_list_users_cursor_pagination(
     rest_client: AsyncTestClient[Litestar],
     db_sessionmaker,
 ) -> None:
-    admin = await _create_user(
-        db_sessionmaker, email="admin@example.com", is_admin=True
-    )
-    token = jwt_auth.create_token(identifier=str(admin.id))
+    viewer = await _create_user(db_sessionmaker, email="viewer@example.com")
+    token = jwt_auth.create_token(identifier=str(viewer.id))
 
     for i in range(12):
         await _create_user(db_sessionmaker, email=f"user-{i}@example.com")
