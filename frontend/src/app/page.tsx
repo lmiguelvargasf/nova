@@ -5,7 +5,9 @@ import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { Toast } from "@/components/ui";
 import CurrentUserCard from "@/features/users/CurrentUserCard.client";
-import UsersPaginationCard from "@/features/users/UsersPaginationCard.client";
+import UsersPaginationCard, {
+  UsersPaginationSkeleton,
+} from "@/features/users/UsersPaginationCard.client";
 import { useDataSource } from "@/lib/dataSource";
 
 export default function Home() {
@@ -114,7 +116,7 @@ export default function Home() {
                 </p>
                 <div className="mt-4">
                   {userId ? (
-                    <Suspense fallback={<p>Loading users...</p>}>
+                    <Suspense fallback={<UsersPaginationSkeleton />}>
                       <UsersPaginationCard />
                     </Suspense>
                   ) : (

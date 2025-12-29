@@ -17,6 +17,8 @@ type UserEntry = {
 
 const PAGE_SIZE = 5;
 
+const SKELETON_ITEMS = Array.from({ length: PAGE_SIZE }, (_, index) => index);
+
 function getDisplayName(user: UserEntry) {
   const fullName = [user.firstName, user.lastName]
     .filter(Boolean)
@@ -61,6 +63,26 @@ function UsersList({ users }: { users: UserEntry[] }) {
             <p className="text-xs text-slate-500 dark:text-slate-400">
               {user.email}
             </p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function UsersPaginationSkeleton() {
+  return (
+    <ul
+      className="divide-y divide-slate-200/70 dark:divide-white/10"
+      aria-busy="true"
+      aria-live="polite"
+    >
+      {SKELETON_ITEMS.map((item) => (
+        <li key={item} className="flex items-center gap-4 py-3">
+          <div className="h-10 w-10 rounded-full bg-slate-200/80 dark:bg-white/10" />
+          <div className="flex-1 space-y-2">
+            <div className="h-3 w-32 rounded-full bg-slate-200/80 dark:bg-white/10" />
+            <div className="h-2 w-44 rounded-full bg-slate-200/60 dark:bg-white/10" />
           </div>
         </li>
       ))}
@@ -193,7 +215,7 @@ function UsersPaginationRest() {
   }, [cursor]);
 
   if (loading) {
-    return <p>Loading users...</p>;
+    return <UsersPaginationSkeleton />;
   }
 
   if (errorMessage) {
@@ -229,7 +251,7 @@ export default function UsersPaginationCard() {
   const { mode, ready } = useDataSource();
 
   if (!ready) {
-    return <p>Loading users...</p>;
+    return <UsersPaginationSkeleton />;
   }
 
   return mode === "rest" ? <UsersPaginationRest /> : <UsersPaginationGraphQL />;
