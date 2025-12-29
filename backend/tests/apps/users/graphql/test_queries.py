@@ -1,4 +1,5 @@
 from advanced_alchemy.exceptions import NotFoundError
+from strawberry.relay.utils import to_base64
 
 from backend.apps.users.models import UserModel
 
@@ -22,7 +23,7 @@ class TestUserQueries:
         assert "data" in result
         me_data = result["data"]["me"]
         assert me_data == {
-            "id": "1",
+            "id": to_base64("UserType", "1"),
             "firstName": "Test",
             "lastName": "User",
             "email": "test@example.com",
@@ -81,7 +82,7 @@ class TestUserQueries:
         user_data = result["data"]["user"]
         assert user_data is not None
         expected_data = {
-            "id": "1",
+            "id": to_base64("UserType", "1"),
             "firstName": "Test",
             "lastName": "User",
             "email": "test@example.com",
