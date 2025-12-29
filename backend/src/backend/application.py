@@ -1,5 +1,6 @@
 from advanced_alchemy.extensions.litestar import SQLAlchemyAsyncConfig
 from litestar import Litestar
+from litestar.config.compression import CompressionConfig
 from litestar.config.cors import CORSConfig
 from litestar.datastructures.state import State
 from litestar.plugins import PluginProtocol
@@ -27,6 +28,7 @@ def create_app(
     alchemy_config_override: SQLAlchemyAsyncConfig | None = None,
 ) -> Litestar:
     cors_config = CORSConfig(allow_origins=settings.cors_allow_origins)
+    compression_config = CompressionConfig(backend="brotli", brotli_gzip_fallback=True)
     route_handlers: list[ControllerRouterHandler] = [
         health_check,
         create_graphql_controller(context_getter=graphql_context_getter),
@@ -54,6 +56,7 @@ def create_app(
         route_handlers=route_handlers,
         plugins=plugins,
         cors_config=cors_config,
+        compression_config=compression_config,
         middleware=[
             *get_rate_limit_middlewares(),
         ],
