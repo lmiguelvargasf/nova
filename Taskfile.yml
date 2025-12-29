@@ -215,13 +215,13 @@ tasks:
     cmds:
       - "{{.FRONTEND_TASK}} storybook:dev"
 
-  worker:up:
+  worker:dev:
     desc: Run backend worker
     deps: ["infra:up"]
     cmds:
       - "{{.BACKEND_TASK}} worker"
 
-  beat:up:
+  beat:dev:
     desc: Run backend beat
     deps: ["infra:up"]
     cmds:

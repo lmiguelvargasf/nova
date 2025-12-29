@@ -59,9 +59,51 @@
       }
     },
     {
+      "label": "worker:dev",
+      "type": "shell",
+      "command": "mise x -- task worker:dev",
+      "isBackground": true,
+      "options": {
+        "shell": {
+          "executable": "/bin/bash",
+          "args": [
+            "-lc"
+          ]
+        },
+        "env": {
+          "PATH": "${env:HOME}/.local/bin:${env:PATH}"
+        }
+      },
+      "presentation": {
+        "panel": "new"
+      }
+    },
+    {
+      "label": "beat:dev",
+      "type": "shell",
+      "command": "mise x -- task beat:dev",
+      "isBackground": true,
+      "options": {
+        "shell": {
+          "executable": "/bin/bash",
+          "args": [
+            "-lc"
+          ]
+        },
+        "env": {
+          "PATH": "${env:HOME}/.local/bin:${env:PATH}"
+        }
+      },
+      "presentation": {
+        "panel": "new"
+      }
+    },
+    {
       "label": "dev",
       "dependsOn": [
         "backend:dev",
+        "worker:dev",
+        "beat:dev",
         "frontend:dev"
       ],
       "dependsOrder": "parallel",
