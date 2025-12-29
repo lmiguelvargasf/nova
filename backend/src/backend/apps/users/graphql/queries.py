@@ -30,7 +30,10 @@ class UserQuery:
         except TypeError as e:
             raise UserNotFoundError(str(id)) from e
 
-    @strawberry.relay.connection(strawberry.relay.ListConnection[UserType])
+    @strawberry.relay.connection(
+        strawberry.relay.ListConnection[UserType],
+        permission_classes=[IsAuthenticated],
+    )
     async def users(self, info: Info[GraphQLContext, None]) -> Iterable[UserType]:
         users = await info.context.services.users.list()
         return [UserType.from_model(u) for u in users]

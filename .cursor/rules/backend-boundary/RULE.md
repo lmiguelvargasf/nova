@@ -43,6 +43,12 @@ alwaysApply: false
 - REST endpoints live in `backend/src/backend/apps/**/controllers.py` and should use Litestar `Controller` classes.
 - Prefer `msgspec.Struct` for request/response bodies (Pydantic only for settings).
 - Keep handlers thin; move non-trivial logic into `services.py`.
+- **Pagination (lists)**:
+  - Prefer **cursor (keyset) pagination** over offset pagination for scalability.
+  - Use Litestar’s `AbstractAsyncCursorPaginator` and return a small envelope:
+    - request: `limit` + `cursor`
+    - response: `{ items: [...], page: { next_cursor, limit, has_next } }`
+  - If a filter/sort changes, clients must reset pagination (drop `cursor`). Reusing a cursor with different filters should return 400.
 
 Example:
 ```python

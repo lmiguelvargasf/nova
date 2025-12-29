@@ -5,55 +5,26 @@ from advanced_alchemy.exceptions import (
     NotFoundError,
     RepositoryError,
 )
-from advanced_alchemy.filters import LimitOffset, SearchFilter, StatementFilter
-from advanced_alchemy.service import OffsetPagination
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHash, VerificationError, VerifyMismatchError
 from litestar import Controller, Request, delete, get, patch, post
 from litestar.exceptions import HTTPException
 from litestar.params import Parameter
-from msgspec import Struct
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.api.pagination import CursorPage, CursorPageMeta
 from backend.apps.users.auth import create_access_token
 from backend.apps.users.models import UserModel
+from backend.apps.users.pagination import UserCursorPaginator
+from backend.apps.users.schemas import (
+    DeleteResponse,
+    LoginRequest,
+    LoginResponse,
+    UserCreate,
+    UserResponse,
+    UserUpdate,
+)
 from backend.apps.users.services import UserService
-
-
-class UserResponse(Struct):
-    id: int
-    email: str
-    first_name: str
-    last_name: str
-
-
-class UserCreate(Struct):
-    email: str
-    password: str
-    first_name: str
-    last_name: str
-
-
-class UserUpdate(Struct):
-    email: str | None = None
-    password: str | None = None
-    first_name: str | None = None
-    last_name: str | None = None
-
-
-class LoginRequest(Struct):
-    email: str
-    password: str
-
-
-class LoginResponse(Struct):
-    token: str
-    user: UserResponse
-    reactivated: bool
-
-
-class DeleteResponse(Struct):
-    deleted: bool
 
 
 def _require_user(request: Request) -> UserModel:
@@ -162,10 +133,8 @@ class UserController(Controller):
         self,
         request: Request,
         db_session: AsyncSession,
-        current_page: int = Parameter(
-            ge=1, query="currentPage", default=1, required=False
-        ),
-        page_size: int = Parameter(query="pageSize", ge=1, default=20, required=False),
+        limit: int = Parameter(query="limit", ge=1, le=100, default=20, required=False),
+        cursor: str | None = Parameter(query="cursor", default=None, required=False),
         search_string: str | None = Parameter(
             title="Field to search",
             query="searchString",
@@ -178,28 +147,26 @@ class UserController(Controller):
             default=True,
             required=False,
         ),
-    ) -> OffsetPagination[UserResponse]:
+    ) -> CursorPage[UserResponse]:
         user = _require_user(request)
         db_user = await db_session.get(UserModel, user.id)
         if db_user is None:
             raise HTTPException(status_code=401, detail="User is not authenticated")
         _require_admin(db_user)
 
-        users_service = UserService(db_session)
-        filters: list[StatementFilter] = [
-            LimitOffset(page_size, page_size * (current_page - 1))
-        ]
-        if search_string:
-            filters.append(
-                SearchFilter(
-                    field_name={"email"},
-                    value=search_string,
-                    ignore_case=search_ignore_case,
-                )
-            )
-        results, total = await users_service.list_and_count(*filters)
-        return users_service.to_schema(
-            results, total, filters=filters, schema_type=UserResponse
+        paginator = UserCursorPaginator(
+            db_session=db_session,
+            search_string=search_string,
+            search_ignore_case=search_ignore_case,
+        )
+        page = await paginator(cursor=cursor, results_per_page=limit)
+        return CursorPage(
+            items=list(page.items),
+            page=CursorPageMeta(
+                next_cursor=page.cursor,
+                limit=page.results_per_page,
+                has_next=page.cursor is not None,
+            ),
         )
 
     @get(path="/{user_id:int}")
