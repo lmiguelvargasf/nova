@@ -215,14 +215,20 @@ tasks:
     cmds:
       - "{{.FRONTEND_TASK}} storybook:dev"
 
-  backend:worker:
+  worker:up:
     desc: Run backend worker
     deps: ["infra:up"]
     cmds:
       - "{{.BACKEND_TASK}} worker"
 
-  backend:beat:
+  beat:up:
     desc: Run backend beat
     deps: ["infra:up"]
     cmds:
       - "{{.BACKEND_TASK}} beat"
+
+  flower:up:
+    desc: Run Flower monitoring
+    deps: ["infra:up"]
+    cmds:
+      - "{{.BACKEND_TASK}} flower"

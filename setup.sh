@@ -129,8 +129,8 @@ main() {
   cat <<EOF
 Start services in separate terminals:
   task backend:dev
-  task backend:worker
-  task backend:beat
+  task worker:up
+  task beat:up
   task frontend:dev
 
 URLs:
