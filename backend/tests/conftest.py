@@ -86,6 +86,7 @@ def user_service_mock(mocker) -> UserService:
     service.get = mocker.AsyncMock()
     service.get_one_or_none = mocker.AsyncMock()
     service.create = mocker.AsyncMock()
+    service.list = mocker.AsyncMock()
     return service
 
 

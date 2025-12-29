@@ -129,3 +129,77 @@ class TestUserQueries:
 
         assert "errors" in result
         assert result["errors"][0]["message"] == "User is not authenticated"
+
+    async def test_users_connection(
+        self,
+        graphql_client,
+        user_service_mock,
+    ):
+        first_user = UserModel(
+            email="first@example.com",
+            password_hash="hashed",
+            first_name="First",
+            last_name="User",
+            is_admin=False,
+            is_active=True,
+        )
+        first_user.id = 1
+        second_user = UserModel(
+            email="second@example.com",
+            password_hash="hashed",
+            first_name="Second",
+            last_name="User",
+            is_admin=False,
+            is_active=True,
+        )
+        second_user.id = 2
+        user_service_mock.list.return_value = [first_user, second_user]
+
+        query = """
+        query Users($first: Int) {
+            users(first: $first) {
+                edges {
+                    node {
+                        id
+                        email
+                    }
+                }
+                pageInfo {
+                    hasNextPage
+                }
+            }
+        }
+        """
+
+        result = await graphql_client.query(query, variables={"first": 1})
+
+        assert "errors" not in result
+        edges = result["data"]["users"]["edges"]
+        assert len(edges) == 1
+        assert edges[0]["node"]["email"] == "first@example.com"
+        assert result["data"]["users"]["pageInfo"]["hasNextPage"] is True
+        user_service_mock.list.assert_called_once()
+
+    async def test_users_connection_unauthenticated(
+        self,
+        graphql_client,
+        current_user_mock,
+    ):
+        current_user_mock.id = None
+
+        query = """
+        query Users {
+            users {
+                edges {
+                    node {
+                        id
+                    }
+                }
+            }
+        }
+        """
+
+        result = await graphql_client.query(query)
+
+        assert "errors" in result
+        assert result["errors"][0]["message"] == "User is not authenticated"
