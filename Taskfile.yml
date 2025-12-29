@@ -194,3 +194,15 @@ tasks:
     desc: Run frontend storybook:dev
     cmds:
       - "{{.FRONTEND_TASK}} storybook:dev"
+
+  backend:worker:
+    desc: Run backend worker
+    deps: ["db:up"]
+    cmds:
+      - "{{.BACKEND_TASK}} worker"
+
+  backend:beat:
+    desc: Run backend beat
+    deps: ["db:up"]
+    cmds:
+      - "{{.BACKEND_TASK}} beat"

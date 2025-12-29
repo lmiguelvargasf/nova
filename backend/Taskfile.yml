@@ -84,3 +84,20 @@ tasks:
     desc: Create an admin user
     cmds:
       - uv run python -m backend.scripts.create_admin_user {{.CLI_ARGS}}
+
+  worker:
+    desc: Run Celery worker
+    deps: [migrate]
+    cmds:
+      - uv run celery -A backend.celery_app worker --loglevel info
+
+  beat:
+    desc: Run Celery beat
+    deps: [migrate]
+    cmds:
+      - uv run celery -A backend.celery_app beat --loglevel info
+
+  flower:
+    desc: Run Flower monitoring
+    cmds:
+      - uv run celery -A backend.celery_app flower

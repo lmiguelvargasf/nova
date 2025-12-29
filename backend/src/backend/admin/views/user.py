@@ -1,6 +1,9 @@
+from starlette.requests import Request
+from starlette_admin import action
 from starlette_admin.contrib.sqla import ModelView
 
 from backend.apps.users.models import UserModel
+from backend.apps.users.tasks import deactivate_inactive_users
 
 
 class UserAdminView(ModelView):
@@ -36,6 +39,21 @@ class UserAdminView(ModelView):
         "created_at",
         "updated_at",
     )
+
+    @action(
+        name="run_inactivity_sweep",
+        text="Run Inactivity Sweep",
+        confirmation=(
+            "This will trigger a background task to deactivate users who haven't "
+            "logged in for the configured cutoff days. "
+            "This runs globally, ignoring selection."
+        ),
+        submit_btn_text="Run Sweep",
+        submit_btn_class="btn-danger",
+    )
+    async def run_inactivity_sweep(self, request: Request, pks: list[object]) -> str:
+        deactivate_inactive_users.delay()
+        return "Inactivity sweep task has been queued."
 
 
 view = UserAdminView(UserModel, icon="fa fa-user")

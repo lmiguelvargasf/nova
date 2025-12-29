@@ -17,6 +17,8 @@ dependencies = [
   "pydantic-settings>=2.12.0",
   "starlette-admin>=0.16.0",
   "strawberry-graphql>=0.287.3",
+  "celery[redis]>=5.3.6",
+  "flower>=2.0.1",
 ]
 
 [build-system]
