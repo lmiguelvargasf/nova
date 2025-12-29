@@ -44,16 +44,21 @@ class UserAdminView(ModelView):
         name="run_inactivity_sweep",
         text="Run Inactivity Sweep",
         confirmation=(
-            "This will trigger a background task to deactivate users who haven't "
-            "logged in for the configured cutoff days. "
-            "This runs globally, ignoring selection."
+            "This will trigger a background task to deactivate selected users "
+            "that haven't logged in for the configured cutoff days."
         ),
         submit_btn_text="Run Sweep",
         submit_btn_class="btn-danger",
     )
     async def run_inactivity_sweep(self, request: Request, pks: list[object]) -> str:
-        deactivate_inactive_users.delay()
-        return "Inactivity sweep task has been queued."
+        # pks is a list of selected primary keys (ids)
+        user_ids = [int(str(pk)) for pk in pks] if pks else None
+
+        deactivate_inactive_users.delay(user_ids=user_ids)
+
+        if user_ids:
+            return f"Inactivity sweep queued for {len(user_ids)} selected users."
+        return "Inactivity sweep task has been queued for all users."
 
 
 view = UserAdminView(UserModel, icon="fa fa-user")
