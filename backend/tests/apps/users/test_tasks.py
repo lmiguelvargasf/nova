@@ -64,7 +64,7 @@ async def test_deactivate_inactive_users(
     await db_session.commit()
 
     # Run task
-    count = await _deactivate_inactive_users_async(cutoff_days)
+    count = await _deactivate_inactive_users_async(cutoff_days, engine=db_engine)
 
     assert count == 1
 
