@@ -3,10 +3,12 @@ from litestar import Litestar
 from litestar.config.compression import CompressionConfig
 from litestar.config.cors import CORSConfig
 from litestar.datastructures.state import State
+from litestar.middleware import DefineMiddleware
 from litestar.plugins import PluginProtocol
 from litestar.stores.memory import MemoryStore
 from litestar.types import ControllerRouterHandler
 from sqlalchemy.ext.asyncio import AsyncEngine
+from starlette.middleware.sessions import SessionMiddleware
 
 from .apps.users.controllers import AuthController, UserController
 from .auth.jwt import jwt_auth
@@ -52,14 +54,25 @@ def create_app(
 
         route_handlers.append(create_admin_handler(engine=admin_engine))
 
+    middleware = [*get_rate_limit_middlewares()]
+
+    # Add SessionMiddleware globally if admin is enabled
+    if enable_admin:
+        middleware.insert(
+            0,
+            DefineMiddleware(
+                SessionMiddleware,  # type: ignore[arg-type]
+                secret_key=settings.admin_session_secret,
+                same_site="lax",
+            ),
+        )
+
     return Litestar(
         route_handlers=route_handlers,
         plugins=plugins,
         cors_config=cors_config,
         compression_config=compression_config,
-        middleware=[
-            *get_rate_limit_middlewares(),
-        ],
+        middleware=middleware,
         state=State(app_state),
         stores={"rate_limit": MemoryStore()},
         on_app_init=[jwt_auth.on_app_init],

@@ -3,13 +3,11 @@ from litestar.handlers.asgi_handlers import ASGIRouteHandler
 from sqlalchemy.ext.asyncio import AsyncEngine
 from starlette.applications import Starlette
 from starlette.middleware import Middleware
-from starlette.middleware.sessions import SessionMiddleware
 from starlette.types import Receive, Scope, Send
 from starlette_admin import BaseAdmin
 from starlette_admin.contrib.sqla.middleware import DBSessionMiddleware
 
 from backend.config.alchemy import alchemy_config
-from backend.config.base import settings
 
 from .auth import BackendAdminAuthProvider
 from .views import ADMIN_VIEWS
@@ -26,11 +24,6 @@ def create_admin_handler(
         title="Admin",
         auth_provider=BackendAdminAuthProvider(),
         middlewares=[
-            Middleware(
-                SessionMiddleware,  # type: ignore[arg-type]
-                secret_key=settings.admin_session_secret,
-                same_site="lax",
-            ),
             Middleware(DBSessionMiddleware, engine=db_engine),  # type: ignore[arg-type]
         ],
     )

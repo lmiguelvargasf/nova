@@ -35,7 +35,15 @@ def _get_cached_subject(request: Request) -> str | None:
     return subject
 
 
+def _is_admin_user(request: Request) -> bool:
+    if "session" not in request.scope:
+        return False
+    return "admin_user_id" in request.session
+
+
 def _is_path_excluded(request: Request) -> bool:
+    if _is_admin_user(request):
+        return True
     path = request.url.path
     return any(path.startswith(excluded_path) for excluded_path in _EXCLUDED_PATHS)
 
