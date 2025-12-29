@@ -1,7 +1,6 @@
 from collections.abc import Iterable
 
 import strawberry
-from sqlalchemy import select
 from strawberry.types import Info
 
 from backend.apps.users.models import UserModel
@@ -37,11 +36,11 @@ class UserQuery:
         permission_classes=[IsAuthenticated],
     )
     async def users(self, info: Info[GraphQLContext, None]) -> Iterable[UserType]:
-        stmt = (
-            select(UserModel)
-            .where(UserModel.deleted_at.is_(None))
-            .order_by(UserModel.created_at.asc(), UserModel.id.asc())
+        users = await info.context.services.users.list(
+            UserModel.deleted_at.is_(None),
+            order_by=[
+                (UserModel.created_at, True),
+                (UserModel.id, True),
+            ],
         )
-        result = await info.context.db_session.execute(stmt)
-        users = list(result.scalars())
         return [UserType.from_model(u) for u in users]
