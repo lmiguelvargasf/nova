@@ -11,9 +11,47 @@ type Mutation {
   login(email: String!, password: String!): LoginResponse!
 }
 
+"""An object with a Globally Unique ID"""
+interface Node {
+  """The Globally Unique ID of this object"""
+  id: ID!
+}
+
+"""Information to aid in pagination."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
 type Query {
   me: UserType!
-  user(id: ID!): UserType!
+  userById(id: ID!): UserType!
+  users(
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+
+    """Returns the first n items from the list."""
+    first: Int = null
+
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): UserTypeConnection!
+  node(
+    """The ID of the object."""
+    id: ID!
+  ): Node!
 }
 
 input UpdateUserInput {
@@ -30,9 +68,28 @@ input UserInput {
   lastName: String!
 }
 
-type UserType {
+type UserType implements Node {
+  """The Globally Unique ID of this object"""
   id: ID!
   firstName: String!
   lastName: String!
   email: String!
+}
+
+"""A connection to a list of items."""
+type UserTypeConnection {
+  """Pagination data for this connection"""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection"""
+  edges: [UserTypeEdge!]!
+}
+
+"""An edge in a connection."""
+type UserTypeEdge {
+  """A cursor for use in pagination"""
+  cursor: String!
+
+  """The item at the end of the edge"""
+  node: UserType!
 }

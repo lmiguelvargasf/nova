@@ -7,7 +7,7 @@ from backend.config.base import settings
 
 @strawberry.type
 class Query(UserQuery):
-    pass
+    node: strawberry.relay.Node = strawberry.relay.node()
 
 
 @strawberry.type

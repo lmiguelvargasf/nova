@@ -83,31 +83,47 @@ class EntityService(service.SQLAlchemyAsyncRepositoryService[EntityModel]):
 ## 3. GraphQL Type (`graphql/types.py`)
 
 ```python
+from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import Self
 
 import strawberry
+from strawberry import relay
 
 from {app}.models import EntityModel
 
 
 @strawberry.type
 @dataclass
-class EntityType:
-    id: strawberry.ID
+class EntityType(relay.Node):
+    id: relay.NodeID[int]
     name: str
+
+    @classmethod
+    async def resolve_nodes(
+        cls,
+        *,
+        info: strawberry.Info,
+        node_ids: Iterable[str],
+        required: bool = False,
+    ):
+        # Resolve nodes in the same order as node_ids
+        # Prefer fetching in bulk and mapping back to preserve order.
+        ...
 
     @classmethod
     def from_model(cls, entity: EntityModel) -> Self:
         return cls(
-            id=strawberry.ID(str(entity.id)),
+            id=entity.id,
             name=entity.name,
         )
 ```
 
 - Use `@strawberry.type` + `@dataclass`
 - Implement `from_model()` class method for ORM → GraphQL conversion
-- Use `strawberry.ID` for ID fields
+- **Relay IDs**:
+  - Implement `relay.Node` and type the id field as `relay.NodeID[int]`
+  - Expose object lookup via the root `node(id: ID!)` field and/or a dedicated `*_by_id(id: ID!)` field that takes a Relay Global ID (GraphQL scalar name is `ID`)
 
 ## 4. GraphQL Input (`graphql/inputs.py`)
 
@@ -130,8 +146,6 @@ class EntityInput:
 
 ```python
 import strawberry
-from advanced_alchemy.exceptions import NotFoundError
-from graphql.error import GraphQLError
 from strawberry.types import Info
 
 from {app}.services import EntityService
@@ -142,20 +156,12 @@ from .types import EntityType
 @strawberry.type
 class EntityQuery:
     @strawberry.field
-    async def entity(self, info: Info, id: strawberry.ID) -> EntityType:
-        entity_id = int(id)
-        entity_service: EntityService = info.context["entity_service"]
-        try:
-            entity = await entity_service.get(entity_id)
-        except NotFoundError:
-            raise GraphQLError(f"Entity with id {entity_id} not found") from None
-        return EntityType.from_model(entity)
+    async def entity_by_id(self, info: Info, id: strawberry.relay.GlobalID) -> EntityType:
+        return await id.resolve_node(info, ensure_type=EntityType)
 ```
 
-- Use `@strawberry.type` class with `@strawberry.field` methods
-- Get service from `info.context`
-- Handle `NotFoundError` → `GraphQLError`
-- Return `EntityType.from_model()`
+- Prefer `*_by_id(id: strawberry.relay.GlobalID)` for details lookup (Relay Global ID; schema scalar is `ID`)
+- Prefer connection fields (`@strawberry.relay.connection(...)`) for lists/pagination when appropriate
 
 ## 6. GraphQL Mutation (`graphql/mutations.py`)
 

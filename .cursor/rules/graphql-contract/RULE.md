@@ -47,3 +47,11 @@ Whenever you modify backend types/resolvers or frontend `.graphql` documents:
 - **Breaking**: Removing/renaming fields, `Nullable -> Non-Null`, or adding required arguments.
 - **Safe**: Adding nullable fields, optional arguments, or new types.
 - **Protocol**: If a breaking change is required, you **must** update all affected frontend usages immediately after running codegen. Do not leave the frontend in a broken state.
+
+## 6) Relay IDs & List → Details
+- **Relay IDs**: Types implementing `strawberry.relay.Node` expose `id` as a Relay Global ID (base64 of `"TypeName:<node_id>"`).
+- **Best practice**:
+  - Use connection fields (e.g. `users`) for lists and store `node.id`.
+  - Use a dedicated GlobalID-based field (e.g. `userById(id: ID!)`) or `node(id: ID!)` to fetch details.
+    - Note: Strawberry uses the GraphQL scalar name `ID` for Relay Global IDs.
+- **Avoid mixing ID formats**: Keep legacy numeric-ID fields separate from GlobalID fields to prevent ambiguity.

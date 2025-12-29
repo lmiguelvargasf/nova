@@ -28,7 +28,7 @@ export default function UserCard({ userId }: { userId: string }) {
     return <ErrorMessage message={error.message} />;
   }
 
-  const user = data?.user;
+  const user = data?.userById;
   if (!user) {
     return <p>User with ID {userId} is not created or could not be found.</p>;
   }

@@ -1,21 +1,13 @@
+from collections.abc import Iterable
+
 import strawberry
-from advanced_alchemy.exceptions import NotFoundError
-from graphql.error import GraphQLError
 from strawberry.types import Info
 
 from backend.graphql.context import GraphQLContext
 from backend.graphql.permissions import IsAuthenticated
 
-from .errors import UserNotAuthenticatedError
+from .errors import UserNotAuthenticatedError, UserNotFoundError
 from .types import UserType
-
-
-class UserNotFoundError(GraphQLError):
-    def __init__(self, user_id: int) -> None:
-        super().__init__(
-            f"User with id {user_id} not found",
-            extensions={"code": "NOT_FOUND"},
-        )
 
 
 @strawberry.type
@@ -28,12 +20,17 @@ class UserQuery:
         return UserType.from_model(user)
 
     @strawberry.field(permission_classes=[IsAuthenticated])
-    async def user(
-        self, info: Info[GraphQLContext, None], id: strawberry.ID
+    async def user_by_id(
+        self,
+        info: Info[GraphQLContext, None],
+        id: strawberry.relay.GlobalID,
     ) -> UserType:
-        user_id = int(id)
         try:
-            user = await info.context.services.users.get(user_id)
-        except NotFoundError:
-            raise UserNotFoundError(user_id) from None
-        return UserType.from_model(user)
+            return await id.resolve_node(info, ensure_type=UserType)
+        except TypeError as e:
+            raise UserNotFoundError(str(id)) from e
+
+    @strawberry.relay.connection(strawberry.relay.ListConnection[UserType])
+    async def users(self, info: Info[GraphQLContext, None]) -> Iterable[UserType]:
+        users = await info.context.services.users.list()
+        return [UserType.from_model(u) for u in users]

@@ -1,4 +1,4 @@
-from advanced_alchemy.exceptions import NotFoundError
+from strawberry.relay.utils import to_base64
 
 from backend.apps.users.models import UserModel
 
@@ -22,7 +22,7 @@ class TestUserQueries:
         assert "data" in result
         me_data = result["data"]["me"]
         assert me_data == {
-            "id": "1",
+            "id": to_base64("UserType", "1"),
             "firstName": "Test",
             "lastName": "User",
             "email": "test@example.com",
@@ -46,10 +46,11 @@ class TestUserQueries:
         assert "errors" in result
         assert result["errors"][0]["message"] == "User is not authenticated"
 
-    async def test_get_user_by_id(
+    async def test_get_user_by_global_id(
         self,
         user_service_mock,
         graphql_client,
+        mocker,
     ):
         mock_user = UserModel(
             email="test@example.com",
@@ -60,11 +61,12 @@ class TestUserQueries:
             is_active=True,
         )
         mock_user.id = 1
-        user_service_mock.get.return_value = mock_user
+
+        user_service_mock.list = mocker.AsyncMock(return_value=[mock_user])
 
         query = """
-        query GetUser($id: ID!) {
-            user(id: $id) {
+        query GetUserById($id: ID!) {
+            userById(id: $id) {
                 id
                 firstName
                 lastName
@@ -73,59 +75,61 @@ class TestUserQueries:
         }
         """
 
-        result = await graphql_client.query(query, variables={"id": "1"})
+        global_id = to_base64("UserType", "1")
+        result = await graphql_client.query(query, variables={"id": global_id})
 
         assert "errors" not in result
-        assert "data" in result
-
-        user_data = result["data"]["user"]
-        assert user_data is not None
-        expected_data = {
-            "id": "1",
+        assert result["data"]["userById"] == {
+            "id": global_id,
             "firstName": "Test",
             "lastName": "User",
             "email": "test@example.com",
         }
-        assert user_data == expected_data
 
-        user_service_mock.get.assert_called_once_with(1)
+        user_service_mock.list.assert_called_once()
+        assert user_service_mock.list.call_args.kwargs.get("id__in") == [1]
 
-    async def test_get_user_by_id_not_found(
-        self, user_service_mock, graphql_client, current_user_mock
+    async def test_get_user_by_global_id_unauthenticated(
+        self,
+        graphql_client,
+        current_user_mock,
     ):
-        user_service_mock.get.side_effect = NotFoundError(
-            "No item found when one was expected"
-        )
-
-        query = """
-        query GetUser($id: ID!) {
-            user(id: $id) {
-                id
-                email
-            }
-        }
-        """
-
-        result = await graphql_client.query(query, variables={"id": "999"})
-
-        assert "errors" in result
-        assert len(result["errors"]) == 1
-        assert "User with id 999 not found" in result["errors"][0]["message"]
-        user_service_mock.get.assert_called_once_with(999)
-
-    async def test_get_user_unauthenticated(self, graphql_client, current_user_mock):
         current_user_mock.id = None
 
         query = """
-        query GetUser($id: ID!) {
-            user(id: $id) {
+        query GetUserById($id: ID!) {
+            userById(id: $id) {
                 id
-                email
             }
         }
         """
 
-        result = await graphql_client.query(query, variables={"id": "1"})
+        global_id = to_base64("UserType", "1")
+        result = await graphql_client.query(query, variables={"id": global_id})
 
         assert "errors" in result
         assert result["errors"][0]["message"] == "User is not authenticated"
+
+    async def test_get_user_by_global_id_not_found(
+        self,
+        user_service_mock,
+        graphql_client,
+        mocker,
+    ):
+        user_service_mock.list = mocker.AsyncMock(return_value=[])
+
+        query = """
+        query GetUserById($id: ID!) {
+            userById(id: $id) {
+                id
+            }
+        }
+        """
+
+        global_id = to_base64("UserType", "999")
+        result = await graphql_client.query(query, variables={"id": global_id})
+
+        assert "errors" in result
+        assert result["errors"][0]["message"] == "User not found"
+
+    # Note: legacy `user(id: ID!)` query was removed in favor of Relay Global IDs.
