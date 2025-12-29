@@ -1,0 +1,8 @@
+query GetLatestUsers($limit: Int = 5) {
+  latestUsers(limit: $limit) {
+    id
+    firstName
+    lastName
+    email
+  }
+}

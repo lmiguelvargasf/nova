@@ -48,6 +48,7 @@ type Query {
     """Returns the items in the list that come after the specified cursor."""
     last: Int = null
   ): UserTypeConnection!
+  latestUsers(limit: Int! = 5): [UserType!]!
   node(
     """The ID of the object."""
     id: ID!

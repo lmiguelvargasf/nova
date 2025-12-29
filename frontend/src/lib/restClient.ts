@@ -113,3 +113,8 @@ export async function restSoftDeleteMe(): Promise<RestDeleteResponse> {
 export async function restGetUserById(userId: string): Promise<RestUser> {
   return restRequest(`/users/${encodeURIComponent(userId)}`);
 }
+
+export async function restGetLatestUsers(limit = 5): Promise<RestUser[]> {
+  const params = new URLSearchParams({ limit: String(limit) });
+  return restRequest(`/users/latest?${params.toString()}`);
+}

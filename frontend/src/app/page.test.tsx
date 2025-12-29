@@ -18,6 +18,10 @@ vi.mock("@/features/users/CurrentUserCard.client", () => ({
   default: () => <div>Mocked user card</div>,
 }));
 
+vi.mock("@/features/users/LatestUsersCard.client", () => ({
+  default: () => <div>Mocked latest users</div>,
+}));
+
 vi.mock("@/features/users/UserCreator.client", () => ({
   default: () => <div>Mocked user creator</div>,
 }));
@@ -34,7 +38,7 @@ test("renders the nova home content", async () => {
     screen.getByText(/GraphQL-first full-stack template/i),
   ).toBeInTheDocument();
   expect(
-    screen.getByRole("heading", { name: /Core stack/i }),
+    screen.getByRole("heading", { name: /Latest registrations/i }),
   ).toBeInTheDocument();
   expect(screen.getByRole("link", { name: /Login/i })).toBeInTheDocument();
   expect(screen.getByRole("link", { name: /Sign Up/i })).toBeInTheDocument();

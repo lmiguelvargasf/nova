@@ -1,8 +1,10 @@
 from collections.abc import Iterable
 
 import strawberry
+from sqlalchemy import select
 from strawberry.types import Info
 
+from backend.apps.users.models import UserModel
 from backend.graphql.context import GraphQLContext
 from backend.graphql.permissions import IsAuthenticated
 
@@ -36,4 +38,20 @@ class UserQuery:
     )
     async def users(self, info: Info[GraphQLContext, None]) -> Iterable[UserType]:
         users = await info.context.services.users.list()
+        return [UserType.from_model(u) for u in users]
+
+    @strawberry.field(permission_classes=[IsAuthenticated])
+    async def latest_users(
+        self,
+        info: Info[GraphQLContext, None],
+        limit: int = 5,
+    ) -> list[UserType]:
+        stmt = (
+            select(UserModel)
+            .where(UserModel.deleted_at.is_(None))
+            .order_by(UserModel.created_at.desc(), UserModel.id.desc())
+            .limit(limit)
+        )
+        result = await info.context.db_session.execute(stmt)
+        users = list(result.scalars())
         return [UserType.from_model(u) for u in users]
