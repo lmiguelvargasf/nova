@@ -10,7 +10,7 @@
 ![Docker](https://img.shields.io/badge/Docker-0074D9?style=for-the-badge&logo=docker&logoColor=white)
 ![Task](https://img.shields.io/badge/Task-43B883?style=for-the-badge&logo=task&logoColor=white)
 
-A full-stack application template with a Python (Litestar) backend and a TypeScript (Next.js) frontend, connected via GraphQL. Ideal for hackathons and rapid prototyping, designed to smoothly evolve from a PoC into an MVP.
+A full-stack application template with a Python (Litestar) backend and a TypeScript (Next.js) frontend, connected via GraphQL and REST. Ideal for hackathons and rapid prototyping, designed to smoothly evolve from a PoC into an MVP.
 
 ## 📚 Table of Contents
 
