@@ -39,7 +39,30 @@ alwaysApply: false
 ## 6) GraphQL & Contracts
 - If you change GraphQL behavior/schema: call it out, confirm if it impacts the contract, then run the repo’s codegen workflow (`task frontend:codegen`) so the frontend stays in sync.
 
-## 7) Validation Workflow
+## 7) REST Endpoints (Litestar Controllers)
+- REST endpoints live in `backend/src/backend/apps/**/controllers.py` and should use Litestar `Controller` classes.
+- Prefer `msgspec.Struct` for request/response bodies (Pydantic only for settings).
+- Keep handlers thin; move non-trivial logic into `services.py`.
+
+Example:
+```python
+from msgspec import Struct
+from litestar import Controller, get
+
+
+class HealthResponse(Struct):
+    status: str
+
+
+class HealthController(Controller):
+    path = "/api/health"
+
+    @get(path="")
+    async def health(self) -> HealthResponse:
+        return HealthResponse(status="ok")
+```
+
+## 8) Validation Workflow
 Before declaring a backend task complete:
 - **Run**:
   - `task backend:format`

@@ -10,7 +10,7 @@
 ![Docker](https://img.shields.io/badge/Docker-0074D9?style=for-the-badge&logo=docker&logoColor=white)
 ![Task](https://img.shields.io/badge/Task-43B883?style=for-the-badge&logo=task&logoColor=white)
 
-A full-stack application template with a Python (Litestar) backend and a TypeScript (Next.js) frontend, connected via GraphQL. Ideal for hackathons and rapid prototyping, designed to smoothly evolve from a PoC into an MVP.
+A full-stack application template with a Python (Litestar) backend and a TypeScript (Next.js) frontend, connected via GraphQL and REST. Ideal for hackathons and rapid prototyping, designed to smoothly evolve from a PoC into an MVP.
 
 ## 📚 Table of Contents
 
@@ -29,7 +29,8 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 - **[Python][]** – Core programming language for backend.
 - **[Litestar][]** – High-performance ASGI framework for modern Python web apps.
 - **[Advanced Alchemy][advanced-alchemy]** – SQLAlchemy integration (async) + migrations tooling.
-- **[GraphQL][]** – API query language providing a more efficient alternative to REST.
+- **[GraphQL][]** – API query language for flexible data fetching.
+- **[REST][]** – Stateless, resource-oriented APIs over HTTP using JSON and standard verbs
 - **[PostgreSQL][]** – Advanced open-source relational database known for reliability.
 - **[uv][]** – Ultra-fast Python package and project manager.
 - **[ruff][]** – Extremely fast Python linter and code formatter.
@@ -214,6 +215,7 @@ This project is licensed under the [MIT License](./LICENSE).
 [pre-commit]: https://pre-commit.com/
 [python]: https://www.python.org/
 [releases]: https://github.com/lmiguelvargasf/nova/releases
+[rest]: https://restfulapi.net/
 [ruff]: https://docs.astral.sh/ruff/
 [storybook]: https://storybook.js.org/
 [tailwind]: https://tailwindcss.com/
