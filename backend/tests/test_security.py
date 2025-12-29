@@ -63,7 +63,9 @@ async def test_graphql_query_depth_limit(graphql_client):
     # A simple way is to use a very deep nesting that doesn't necessarily exist
     # but will be caught by the parser/depth limiter before execution.
 
-    deep_query = "query { " + 'user(id: "1") { ' * 11 + "id" + " }" * 11 + " }"
+    deep_query = (
+        "query { " + 'node(id: "VXNlclR5cGU6MQ==") { ' * 11 + "id" + " }" * 11 + " }"
+    )
 
     response = await graphql_client.query(deep_query)
 
@@ -79,7 +81,7 @@ async def test_graphql_query_depth_allowed(graphql_client, mocker):
     # This query has depth 2 (Query -> user -> id) which is < 10
     query = """
     query {
-      user(id: "1") {
+      node(id: "VXNlclR5cGU6MQ==") {
         id
       }
     }

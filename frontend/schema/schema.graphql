@@ -34,7 +34,7 @@ type PageInfo {
 
 type Query {
   me: UserType!
-  user(id: ID!): UserType!
+  userById(id: ID!): UserType!
   users(
     """Returns the items in the list that come before the specified cursor."""
     before: String = null
