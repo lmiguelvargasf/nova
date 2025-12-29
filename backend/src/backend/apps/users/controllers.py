@@ -162,7 +162,11 @@ class UserController(Controller):
         page = await paginator(cursor=cursor, results_per_page=limit)
         return CursorPage(
             items=list(page.items),
-            page=CursorPageMeta(next_cursor=page.cursor, limit=page.results_per_page),
+            page=CursorPageMeta(
+                next_cursor=page.cursor,
+                limit=page.results_per_page,
+                has_next=page.cursor is not None,
+            ),
         )
 
     @get(path="/{user_id:int}")

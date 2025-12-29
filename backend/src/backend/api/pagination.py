@@ -11,6 +11,7 @@ T = TypeVar("T")
 class CursorPageMeta(Struct):
     next_cursor: str | None
     limit: int
+    has_next: bool
 
 
 class CursorPage[T](Struct):

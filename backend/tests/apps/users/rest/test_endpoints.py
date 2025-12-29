@@ -184,6 +184,7 @@ async def test_rest_list_users_cursor_pagination(
     data1 = response1.json()
     assert len(data1["items"]) == 5
     assert data1["page"]["limit"] == 5
+    assert data1["page"]["has_next"] is True
     assert data1["page"]["next_cursor"]
 
     cursor = data1["page"]["next_cursor"]
@@ -196,8 +197,21 @@ async def test_rest_list_users_cursor_pagination(
     assert response2.status_code == HTTP_200_OK
     data2 = response2.json()
     assert len(data2["items"]) == 5
+    assert data2["page"]["has_next"] is True
+    assert data2["page"]["next_cursor"]
     emails2 = {u["email"] for u in data2["items"]}
     assert emails1.isdisjoint(emails2)
+
+    cursor2 = data2["page"]["next_cursor"]
+    response3 = await rest_client.get(
+        f"/api/users?limit=5&cursor={cursor2}",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response3.status_code == HTTP_200_OK
+    data3 = response3.json()
+    assert len(data3["items"]) == 3
+    assert data3["page"]["has_next"] is False
+    assert data3["page"]["next_cursor"] is None
 
 
 async def test_rest_list_users_invalid_cursor(
