@@ -55,7 +55,6 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 - **[mise][]** – Manages tool versions.
 - **[Task][]** – Task runner designed for modern workflows.
 - **[pre-commit][]** – Manages and runs automated Git hooks.
-- **[Flower][]** – Real-time monitoring for Celery workers.
 
 ## 🚀 Getting Started
 
