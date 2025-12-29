@@ -227,7 +227,7 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} beat"
 
-  flower:up:
+  flower:dev:
     desc: Run Flower monitoring
     deps: ["infra:up"]
     cmds:
