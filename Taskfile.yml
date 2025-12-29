@@ -99,6 +99,11 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} check"
 
+  backend:typecheck:
+    desc: Run backend typecheck
+    cmds:
+      - "{{.BACKEND_TASK}} typecheck"
+
   backend:test:
     desc: Run backend test
     deps: ["db:up"]
