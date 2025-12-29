@@ -230,6 +230,34 @@ async def test_rest_list_users_invalid_cursor(
     assert response.status_code == HTTP_400_BAD_REQUEST
 
 
+async def test_rest_list_users_cursor_filter_mismatch(
+    rest_client: AsyncTestClient[Litestar],
+    db_sessionmaker,
+) -> None:
+    admin = await _create_user(
+        db_sessionmaker, email="admin4@example.com", is_admin=True
+    )
+    token = jwt_auth.create_token(identifier=str(admin.id))
+
+    for i in range(3):
+        await _create_user(db_sessionmaker, email=f"filter-{i}@example.com")
+
+    response1 = await rest_client.get(
+        "/api/users?limit=2&searchString=filter",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response1.status_code == HTTP_200_OK
+    cursor = response1.json()["page"]["next_cursor"]
+    assert cursor
+
+    # Change filters while reusing cursor should be rejected
+    response2 = await rest_client.get(
+        f"/api/users?limit=2&cursor={cursor}&searchString=other",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response2.status_code == HTTP_400_BAD_REQUEST
+
+
 async def test_rest_list_users_limit_too_large(
     rest_client: AsyncTestClient[Litestar],
     db_sessionmaker,
