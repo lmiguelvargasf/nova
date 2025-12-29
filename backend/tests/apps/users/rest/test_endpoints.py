@@ -164,6 +164,74 @@ async def test_rest_list_users_non_admin(
     assert response.status_code == HTTP_403_FORBIDDEN
 
 
+async def test_rest_list_users_cursor_pagination(
+    rest_client: AsyncTestClient[Litestar],
+    db_sessionmaker,
+) -> None:
+    admin = await _create_user(
+        db_sessionmaker, email="admin@example.com", is_admin=True
+    )
+    token = jwt_auth.create_token(identifier=str(admin.id))
+
+    for i in range(12):
+        await _create_user(db_sessionmaker, email=f"user-{i}@example.com")
+
+    response1 = await rest_client.get(
+        "/api/users?limit=5",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response1.status_code == HTTP_200_OK
+    data1 = response1.json()
+    assert len(data1["items"]) == 5
+    assert data1["page"]["limit"] == 5
+    assert data1["page"]["next_cursor"]
+
+    cursor = data1["page"]["next_cursor"]
+    emails1 = {u["email"] for u in data1["items"]}
+
+    response2 = await rest_client.get(
+        f"/api/users?limit=5&cursor={cursor}",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response2.status_code == HTTP_200_OK
+    data2 = response2.json()
+    assert len(data2["items"]) == 5
+    emails2 = {u["email"] for u in data2["items"]}
+    assert emails1.isdisjoint(emails2)
+
+
+async def test_rest_list_users_invalid_cursor(
+    rest_client: AsyncTestClient[Litestar],
+    db_sessionmaker,
+) -> None:
+    admin = await _create_user(
+        db_sessionmaker, email="admin2@example.com", is_admin=True
+    )
+    token = jwt_auth.create_token(identifier=str(admin.id))
+
+    response = await rest_client.get(
+        "/api/users?limit=5&cursor=not-a-cursor",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response.status_code == HTTP_400_BAD_REQUEST
+
+
+async def test_rest_list_users_limit_too_large(
+    rest_client: AsyncTestClient[Litestar],
+    db_sessionmaker,
+) -> None:
+    admin = await _create_user(
+        db_sessionmaker, email="admin3@example.com", is_admin=True
+    )
+    token = jwt_auth.create_token(identifier=str(admin.id))
+
+    response = await rest_client.get(
+        "/api/users?limit=101",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response.status_code == HTTP_400_BAD_REQUEST
+
+
 async def test_rest_update_me_invalid_input(
     rest_client: AsyncTestClient[Litestar],
     user: UserModel,
