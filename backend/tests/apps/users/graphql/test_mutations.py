@@ -1,4 +1,10 @@
+from strawberry import relay
+
 from backend.apps.users.models import UserModel
+
+
+def user_gid(user_id: int) -> str:
+    return relay.to_base64("UserType", str(user_id))
 
 
 class TestUserMutations:
@@ -41,7 +47,7 @@ class TestUserMutations:
         assert "data" in result
         assert "createUser" in result["data"]
         expected_user_data = {
-            "id": "1",
+            "id": user_gid(1),
             "firstName": "New",
             "lastName": "User",
             "email": "new@example.com",
@@ -138,7 +144,7 @@ class TestUserMutations:
         assert "errors" not in result
         assert "data" in result
         expected_user_data = {
-            "id": "1",
+            "id": user_gid(1),
             "firstName": "Updated",
             "lastName": "User",
             "email": "updated@example.com",

@@ -39,7 +39,10 @@ class UserQuery:
             raise UserNotFoundError(user_id) from None
         return UserType.from_model(user)
 
-    @relay.connection(permission_classes=[IsAuthenticated])
+    @relay.connection(
+        relay.ListConnection[UserType],
+        permission_classes=[IsAuthenticated],
+    )
     async def users(self, info: Info[GraphQLContext, None]) -> list[UserType]:
         users = await info.context.services.users.list()
         return [UserType.from_model(user) for user in users]
