@@ -8,7 +8,7 @@ from litestar.security.jwt import Token
 
 from backend.config.base import settings
 
-_EXCLUDED_PATHS = {"/health", "/schema"}
+_EXCLUDED_PATHS = {"/health", "/schema", "/admin"}
 
 
 def _get_cached_subject(request: Request) -> str | None:
@@ -36,7 +36,8 @@ def _get_cached_subject(request: Request) -> str | None:
 
 
 def _is_path_excluded(request: Request) -> bool:
-    return request.url.path in _EXCLUDED_PATHS
+    path = request.url.path
+    return any(path.startswith(excluded_path) for excluded_path in _EXCLUDED_PATHS)
 
 
 def _is_authenticated(request: Request) -> bool:
