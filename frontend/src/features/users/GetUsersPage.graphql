@@ -1,0 +1,16 @@
+query GetUsersPage($first: Int = 5, $after: String) {
+  users(first: $first, after: $after) {
+    edges {
+      node {
+        id
+        firstName
+        lastName
+        email
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}

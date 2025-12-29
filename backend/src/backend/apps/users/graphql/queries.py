@@ -3,6 +3,7 @@ from collections.abc import Iterable
 import strawberry
 from strawberry.types import Info
 
+from backend.apps.users.models import UserModel
 from backend.graphql.context import GraphQLContext
 from backend.graphql.permissions import IsAuthenticated
 
@@ -35,5 +36,11 @@ class UserQuery:
         permission_classes=[IsAuthenticated],
     )
     async def users(self, info: Info[GraphQLContext, None]) -> Iterable[UserType]:
-        users = await info.context.services.users.list()
+        users = await info.context.services.users.list(
+            UserModel.deleted_at.is_(None),
+            order_by=[
+                (UserModel.created_at, True),
+                (UserModel.id, True),
+            ],
+        )
         return [UserType.from_model(u) for u in users]
