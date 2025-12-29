@@ -36,6 +36,7 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 - **[PostgreSQL][]** – Advanced open-source relational database known for reliability.
 - **[Redis][]** – In-memory data store used as a message broker for background tasks.
 - **[Celery][]** – Distributed task queue for handling asynchronous background jobs.
+- **[Flower][]** – Real-time monitoring for Celery workers.
 - **[uv][]** – Ultra-fast Python package and project manager.
 - **[ruff][]** – Extremely fast Python linter and code formatter.
 - **[ty][]** – Fast, type-safe Python type checker.
@@ -54,6 +55,7 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 - **[mise][]** – Manages tool versions.
 - **[Task][]** – Task runner designed for modern workflows.
 - **[pre-commit][]** – Manages and runs automated Git hooks.
+- **[Flower][]** – Real-time monitoring for Celery workers.
 
 ## 🚀 Getting Started
 
@@ -164,11 +166,17 @@ task frontend:dev
     task beat:dev
     ```
 
+1. Start monitoring (optional):
+    ```bash
+    task flower:up
+    ```
+
 The services will be available at:
 - [Frontend Application](http://localhost:3000)
 - [Backend Health Check](http://localhost:8000/health)
 - [Admin UI](http://localhost:8000/admin)
 - [GraphQL Endpoint (GraphiQL)](http://localhost:8000/graphql)
+- [Flower Monitoring](http://localhost:5555)
 
 ## 💻 Developer Experience
 
@@ -220,6 +228,7 @@ This project is licensed under the [MIT License](./LICENSE).
 [biome]: https://biomejs.dev/
 [celery]: https://docs.celeryq.dev/
 [docker-desktop]: https://www.docker.com/products/docker-desktop/
+[flower]: https://flower.readthedocs.io/
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
 [mise]: https://mise.jdx.dev/
