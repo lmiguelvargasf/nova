@@ -139,6 +139,11 @@ task frontend:dev
     task backend:dev
     ```
 
+1. Create an initial admin user:
+    ```bash
+    task backend:create-admin-user
+    ```
+
 1. Generate frontend code based on the backend API:
     ```bash
     task frontend:codegen
@@ -149,9 +154,14 @@ task frontend:dev
     task frontend:dev
     ```
 
-1. Create an initial admin user:
+1. Start background worker:
     ```bash
-    task backend:create-admin-user
+    task worker:dev
+    ```
+
+1. Start periodic task scheduler:
+    ```bash
+    task beat:dev
     ```
 
 The services will be available at:
