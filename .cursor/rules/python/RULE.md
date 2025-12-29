@@ -79,6 +79,15 @@ alwaysApply: true
   - For details lookup, prefer `*_by_id(id: strawberry.relay.GlobalID)` (or `Query.node(id: ID!)`) instead of `int(id)` parsing.
   - For lists, prefer Relay connections (`@strawberry.relay.connection(...)`) and use `node.id` for list → details navigation.
 
+## 7.1) REST Pagination (Litestar)
+- Prefer **cursor/keyset pagination** for list endpoints (scalable; avoids deep offsets).
+- Endpoint contract:
+  - Request: `limit` (bounded) and optional opaque `cursor`
+  - Response: `{ items: [...], page: { next_cursor, limit, has_next } }`
+- Cursor should be opaque and validated:
+  - reject malformed/tampered cursors with 400
+  - reject cursor reuse when filters/sort change with 400 (client must reset pagination)
+
 ## 8) Errors Must Not Disappear (With Narrow Exceptions)
 - Do not swallow exceptions.
 - Only catch exceptions you can handle meaningfully; otherwise re-raise.

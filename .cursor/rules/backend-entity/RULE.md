@@ -163,6 +163,12 @@ class EntityQuery:
 - Prefer `*_by_id(id: strawberry.relay.GlobalID)` for details lookup (Relay Global ID; schema scalar is `ID`)
 - Prefer connection fields (`@strawberry.relay.connection(...)`) for lists/pagination when appropriate
 
+## 5.1 REST List Pagination (Litestar)
+When adding REST list endpoints for an entity, prefer cursor pagination:
+- Request: `limit` + optional `cursor`
+- Response: `{ items: [...], page: { next_cursor, limit, has_next } }`
+- Use Litestar’s `AbstractAsyncCursorPaginator` for the list implementation.
+
 ## 6. GraphQL Mutation (`graphql/mutations.py`)
 
 ```python
