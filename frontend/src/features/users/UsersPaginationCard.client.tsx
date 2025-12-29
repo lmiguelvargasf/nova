@@ -93,11 +93,14 @@ export function UsersPaginationSkeleton() {
 function PaginationFooter(props: {
   pageIndex: number;
   hasNext: boolean;
+  hasPrev: boolean;
   isLoading?: boolean;
+  onPrev: () => void;
   onNext: () => void;
   onReset: () => void;
 }) {
-  const { pageIndex, hasNext, isLoading, onNext, onReset } = props;
+  const { pageIndex, hasNext, hasPrev, isLoading, onPrev, onNext, onReset } =
+    props;
 
   return (
     <div className="flex items-center justify-between border-t border-slate-200/70 pt-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 dark:border-white/10">
@@ -109,7 +112,15 @@ function PaginationFooter(props: {
           disabled={pageIndex === 0 || isLoading}
           className="rounded-full border border-slate-200 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500 transition enabled:hover:bg-slate-100 disabled:opacity-40 dark:border-white/10 dark:text-slate-300 dark:enabled:hover:bg-white/10"
         >
-          Start over
+          First page
+        </button>
+        <button
+          type="button"
+          onClick={onPrev}
+          disabled={!hasPrev || isLoading}
+          className="rounded-full border border-slate-200 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500 transition enabled:hover:bg-slate-100 disabled:opacity-40 dark:border-white/10 dark:text-slate-300 dark:enabled:hover:bg-white/10"
+        >
+          Previous
         </button>
         <button
           type="button"
@@ -125,8 +136,9 @@ function PaginationFooter(props: {
 }
 
 function UsersPaginationGraphQL() {
-  const [after, setAfter] = useState<string | null>(null);
-  const [pageIndex, setPageIndex] = useState(0);
+  const [afterStack, setAfterStack] = useState<(string | null)[]>([null]);
+  const after = afterStack[afterStack.length - 1] ?? null;
+  const pageIndex = afterStack.length - 1;
   const { data, error } = useSuspenseQuery(GetUsersPageDocument, {
     variables: { first: PAGE_SIZE, after },
     errorPolicy: "all",
@@ -146,16 +158,19 @@ function UsersPaginationGraphQL() {
   const pageInfo = data?.users.pageInfo;
   const nextCursor = pageInfo?.endCursor ?? null;
   const hasNext = pageInfo?.hasNextPage ?? false;
+  const hasPrev = afterStack.length > 1;
 
   const handleNext = () => {
     if (!nextCursor) return;
-    setAfter(nextCursor);
-    setPageIndex((prev) => prev + 1);
+    setAfterStack((prev) => [...prev, nextCursor]);
+  };
+
+  const handlePrev = () => {
+    setAfterStack((prev) => (prev.length > 1 ? prev.slice(0, -1) : prev));
   };
 
   const handleReset = () => {
-    setAfter(null);
-    setPageIndex(0);
+    setAfterStack([null]);
   };
 
   return (
@@ -164,6 +179,8 @@ function UsersPaginationGraphQL() {
       <PaginationFooter
         pageIndex={pageIndex}
         hasNext={hasNext}
+        hasPrev={hasPrev}
+        onPrev={handlePrev}
         onNext={handleNext}
         onReset={handleReset}
       />
@@ -172,13 +189,15 @@ function UsersPaginationGraphQL() {
 }
 
 function UsersPaginationRest() {
-  const [cursor, setCursor] = useState<string | null>(null);
-  const [pageIndex, setPageIndex] = useState(0);
+  const [cursorStack, setCursorStack] = useState<(string | null)[]>([null]);
+  const cursor = cursorStack[cursorStack.length - 1] ?? null;
+  const pageIndex = cursorStack.length - 1;
   const [users, setUsers] = useState<UserEntry[]>([]);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [hasNext, setHasNext] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const hasPrev = cursorStack.length > 1;
 
   useEffect(() => {
     let active = true;
@@ -224,13 +243,15 @@ function UsersPaginationRest() {
 
   const handleNext = () => {
     if (!nextCursor) return;
-    setCursor(nextCursor);
-    setPageIndex((prev) => prev + 1);
+    setCursorStack((prev) => [...prev, nextCursor]);
+  };
+
+  const handlePrev = () => {
+    setCursorStack((prev) => (prev.length > 1 ? prev.slice(0, -1) : prev));
   };
 
   const handleReset = () => {
-    setCursor(null);
-    setPageIndex(0);
+    setCursorStack([null]);
   };
 
   return (
@@ -239,7 +260,9 @@ function UsersPaginationRest() {
       <PaginationFooter
         pageIndex={pageIndex}
         hasNext={hasNext}
+        hasPrev={hasPrev}
         isLoading={loading}
+        onPrev={handlePrev}
         onNext={handleNext}
         onReset={handleReset}
       />
