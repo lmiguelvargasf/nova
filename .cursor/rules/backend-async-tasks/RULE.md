@@ -12,6 +12,7 @@ This project uses **Celery** for handling asynchronous background jobs and **Cel
 -   Tasks MUST be defined in a `tasks.py` file within the relevant application module (e.g., `backend/src/backend/apps/users/tasks.py`).
 -   Decorate tasks with `@app.task` imported from `backend.celery_app`.
 -   Tasks MUST return a typed result (e.g., `int`, `None`).
+-   Task-specific business parameters (like “inactive cutoff days”) SHOULD be kept local to the task unless you explicitly need environment-level tuning.
 
 ### Example
 
@@ -62,5 +63,5 @@ app.conf.beat_schedule = {
 
 ## 4. Testing
 
--   When testing tasks, allow dependency injection of the engine or session to ensure tests run within the test transaction rollback scope.
+-   When testing tasks, prefer dependency injection of a real `AsyncSession` to keep the test DB transaction deterministic.
 -   See `backend/tests/apps/users/test_tasks.py` for examples.

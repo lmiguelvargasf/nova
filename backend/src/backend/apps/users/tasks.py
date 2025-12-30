@@ -1,19 +1,40 @@
 import asyncio
 import datetime
 
+from celery.app.task import Task
+from celery.utils.log import get_task_logger
 from sqlalchemy import and_, or_, update
+from sqlalchemy.exc import DBAPIError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.apps.users.models import UserModel
 from backend.celery_app import app, get_task_session
 
+logger = get_task_logger(__name__)
 
-@app.task
+
+@app.task(
+    bind=True,
+    autoretry_for=(DBAPIError,),
+    retry_backoff=True,
+    retry_jitter=True,
+    retry_kwargs={"max_retries": 5},
+)
 def deactivate_inactive_users(
+    self: Task,
     cutoff_days: int = 7,
     user_ids: list[int] | None = None,
 ) -> int:
-    return asyncio.run(_deactivate_inactive_users_async(cutoff_days, user_ids))
+    task_id = getattr(self.request, "id", None)
+    logger.info(
+        "deactivate_inactive_users start task_id=%s cutoff_days=%s user_ids_count=%s",
+        task_id,
+        cutoff_days,
+        len(user_ids) if user_ids else None,
+    )
+    count = asyncio.run(_deactivate_inactive_users_async(cutoff_days, user_ids))
+    logger.info("deactivate_inactive_users done task_id=%s updated=%s", task_id, count)
+    return count
 
 
 async def _deactivate_inactive_users_async(

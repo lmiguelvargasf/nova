@@ -1,5 +1,6 @@
+import asyncio
 from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
 
 from celery import Celery, signals
 from celery.schedules import crontab
@@ -15,6 +16,11 @@ app.conf.update(
     result_backend=settings.celery_result_backend,
     timezone=settings.celery_timezone,
     enable_utc=True,
+    broker_connection_retry_on_startup=True,
+    result_expires=settings.celery_result_expires_seconds,
+    task_track_started=True,
+    task_send_sent_event=True,
+    worker_prefetch_multiplier=1,
 )
 
 app.conf.beat_schedule = {
@@ -46,10 +52,10 @@ def shutdown_worker_engine(**kwargs: object) -> None:
     Dispose of the global AsyncEngine when the worker process shuts down.
     """
     global _engine
-    if _engine:
-        # We can't await here because this signal might run in a sync context,
-        # but for cleanup on shutdown, we can rely on process termination.
-        pass
+    if _engine is not None:
+        with suppress(RuntimeError):
+            asyncio.run(_engine.dispose())
+        _engine = None
 
 
 @asynccontextmanager

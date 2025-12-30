@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     celery_broker_url: str
     celery_result_backend: str
     celery_timezone: str = "UTC"
+    celery_result_expires_seconds: int = 60 * 60  # 1 hour
 
     @cached_property
     def postgres_test_db(self) -> str:
