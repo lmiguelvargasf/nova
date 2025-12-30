@@ -9,13 +9,8 @@ from backend.apps.users.tasks import _deactivate_inactive_users_async
 
 @pytest.mark.asyncio
 async def test_deactivate_inactive_users(
-    db_engine, db_session: AsyncSession, monkeypatch
+    db_session: AsyncSession,
 ):
-    from backend.config import alchemy
-
-    # Patch alchemy_config.get_engine to return the test db_engine
-    monkeypatch.setattr(alchemy.alchemy_config, "get_engine", lambda: db_engine)
-
     # Setup data
     cutoff_days = 7
     now = datetime.datetime.now(datetime.UTC)
@@ -64,7 +59,7 @@ async def test_deactivate_inactive_users(
     await db_session.commit()
 
     # Run task
-    count = await _deactivate_inactive_users_async(cutoff_days, engine=db_engine)
+    count = await _deactivate_inactive_users_async(cutoff_days, session=db_session)
 
     assert count == 1
 

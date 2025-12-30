@@ -2,7 +2,7 @@ import asyncio
 import datetime
 
 from sqlalchemy import and_, or_, update
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.apps.users.models import UserModel
 from backend.celery_app import app, get_task_session
@@ -19,15 +19,15 @@ def deactivate_inactive_users(
 async def _deactivate_inactive_users_async(
     cutoff_days: int,
     user_ids: list[int] | None = None,
-    engine: AsyncEngine | None = None,
+    *,
+    session: AsyncSession | None = None,
 ) -> int:
     cutoff_date = datetime.datetime.now(datetime.UTC) - datetime.timedelta(
         days=cutoff_days
     )
 
-    if engine:
-        async with AsyncSession(engine) as session, session.begin():
-            return await _execute_deactivation(session, cutoff_date, user_ids)
+    if session is not None:
+        return await _execute_deactivation(session, cutoff_date, user_ids)
 
     async with get_task_session() as session:
         return await _execute_deactivation(session, cutoff_date, user_ids)
