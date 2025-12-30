@@ -14,8 +14,8 @@ have() { command -v "$1" >/dev/null 2>&1; }
 
 stop_db() {
   if [[ "${DB_STARTED}" == "1" && -n "${MISE_BIN:-}" ]]; then
-    info "Stopping database..."
-    "${MISE_BIN}" exec -- task db:stop || true
+    info "Stopping infrastructure..."
+    "${MISE_BIN}" exec -- task infra:stop || true
     DB_STARTED=0
   fi
 }
@@ -129,7 +129,12 @@ main() {
   cat <<EOF
 Start services in separate terminals:
   task backend:dev
+  task worker:dev
+  task beat:dev
   task frontend:dev
+
+Optionally, monitoring:
+  task flower:dev
 
 URLs:
   Frontend:  http://localhost:3000

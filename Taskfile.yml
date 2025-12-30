@@ -11,28 +11,48 @@ vars:
   FRONTEND_TASK: task -d frontend
 
 tasks:
-  db:pull:
-    desc: Pull database image
+  infra:pull:
+    desc: Pull infrastructure images
     cmds:
       - "{{.DOCKER_COMPOSE}} pull"
 
   db:up:
-    desc: Start database service and wait for it to be ready
+    desc: Start only database service
+    cmds:
+      - "{{.DOCKER_COMPOSE}} up db --wait"
+
+  redis:up:
+    desc: Start only redis service
+    cmds:
+      - "{{.DOCKER_COMPOSE}} up redis --wait"
+
+  infra:up:
+    desc: Start all infrastructure services (db, redis)
     cmds:
       - "{{.DOCKER_COMPOSE}} up --wait"
 
   db:stop:
     desc: Stop database service
     cmds:
+      - "{{.DOCKER_COMPOSE}} stop db"
+
+  redis:stop:
+    desc: Stop redis service
+    cmds:
+      - "{{.DOCKER_COMPOSE}} stop redis"
+
+  infra:stop:
+    desc: Stop all infrastructure services
+    cmds:
       - "{{.DOCKER_COMPOSE}} stop"
 
-  db:down:
-    desc: Stop database service
+  infra:down:
+    desc: Stop all services and remove containers
     cmds:
       - "{{.DOCKER_COMPOSE}} down"
 
-  db:down:volumes:
-    desc: Stop database service and remove volumes
+  infra:down:volumes:
+    desc: Stop all services and remove volumes
     cmds:
       - "{{.DOCKER_COMPOSE}} down -v"
 
@@ -60,7 +80,7 @@ tasks:
 
   backend:dev:
     desc: Run backend
-    deps: ["db:up"]
+    deps: ["infra:up"]
     cmds:
       - "{{.BACKEND_TASK}} dev"
 
@@ -79,6 +99,11 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} check"
 
+  backend:typecheck:
+    desc: Run backend typecheck
+    cmds:
+      - "{{.BACKEND_TASK}} typecheck"
+
   backend:test:
     desc: Run backend test
     deps: ["db:up"]
@@ -96,11 +121,6 @@ tasks:
     deps: ["db:up"]
     cmds:
       - "{{.BACKEND_TASK}} test:cov:html"
-
-  backend:typecheck:
-    desc: Run backend typecheck
-    cmds:
-      - "{{.BACKEND_TASK}} typecheck"
 
   backend:create-admin-user:
     desc: Create an admin user
@@ -194,3 +214,21 @@ tasks:
     desc: Run frontend storybook:dev
     cmds:
       - "{{.FRONTEND_TASK}} storybook:dev"
+
+  worker:dev:
+    desc: Run backend worker
+    deps: ["infra:up"]
+    cmds:
+      - "{{.BACKEND_TASK}} worker"
+
+  beat:dev:
+    desc: Run backend beat
+    deps: ["infra:up"]
+    cmds:
+      - "{{.BACKEND_TASK}} beat"
+
+  flower:dev:
+    desc: Run Flower monitoring
+    deps: ["infra:up"]
+    cmds:
+      - "{{.BACKEND_TASK}} flower"
