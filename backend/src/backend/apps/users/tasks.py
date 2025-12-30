@@ -25,11 +25,6 @@ async def _deactivate_inactive_users_async(
         days=cutoff_days
     )
 
-    # Use the session factory helper
-    # If engine was passed explicitly (tests), we could wrap it in a session,
-    # but let's rely on our new robust get_task_session which handles defaults.
-
-    # If tests pass an engine, we might want to use it.
     if engine:
         async with AsyncSession(engine) as session, session.begin():
             return await _execute_deactivation(session, cutoff_date, user_ids)
