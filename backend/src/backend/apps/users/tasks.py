@@ -6,17 +6,13 @@ from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
 from backend.apps.users.models import UserModel
 from backend.celery_app import app, get_task_session
-from backend.config.base import settings
 
 
 @app.task
 def deactivate_inactive_users(
-    cutoff_days: int | None = None,
+    cutoff_days: int = 7,
     user_ids: list[int] | None = None,
 ) -> int:
-    if cutoff_days is None:
-        cutoff_days = settings.celery_inactive_cutoff_days
-
     return asyncio.run(_deactivate_inactive_users_async(cutoff_days, user_ids))
 
 

@@ -17,9 +17,8 @@ class Settings(BaseSettings):
     rate_limit_per_minute_authenticated: int = 100
     graphql_max_depth: int = 10
 
-    celery_broker_url: str = "redis://localhost:6379/0"
-    celery_result_backend: str = "redis://localhost:6379/0"
-    celery_inactive_cutoff_days: int = 7
+    celery_broker_url: str
+    celery_result_backend: str
     celery_timezone: str = "UTC"
 
     @cached_property
