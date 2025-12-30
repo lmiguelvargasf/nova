@@ -19,6 +19,8 @@ env:
   CORS_ALLOW_ORIGINS: '["http://localhost:3000"]'
   ADMIN_SESSION_SECRET: just-for-ci
   JWT_SECRET: just-for-ci
+  CELERY_BROKER_URL: redis://localhost:6379/0
+  CELERY_RESULT_BACKEND: redis://localhost:6379/0
 
 jobs:
   verify-schema:
