@@ -14,6 +14,7 @@
     "ms-playwright.playwright",
     "ms-python.python",
     "ms-python.vscode-pylance",
+    "openai.chatgpt",
     "redhat.vscode-yaml",
     "tamasfe.even-better-toml",
     "unifiedjs.vscode-mdx",

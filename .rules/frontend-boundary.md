@@ -1,11 +1,15 @@
----
+<!-- cursor:
 description: Frontend boundary rules (Next.js 16, TypeScript, Tailwind 4, Apollo)
 globs:
   - "frontend/**/*"
   - "Taskfile.yml"
   - "compose.yaml"
 alwaysApply: false
----
+-->
+
+<!-- antigravity:
+trigger: always_on
+-->
 
 ## 1) Scope Boundary
 - **Isolation**: Keep all frontend logic within `frontend/`. Never import from `backend/`.

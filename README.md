@@ -19,6 +19,7 @@ A full-stack application template with a Python (Litestar) backend and a TypeScr
 - [Tech Stack](#️-tech-stack)
 - [Getting Started](#-getting-started)
 - [Developer Experience](#-developer-experience)
+- [Rules System](#-rules-system)
 - [Production Deployment](#-production-deployment)
 - [Development Tasks](#️-development-tasks)
 - [CI/CD Workflows](#-cicd-workflows)
@@ -182,6 +183,15 @@ The services will be available at:
 This project is pre-configured for **VS Code** (or any fork like **Cursor** or **Windsurf**) to provide a seamless development experience:
 
 - **Type Checking**: Since we use `ty`, the `"python.languageServer"` setting is set to `"None"` in [`.vscode/settings.json`](.vscode/settings.json). This avoids running two language servers simultaneously when the Python extension is enabled (see [official ty configuration][ty-editors]).
+
+
+## 📏 Rules System
+
+This project uses a canonical rule system to manage AI/LLM coding rules (for Cursor, Antigravity, etc.).
+
+- Rules are defined in `.rules/*.md`.
+- Tool-specific configurations are generated automatically.
+- See full documentation in [`docs/rules.md`](docs/rules.md).
 
 ## 🌐 Production Deployment
 

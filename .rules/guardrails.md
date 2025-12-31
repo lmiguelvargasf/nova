@@ -1,7 +1,11 @@
----
+<!-- cursor:
 description: Repo-wide guardrails for safe, consistent changes
 alwaysApply: true
----
+-->
+
+<!-- antigravity:
+trigger: always_on
+-->
 
 ## Change discipline
 - Prefer **small, incremental changes** over large or sweeping edits.

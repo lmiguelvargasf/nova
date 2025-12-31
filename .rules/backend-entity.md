@@ -1,9 +1,13 @@
----
+<!-- cursor:
 description: How to define a backend entity with its full layer stack (model, service, GraphQL types/inputs/queries/mutations, schema registration).
 globs:
   - "backend/src/backend/apps/**/*"
 alwaysApply: false
----
+-->
+
+<!-- antigravity:
+trigger: always_on
+-->
 
 # Backend Entity Definition
 

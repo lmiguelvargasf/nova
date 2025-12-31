@@ -1,7 +1,11 @@
----
+<!-- cursor:
 description: Canonical dev workflow (Taskfile-first). Taskfile is the single source of truth for running this repo.
 alwaysApply: true
----
+-->
+
+<!-- antigravity:
+trigger: always_on
+-->
 
 ## 0) Prime Directive
 This repo is **Taskfile-first** for workflow operations (install/dev/build/lint/format/test/codegen/docker lifecycle).
