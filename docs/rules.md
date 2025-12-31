@@ -34,7 +34,7 @@ The rest of the file is standard Markdown. This content is appended to the gener
 
 ## 2. Creating a New Rule
 
-1.  Create a new file in `.rules/`. Example: `.rules/my-new-rule.md`.
+1.  Create a new file in `.rules/`. Example: `.rules/<rule-name>.md`.
 2.  Add the required metadata blocks (Cursor and Antigravity).
 3.  Write your rule guidelines in Markdown.
 
