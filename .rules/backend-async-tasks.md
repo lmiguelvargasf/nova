@@ -1,7 +1,11 @@
----
+<!-- cursor:
 description: Standards for creating and managing background tasks and Celery workers
 globs: ["backend/src/backend/apps/**/tasks.py", "backend/src/backend/celery_app.py"]
----
+-->
+
+<!-- antigravity:
+trigger: always_on
+-->
 
 # Background Tasks
 

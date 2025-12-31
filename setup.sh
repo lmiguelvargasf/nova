@@ -97,6 +97,9 @@ main() {
   info "Installing toolchain..."
   "${MISE_BIN}" install -y
 
+  info "Generating rules..."
+  "${MISE_BIN}" exec -- bash scripts/generate_rules.sh
+
   info "Installing pre-commit hooks..."
   "${MISE_BIN}" exec -- pre-commit install || die "pre-commit install failed. Re-run with: mise exec -- pre-commit install"
 

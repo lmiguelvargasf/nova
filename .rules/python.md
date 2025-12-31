@@ -1,9 +1,13 @@
----
+<!-- cursor:
 description: Python 3.14+ engineering rules (repo-aligned): correctness-first, no guessing, minimal diffs, ruff-formatted, ty-clean.
 globs:
   - "**/*.py"
 alwaysApply: true
----
+-->
+
+<!-- antigravity:
+trigger: always_on
+-->
 
 ## 0) Prime Directive: No Guessing
 - **In the face of ambiguity, refuse the temptation to guess.**

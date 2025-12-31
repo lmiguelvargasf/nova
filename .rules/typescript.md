@@ -1,4 +1,4 @@
----
+<!-- cursor:
 description: TypeScript engineering rules (strict typing, ESM-first, repo-aligned, LLM-safe)
 globs:
   - "**/*.ts"
@@ -7,7 +7,11 @@ globs:
   - "**/*.cts"
   - "**/*.d.ts"
 alwaysApply: true
----
+-->
+
+<!-- antigravity:
+trigger: always_on
+-->
 
 ## 0) Prime Directive: No Guessing (LLM Safety)
 - **In the face of ambiguity, refuse the temptation to guess.**

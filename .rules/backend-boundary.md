@@ -1,4 +1,4 @@
----
+<!-- cursor:
 description: Backend boundary rules (Litestar, Advanced Alchemy/SQLAlchemy, Strawberry, Python 3.14+); keep changes scoped, consistent, and contract-safe.
 globs:
   - "backend/**/*"
@@ -6,7 +6,11 @@ globs:
   - "compose.yaml"
   - "frontend/schema/schema.graphql"
 alwaysApply: false
----
+-->
+
+<!-- antigravity:
+trigger: always_on
+-->
 
 ## 1) Scope Boundary
 - **Isolation**: Keep all backend logic within `backend/`. Never import from `frontend/`.

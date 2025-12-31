@@ -1,2 +1,6 @@
 .env
 .vscode/python.env
+
+# generated rules
+.cursor/rules
+.agent/rules

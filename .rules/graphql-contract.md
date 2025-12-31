@@ -1,4 +1,4 @@
----
+<!-- cursor:
 description: GraphQL contract + codegen sync (Strawberry backend ↔ TypeScript frontend)
 globs:
   - backend/**/*.py
@@ -8,7 +8,11 @@ globs:
   - frontend/**/*.graphql
   - frontend/**/codegen.*
 alwaysApply: false
----
+-->
+
+<!-- antigravity:
+trigger: always_on
+-->
 
 # GraphQL Contract & Sync
 
