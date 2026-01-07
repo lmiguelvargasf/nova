@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nova 🌟",
+  title: "Nova",
   description:
     "GraphQL-ready application template with a Litestar backend and Next.js.",
   icons: {
