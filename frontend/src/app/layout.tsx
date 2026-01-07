@@ -17,6 +17,10 @@ export const metadata: Metadata = {
   title: "Nova 🌟",
   description:
     "GraphQL-ready application template with a Litestar backend and Next.js.",
+  icons: {
+    icon: "/icon-192x192.png",
+    apple: "/icon-512x512.png",
+  },
 };
 
 export default function RootLayout({
