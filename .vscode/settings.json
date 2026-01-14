@@ -6,7 +6,9 @@
   "python.testing.pytestEnabled": true,
   "python.testing.unittestEnabled": false,
   "python.testing.cwd": "${workspaceFolder}/backend",
-  "python.testing.pytestArgs": ["tests"],
+  "python.testing.pytestArgs": [
+    "tests"
+  ],
   "python.languageServer": "None",
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
@@ -18,12 +20,24 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "biome.enabled": true,
   "biome.lsp.bin": "frontend/node_modules/.bin/biome",
-  "[javascript]": { "editor.defaultFormatter": "biomejs.biome" },
-  "[typescript]": { "editor.defaultFormatter": "biomejs.biome" },
-  "[javascriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
-  "[typescriptreact]": { "editor.defaultFormatter": "vscode.typescript-language-features" },
-  "[json]": { "editor.defaultFormatter": "biomejs.biome" },
-  "[jsonc]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
   "editor.codeActionsOnSave": {
     "source.fixAll.biome": "explicit",
     "source.organizeImports.biome": "explicit",
@@ -32,6 +46,6 @@
   },
   "vitest.rootConfig": "frontend/vitest.config.ts",
   "chat.tools.edits.autoApprove": {
-  "**/*": true,
+    "**/*": true,
   }
 }
