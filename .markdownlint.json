@@ -4,7 +4,7 @@
   "MD033": false,
   "overrides": {
     ".github/pull_request_template.md": {
-      "default": false
+      "MD033": false
     }
   }
 }
