@@ -26,10 +26,7 @@ Deploy the backend as a **Render Web Service**.
 - **Start Command**:
 
   ```bash
-  uv run litestar --app backend.application:create_app database upgrade \
-    --no-prompt \
-    && uv run uvicorn backend.application:create_app --factory --host 0.0.0.0 \
-    --port $PORT
+  uv run litestar --app backend.application:create_app database upgrade --no-prompt && uv run uvicorn backend.application:create_app --factory --host 0.0.0.0 --port $PORT
   ```
 
 #### Starter plan (recommended for cleaner deploy separation)
