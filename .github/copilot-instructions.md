@@ -15,7 +15,7 @@ Nova is a full-stack template:
 - Frontend App Router in `frontend/src/app/`, features in
   `frontend/src/features/`
 - GraphQL schema defined in `backend/src/backend/graphql/schema.py`
-- Task runner is the workflow source of truth
+- Taskfile (`task` CLI) is the workflow source of truth
 
 ## Where rules live
 
