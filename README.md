@@ -69,6 +69,7 @@ an MVP.
 - **[Storybook][]** – Tool for building UI components and pages in isolation.
 - **[Vitest][]** – Next generation testing framework.
 - **[Playwright][]** – Reliable end-to-end testing for modern web apps.
+- **[Biome][]** – Fast formatter and linter for JavaScript/TypeScript projects.
 
 ### Tooling
 
@@ -284,6 +285,7 @@ All versioned changes are documented on the [GitHub Releases][releases] page.
 This project is licensed under the [MIT License](./LICENSE).
 
 [advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/
+[biome]: https://biomejs.dev/
 [celery]: https://docs.celeryq.dev/
 [docker-desktop]: https://www.docker.com/products/docker-desktop/
 [flower]: https://flower.readthedocs.io/
