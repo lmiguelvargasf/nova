@@ -1,7 +1,5 @@
 ---
-applyTo: >
-   backend/**/*, Taskfile.yml, compose.yaml,
-   frontend/schema/schema.graphql
+applyTo: "backend/**/*, Taskfile.yml, compose.yaml, frontend/schema/schema.graphql"
 ---
 
 # Backend instructions
