@@ -6,7 +6,7 @@ Nova is a full-stack template:
 
 - Backend: Python 3.14 + Litestar + Postgres + Redis
 - Frontend: TypeScript + Next.js 16 + React 19
-- API: GraphQL (primary) + REST
+- API: GraphQL + REST (either or both)
 - Async: Celery workers + Beat
 
 ## Architecture Highlights
