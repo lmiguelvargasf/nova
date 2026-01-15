@@ -94,7 +94,15 @@ After it finishes, start services in separate terminals:
 
 ```bash
 task backend:dev
+task worker:dev
+task beat:dev
 task frontend:dev
+```
+
+Optionally, monitoring:
+
+```bash
+task flower:dev
 ```
 
 ### Step-by-step setup (manual)
