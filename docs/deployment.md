@@ -43,8 +43,7 @@ Deploy the backend as a **Render Web Service**.
 - **Start Command**:
 
   ```bash
-  uv run uvicorn backend.application:create_app --factory --host 0.0.0.0 \
-    --port $PORT
+  uv run uvicorn backend.application:create_app --factory --host 0.0.0.0 --port $PORT
   ```
 
 ## Frontend (Vercel)
