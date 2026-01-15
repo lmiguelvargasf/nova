@@ -9,12 +9,14 @@ applyTo:
 # Backend instructions
 
 ## Scope boundary
+
 - Keep all backend logic within `backend/`. Do not import from `frontend/`.
-- Cross-repo changes are allowed only when required by the task or needed to keep contracts/examples in sync:
-  - GraphQL schema/codegen outputs (e.g., `task backend:schema:export` / `task frontend:codegen`)
-  - `.env.example` / README updates when backend env vars or workflows change
+- Cross-repo changes are allowed only when required by the task.
+- Contract sync changes include GraphQL schema/codegen outputs (e.g., `task backend:schema:export` / `task frontend:codegen`).
+- `.env.example` / README updates when backend env vars or workflows change.
 
 ## Technology stack & standards
+
 - Framework: Litestar (`litestar[standard]`). Prefer `async def` handlers for IO.
 - ORM: SQLAlchemy via Advanced Alchemy (async, Postgres via `asyncpg`).
 - GraphQL: Strawberry + `strawberry.litestar` integration.
@@ -23,22 +25,27 @@ applyTo:
 - Package manager: `uv` (`uv.lock` exists). Do not add packages without explicit permission.
 
 ## Conventions
+
 - Follow existing Litestar conventions and project structure.
 - Avoid drive-by refactors; change only what the task requires.
 
 ## Code organization
+
 - Keep Strawberry types/queries/mutations/inputs in their module files under `backend/src/backend/apps/**/graphql/`.
 - Keep resolvers/handlers small and readable. Move multi-step logic into a local `services.py` and call it from resolvers/handlers.
 
 ## Database & migrations
+
 - Do not manually change DB schema/state outside the migration workflow.
 - Any SQLAlchemy model/table change requires a migration and a note on how to apply it.
 - Prefer Taskfile workflows. If a required workflow is missing (e.g., “create a migration”), add a Task target rather than documenting multi-step manual commands as the official process.
 
 ## GraphQL & contracts
+
 - If GraphQL behavior/schema changes, call it out and run the repo’s codegen workflow (`task frontend:codegen`) to keep the frontend in sync.
 
 ## REST endpoints (Litestar controllers)
+
 - REST endpoints live in `backend/src/backend/apps/**/controllers.py` and should use Litestar `Controller` classes.
 - Prefer `msgspec.Struct` for request/response bodies (Pydantic only for settings).
 - Keep handlers thin; move non-trivial logic into `services.py`.
@@ -50,19 +57,21 @@ applyTo:
 ## Backend entity definition (when creating a new entity)
 
 ### Naming conventions
-| Layer | Pattern | Example |
-|-------|---------|---------|
-| Model (ORM) | `{Entity}Model` | `UserModel` |
-| Service | `{Entity}Service` | `UserService` |
-| GraphQL Type | `{Entity}Type` | `UserType` |
-| GraphQL Input | `{Entity}Input` | `UserInput` |
-| GraphQL Query | `{Entity}Query` | `UserQuery` |
-| GraphQL Mutation | `{Entity}Mutation` | `UserMutation` |
-| Admin View | `{Entity}AdminView` | `UserAdminView` |
-| Table name | lowercase singular | `"user"` |
+
+| Layer            | Pattern             | Example         |
+| ---------------- | ------------------- | --------------- |
+| Model (ORM)      | `{Entity}Model`     | `UserModel`     |
+| Service          | `{Entity}Service`   | `UserService`   |
+| GraphQL Type     | `{Entity}Type`      | `UserType`      |
+| GraphQL Input    | `{Entity}Input`     | `UserInput`     |
+| GraphQL Query    | `{Entity}Query`     | `UserQuery`     |
+| GraphQL Mutation | `{Entity}Mutation`  | `UserMutation`  |
+| Admin View       | `{Entity}AdminView` | `UserAdminView` |
+| Table name       | lowercase singular  | `"user"`        |
 
 ### File structure
-```
+
+```text
 backend/src/backend/
 ├── apps/{app_name}/
 │   ├── __init__.py
@@ -80,6 +89,7 @@ backend/src/backend/
 ```
 
 ### Required steps
+
 1. Model (`models.py`)
    - Inherit from `IdentityAuditBase`.
    - Use `Mapped[]` with `mapped_column()`.
@@ -107,16 +117,14 @@ backend/src/backend/
    - Export Query/Mutation classes.
 9. Schema registration (`backend/src/backend/schema.py`)
    - Add the new Query/Mutation via inheritance in the root schema.
-10. Service registration (context)
-    - Ensure the service is available in GraphQL context via dependency injection/context factory.
-11. Admin view (`backend/src/backend/admin/views/{entity}.py`)
-    - Inherit from `ModelView`, set label/name/identity, and export `view`.
-12. Admin registration (`backend/src/backend/admin/views/__init__.py`)
-    - Add the new view to `ADMIN_VIEWS`.
-13. Migration
-    - Generate and apply a migration using Taskfile targets (review the generated file).
+10. Service registration (context): ensure the service is available in GraphQL context via dependency injection/context factory.
+11. Admin view (`backend/src/backend/admin/views/{entity}.py`): inherit from `ModelView`, set label/name/identity, and export `view`.
+12. Admin registration (`backend/src/backend/admin/views/__init__.py`): add the new view to `ADMIN_VIEWS`.
+13. Migration: generate and apply a migration using Taskfile targets (review the generated file).
 
 ## Validation workflow
+
 Before declaring a backend task complete:
+
 - Run `task backend:format`, `task backend:lint`, `task backend:typecheck`, `task backend:test`.
 - If GraphQL was touched: run `task frontend:codegen` and ensure `frontend/schema/schema.graphql` updates accordingly.
