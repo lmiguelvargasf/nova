@@ -39,7 +39,7 @@ ensure_docker_compose() {
   docker compose version >/dev/null 2>&1 || die "'docker compose' is required. Install Docker Desktop."
 
   if ! docker info >/dev/null 2>&1; then
-    die "Docker daemon not running. Please start Docker and re-run ./dev.sh."
+    die "Docker daemon not running. Please start Docker and re-run ./setup.sh."
   fi
 }
 
