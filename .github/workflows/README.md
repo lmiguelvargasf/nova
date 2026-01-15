@@ -4,9 +4,10 @@
 
 This workflow runs on pull request events (opened, synchronized, reopened, edited).
 
-### Jobs
+### PR Jobs
 
 #### Validate PR
+
 - Check PR title follows semantic conventions (`feat`, `fix`, `docs`, etc.)
 - Validate PR size is 400 lines of code or less
 - Comment on PRs that exceed the size threshold
@@ -14,16 +15,19 @@ This workflow runs on pull request events (opened, synchronized, reopened, edite
 ## CI
 
 This workflow runs automatically on:
+
 - Push to the `main` branch
 - Pull requests to the `main` branch
 
-### Jobs
+### CI Jobs
 
 #### Verify GraphQL Schema
+
 - Build the GraphQL schema from the backend
 - Check that the committed schema is up-to-date
 
 #### Frontend Lint and Test
+
 - Run in a Playwright container
 - Use `pnpm` for dependency management with caching
 - Install dependencies
@@ -31,6 +35,7 @@ This workflow runs automatically on:
 - Run linting, format checking, type checking, and unit tests
 
 #### Storybook Tests
+
 - Run in a Playwright container (Vitest browser mode)
 - Use `pnpm` for dependency management with caching
 - Install dependencies
@@ -38,6 +43,7 @@ This workflow runs automatically on:
 - Run Storybook story tests
 
 #### Backend Lint and Test
+
 - Use a PostgreSQL service container
 - Install Python dependencies
 - Run `ruff` for linting and formatting
