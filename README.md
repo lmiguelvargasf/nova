@@ -45,14 +45,11 @@ an MVP.
 
 - **[Python][]** – Core programming language for backend.
 - **[Litestar][]** – High-performance ASGI framework for modern Python web apps.
-- **[Advanced Alchemy][advanced-alchemy]** – SQLAlchemy integration (async) +
-    migrations tooling.
+- **[Advanced Alchemy][]** – SQLAlchemy integration (async) + migrations tooling.
 - **[GraphQL][]** – API query language for flexible data fetching.
-- **[REST][]** – Stateless, resource-oriented APIs over HTTP using JSON and
-    standard verbs.
+- **[REST][]** – Resource-oriented APIs over HTTP with JSON.
 - **[PostgreSQL][]** – Advanced open-source relational database known for reliability.
-- **[Redis][]** – In-memory data store used as a message broker for background
-    tasks.
+- **[Redis][]** – In-memory data store for message brokering.
 - **[Celery][]** – Distributed task queue for handling asynchronous background jobs.
 - **[Flower][]** – Real-time monitoring for Celery workers.
 - **[uv][]** – Ultra-fast Python package and project manager.
@@ -284,7 +281,7 @@ All versioned changes are documented on the [GitHub Releases][releases] page.
 
 This project is licensed under the [MIT License](./LICENSE).
 
-[advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/
+[advanced alchemy]: https://docs.advanced-alchemy.litestar.dev/
 [biome]: https://biomejs.dev/
 [celery]: https://docs.celeryq.dev/
 [docker-desktop]: https://www.docker.com/products/docker-desktop/
