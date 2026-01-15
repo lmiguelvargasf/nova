@@ -2,10 +2,9 @@
   "default": true,
   "MD013": false,
   "MD033": false,
-  "overrides": [
-    {
-      "files": ".github/pull_request_template.md",
+  "overrides": {
+    ".github/pull_request_template.md": {
       "default": false
     }
-  ]
+  }
 }
