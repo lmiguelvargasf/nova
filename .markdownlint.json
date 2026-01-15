@@ -1,4 +1,9 @@
 {
   "default": true,
-  "MD013": false
+  "markdownlint": {
+    "line-length": {
+      "ignoreUrls": true,
+      "ignoreCodeBlocks": true
+    }
+  }
 }
