@@ -2,8 +2,7 @@
 
 ## PR Validation
 
-This workflow runs on pull request events (opened, synchronized, reopened,
-edited).
+This workflow runs on pull request events (opened, synchronized, reopened, edited).
 
 ### PR Jobs
 
