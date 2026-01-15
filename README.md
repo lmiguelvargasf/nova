@@ -69,8 +69,7 @@ an MVP.
 
 ### Tooling
 
-- **[Docker Desktop][docker-desktop]** – Provides Docker Engine and Docker
-    Compose.
+- **[Docker Desktop][]** – Provides Docker Engine and Docker Compose.
 - **[mise][]** – Manages tool versions.
 - **[Task][]** – Task runner designed for modern workflows.
 - **[pre-commit][]** – Manages and runs automated Git hooks.
@@ -79,7 +78,7 @@ an MVP.
 
 ### Prerequisites
 
-- **[Docker Desktop][docker-desktop]**
+- **[Docker Desktop][]**
 
 ### Scripted setup (recommended)
 
@@ -283,7 +282,7 @@ This project is licensed under the [MIT License](./LICENSE).
 [advanced alchemy]: https://docs.advanced-alchemy.litestar.dev/
 [biome]: https://biomejs.dev/
 [celery]: https://docs.celeryq.dev/
-[docker-desktop]: https://www.docker.com/products/docker-desktop/
+[docker desktop]: https://www.docker.com/products/docker-desktop/
 [flower]: https://flower.readthedocs.io/
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
