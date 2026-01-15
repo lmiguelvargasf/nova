@@ -45,14 +45,11 @@ an MVP.
 
 - **[Python][]** – Core programming language for backend.
 - **[Litestar][]** – High-performance ASGI framework for modern Python web apps.
-- **[Advanced Alchemy][advanced-alchemy]** – SQLAlchemy integration (async) +
-    migrations tooling.
+- **[Advanced Alchemy][]** – SQLAlchemy integration (async) + migrations tooling.
 - **[GraphQL][]** – API query language for flexible data fetching.
-- **[REST][]** – Stateless, resource-oriented APIs over HTTP using JSON and
-    standard verbs.
+- **[REST][]** – Resource-oriented APIs over HTTP with JSON.
 - **[PostgreSQL][]** – Advanced open-source relational database known for reliability.
-- **[Redis][]** – In-memory data store used as a message broker for background
-    tasks.
+- **[Redis][]** – In-memory data store for message brokering.
 - **[Celery][]** – Distributed task queue for handling asynchronous background jobs.
 - **[Flower][]** – Real-time monitoring for Celery workers.
 - **[uv][]** – Ultra-fast Python package and project manager.
@@ -63,17 +60,16 @@ an MVP.
 
 - **[TypeScript][]** – Core programming language for frontend.
 - **[Next.js][]** – React framework for production-ready applications.
-- **[Tailwind CSS][tailwind]** – Utility-first CSS framework for rapid UI
-    development.
+- **[Tailwind CSS][]** – Utility-first CSS framework for rapid UI development.
 - **[pnpm][]** – Fast, disk space efficient package manager.
 - **[Storybook][]** – Tool for building UI components and pages in isolation.
 - **[Vitest][]** – Next generation testing framework.
 - **[Playwright][]** – Reliable end-to-end testing for modern web apps.
+- **[Biome][]** – Fast formatter and linter for JavaScript/TypeScript projects.
 
 ### Tooling
 
-- **[Docker Desktop][docker-desktop]** – Provides Docker Engine and Docker
-    Compose.
+- **[Docker Desktop][]** – Provides Docker Engine and Docker Compose.
 - **[mise][]** – Manages tool versions.
 - **[Task][]** – Task runner designed for modern workflows.
 - **[pre-commit][]** – Manages and runs automated Git hooks.
@@ -82,7 +78,7 @@ an MVP.
 
 ### Prerequisites
 
-- **[Docker Desktop][docker-desktop]**
+- **[Docker Desktop][]**
 
 ### Scripted setup (recommended)
 
@@ -99,7 +95,15 @@ After it finishes, start services in separate terminals:
 
 ```bash
 task backend:dev
+task worker:dev
+task beat:dev
 task frontend:dev
+```
+
+Optionally, monitoring:
+
+```bash
+task flower:dev
 ```
 
 ### Step-by-step setup (manual)
@@ -283,9 +287,10 @@ All versioned changes are documented on the [GitHub Releases][releases] page.
 
 This project is licensed under the [MIT License](./LICENSE).
 
-[advanced-alchemy]: https://docs.advanced-alchemy.litestar.dev/
+[advanced alchemy]: https://docs.advanced-alchemy.litestar.dev/
+[biome]: https://biomejs.dev/
 [celery]: https://docs.celeryq.dev/
-[docker-desktop]: https://www.docker.com/products/docker-desktop/
+[docker desktop]: https://www.docker.com/products/docker-desktop/
 [flower]: https://flower.readthedocs.io/
 [graphql]: https://graphql.org/
 [litestar]: https://litestar.dev/
@@ -302,7 +307,7 @@ This project is licensed under the [MIT License](./LICENSE).
 [rest]: https://restfulapi.net/
 [ruff]: https://docs.astral.sh/ruff/
 [storybook]: https://storybook.js.org/
-[tailwind]: https://tailwindcss.com/
+[tailwind css]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
 [ty]: https://docs.astral.sh/ty/
 [ty-editors]: https://docs.astral.sh/ty/editors/

@@ -7,10 +7,10 @@ repos:
       - id: check-yaml
       - id: check-added-large-files
       - id: check-merge-conflict
-  - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.47.0
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.20.0
     hooks:
-      - id: markdownlint
+      - id: markdownlint-cli2
         language_version: system
   - repo: local
     hooks:
