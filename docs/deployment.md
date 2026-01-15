@@ -37,8 +37,7 @@ Deploy the backend as a **Render Web Service**.
 - **Pre-Deploy Command**:
 
   ```bash
-  uv run litestar --app backend.application:create_app database upgrade \
-    --no-prompt
+  uv run litestar --app backend.application:create_app database upgrade --no-prompt
   ```
 
 - **Start Command**:
