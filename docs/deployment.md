@@ -2,9 +2,9 @@
 
 This template has been verified running in production with:
 
-- **Database**: [Render][render] Postgres
-- **Backend**: [Render][render]
-- **Frontend**: [Vercel][vercel]
+- **Database**: [Render][] Postgres
+- **Backend**: [Render][]
+- **Frontend**: [Vercel][]
 
 ## Database (Render)
 
