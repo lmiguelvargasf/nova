@@ -6,7 +6,7 @@ Nova is a full-stack template:
 
 - Backend: Python 3.14 + Litestar + Postgres + Redis
 - Frontend: TypeScript + Next.js 16 + React 19
-- API: GraphQL (primary) + REST
+- API: GraphQL + REST (either or both)
 - Async: Celery workers + Beat
 
 ## Architecture Highlights
@@ -15,7 +15,7 @@ Nova is a full-stack template:
 - Frontend App Router in `frontend/src/app/`, features in
   `frontend/src/features/`
 - GraphQL schema defined in `backend/src/backend/graphql/schema.py`
-- Task runner is the workflow source of truth
+- Taskfile (`task` CLI) is the workflow source of truth
 
 ## Where rules live
 
