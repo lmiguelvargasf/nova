@@ -88,8 +88,7 @@ Run the setup script to install dependencies and configure the environment:
 ./setup.sh
 ```
 
-> **Note:** if you get _permission denied_, run `chmod +x setup.sh` then retry
-> `./setup.sh`.
+> **Note:** if you get _permission denied_, run `chmod +x setup.sh` then retry `./setup.sh`.
 
 After it finishes, start services in separate terminals:
 
