@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Strategic Suspense Boundaries
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: HIGH
 impactDescription: faster initial paint
 tags: async, suspense, streaming, layout-shift

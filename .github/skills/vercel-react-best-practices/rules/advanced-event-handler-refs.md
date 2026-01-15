@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Store Event Handlers in Refs
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: LOW
 impactDescription: stable subscriptions
 tags: advanced, hooks, refs, event-handlers, optimization

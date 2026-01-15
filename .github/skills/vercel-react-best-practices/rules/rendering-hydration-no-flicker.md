@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Prevent Hydration Mismatch Without Flickering
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: MEDIUM
 impactDescription: avoids visual flicker and hydration errors
 tags: rendering, ssr, hydration, localStorage, flicker

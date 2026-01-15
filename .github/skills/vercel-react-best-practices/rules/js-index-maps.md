@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Build Index Maps for Repeated Lookups
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: LOW-MEDIUM
 impactDescription: 1M ops to 2K ops
 tags: javascript, map, indexing, optimization, performance

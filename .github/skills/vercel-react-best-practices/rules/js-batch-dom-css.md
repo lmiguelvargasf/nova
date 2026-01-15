@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Batch DOM CSS Changes
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: MEDIUM
 impactDescription: reduces reflows/repaints
 tags: javascript, dom, css, performance, reflow

@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Use SWR for Automatic Deduplication
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: MEDIUM-HIGH
 impactDescription: automatic deduplication
 tags: client, swr, deduplication, data-fetching

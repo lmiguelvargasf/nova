@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Use toSorted() Instead of sort() for Immutability
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: MEDIUM-HIGH
 impactDescription: prevents mutation bugs in React state
 tags: javascript, arrays, immutability, react, state, mutation

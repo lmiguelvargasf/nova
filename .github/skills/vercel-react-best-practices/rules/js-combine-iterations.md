@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Combine Multiple Array Iterations
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: LOW-MEDIUM
 impactDescription: reduces iterations
 tags: javascript, arrays, loops, performance

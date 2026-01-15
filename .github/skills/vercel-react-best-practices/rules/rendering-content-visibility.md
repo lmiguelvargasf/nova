@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: CSS content-visibility for Long Lists
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: HIGH
 impactDescription: faster initial render
 tags: rendering, css, content-visibility, long-lists

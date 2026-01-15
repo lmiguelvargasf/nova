@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: useLatest for Stable Callback Refs
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: LOW
 impactDescription: prevents effect re-runs
 tags: advanced, hooks, useLatest, refs, optimization

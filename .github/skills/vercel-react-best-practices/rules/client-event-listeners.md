@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Deduplicate Global Event Listeners
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: LOW
 impactDescription: single listener for N components
 tags: client, swr, event-listeners, subscription

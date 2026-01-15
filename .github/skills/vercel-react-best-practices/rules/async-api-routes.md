@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Prevent Waterfall Chains in API Routes
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: CRITICAL
 impactDescription: 2-10× improvement
 tags: api-routes, server-actions, waterfalls, parallelization

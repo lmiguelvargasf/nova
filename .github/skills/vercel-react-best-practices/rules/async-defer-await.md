@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Defer Await Until Needed
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: HIGH
 impactDescription: avoids blocking unused code paths
 tags: async, await, conditional, optimization

@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Use Explicit Conditional Rendering
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: LOW
 impactDescription: prevents rendering 0 or NaN
 tags: rendering, conditional, jsx, falsy-values

@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Use Set/Map for O(1) Lookups
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: LOW-MEDIUM
 impactDescription: O(n) to O(1)
 tags: javascript, set, map, data-structures, performance

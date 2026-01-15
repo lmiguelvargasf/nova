@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Use Loop for Min/Max Instead of Sort
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: LOW
 impactDescription: O(n) instead of O(n log n)
 tags: javascript, arrays, performance, sorting, algorithms

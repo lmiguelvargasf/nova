@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Cross-Request LRU Caching
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: HIGH
 impactDescription: caches across requests
 tags: server, cache, lru, cross-request

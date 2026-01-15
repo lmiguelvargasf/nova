@@ -2,6 +2,7 @@
 <!-- markdownlint-disable MD003 MD022 MD032 -->
 ---
 title: Minimize Serialization at RSC Boundaries
+applyTo: "frontend/**/*.{ts,tsx,js,jsx}"
 impact: HIGH
 impactDescription: reduces data transfer size
 tags: server, rsc, serialization, props
