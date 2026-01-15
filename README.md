@@ -19,26 +19,6 @@ an MVP.
 
 ## 📚 Table of Contents
 
-- [Nova 🌟](#nova-)
-  - [📚 Table of Contents](#-table-of-contents)
-  - [🛠️ Tech Stack](#️-tech-stack)
-    - [Backend](#backend)
-    - [Frontend](#frontend)
-    - [Tooling](#tooling)
-  - [🚀 Getting Started](#-getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Scripted setup (recommended)](#scripted-setup-recommended)
-    - [Step-by-step setup (manual)](#step-by-step-setup-manual)
-      - [Local environment](#local-environment)
-      - [Start services](#start-services)
-  - [💻 Developer Experience](#-developer-experience)
-  - [📏 Rules System](#-rules-system)
-  - [🌐 Production Deployment](#-production-deployment)
-  - [⚙️ Development Tasks](#️-development-tasks)
-  - [🔄 CI/CD Workflows](#-cicd-workflows)
-  - [📦 Releases](#-releases)
-  - [📄 License](#-license)
-
 ## 🛠️ Tech Stack
 
 ### Backend
