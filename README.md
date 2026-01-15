@@ -60,8 +60,7 @@ an MVP.
 
 - **[TypeScript][]** – Core programming language for frontend.
 - **[Next.js][]** – React framework for production-ready applications.
-- **[Tailwind CSS][tailwind]** – Utility-first CSS framework for rapid UI
-    development.
+- **[Tailwind CSS][]** – Utility-first CSS framework for rapid UI development.
 - **[pnpm][]** – Fast, disk space efficient package manager.
 - **[Storybook][]** – Tool for building UI components and pages in isolation.
 - **[Vitest][]** – Next generation testing framework.
@@ -301,7 +300,7 @@ This project is licensed under the [MIT License](./LICENSE).
 [rest]: https://restfulapi.net/
 [ruff]: https://docs.astral.sh/ruff/
 [storybook]: https://storybook.js.org/
-[tailwind]: https://tailwindcss.com/
+[tailwind css]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
 [ty]: https://docs.astral.sh/ty/
 [ty-editors]: https://docs.astral.sh/ty/editors/
