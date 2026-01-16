@@ -34,7 +34,7 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome"
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.biome": "explicit",
@@ -42,20 +42,5 @@
     "source.fixAll.ruff": "explicit",
     "source.organizeImports.ruff": "explicit"
   },
-  "vitest.rootConfig": "frontend/vitest.config.ts",
-  "cSpell.words": [
-    "GraphiQL",
-    "GraphQL",
-    "Litestar",
-    "Next",
-    "Node",
-    "PostgreSQL",
-    "Redis",
-    "Vitest",
-    "linting",
-    "mise",
-    "pnpm",
-    "postgresql",
-    "ty"
-  ]
+  "vitest.rootConfig": "frontend/vitest.config.ts"
 }
