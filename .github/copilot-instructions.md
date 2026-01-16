@@ -21,6 +21,8 @@ Nova is a full-stack template:
 
 - Always-on standards: `.github/instructions/*`
 - Task-specific workflows: `.github/skills/*`
+- Task prompts: `.github/prompts/*` (lightweight workflow entry points;
+  avoid duplicating rules)
 
 ## Key files
 
