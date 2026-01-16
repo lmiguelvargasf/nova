@@ -233,12 +233,14 @@ This project is pre-configured for **VS Code** (or any fork like **Cursor** or
 
 ## 📏 Rules System
 
-This project uses a canonical rule system to manage AI/LLM coding rules (for
-Cursor, Antigravity, etc.).
+This project uses a canonical rule system to manage AI/LLM coding rules, first
+oriented to VS Code + GitHub Copilot (and compatible agents like Cursor or
+Antigravity).
 
-- Rules are defined in `.rules/*.md`.
-- Tool-specific configurations are generated automatically.
-- See full documentation in [`docs/rules.md`](docs/rules.md).
+- Always-on standards live in [`.github/instructions/`](.github/instructions/).
+- Task-specific workflows live in [`.github/skills/`](.github/skills/).
+- Prompt files (workflow entry points) live in
+    [`.github/prompts/`](.github/prompts/).
 
 ## 🌐 Production Deployment
 
