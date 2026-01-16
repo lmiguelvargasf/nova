@@ -1,7 +1,6 @@
 ---
 name: backend-entity
-description: Create a backend entity (model, service, GraphQL, admin view,
-  migration).
+description: Create a backend entity (model, service, GraphQL, admin view, migration).
 ---
 
 Follow the repo rules in:

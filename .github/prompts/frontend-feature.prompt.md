@@ -1,7 +1,6 @@
 ---
 name: frontend-feature
-description: Add a frontend feature in Next.js App Router with GraphQL and
-  tests.
+description: Add a frontend feature in Next.js App Router with GraphQL and tests.
 ---
 
 Follow the repo rules in:

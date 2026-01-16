@@ -24,6 +24,13 @@ Nova is a full-stack template:
 - Task prompts: `.github/prompts/*` (lightweight workflow entry points;
   avoid duplicating rules)
 
+## Prompt files
+
+- `backend-entity`: backend entity scaffolding with GraphQL + admin view.
+- `frontend-feature`: Next.js feature + GraphQL + tests.
+- `graphql-contract`: sync schema and frontend codegen.
+- `taskfile-workflow`: add or update Taskfile targets.
+
 ## Key files
 
 - Backend app: `backend/src/backend/application.py`
