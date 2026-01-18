@@ -50,9 +50,9 @@ ensure_mise_activation() {
   fi
 
   if [[ "$shell_name" == "fish" ]]; then
-    activation_line="${MISE_BIN} activate ${shell_name} | source"
+    activation_line="~/.local/bin/mise activate ${shell_name} | source"
   else
-    activation_line="eval \"\$(${MISE_BIN} activate ${shell_name})\""
+    activation_line="eval \"\$(~/.local/bin/mise activate ${shell_name})\""
   fi
   mkdir -p "$(dirname "$rc_file")"
   touch "$rc_file"
