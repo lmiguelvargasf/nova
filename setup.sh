@@ -34,6 +34,28 @@ pick_mise() {
   return 1
 }
 
+ensure_mise_activation() {
+  local shell_name rc_file activation_line
+  shell_name="$(basename "${SHELL:-}")"
+  case "$shell_name" in
+    bash) rc_file="${HOME}/.bashrc" ;;
+    zsh) rc_file="${HOME}/.zshrc" ;;
+    *) err "Shell '${shell_name:-unknown}' not supported by this setup script. Only bash and zsh are configured here. See https://mise.jdx.dev/getting-started.html for other shells."; return 1 ;;
+  esac
+
+  if [[ -f "$rc_file" ]] && grep -Fq "mise activate ${shell_name}" "$rc_file"; then
+    info "mise activation already configured in ${rc_file}"
+    return 0
+  fi
+
+  activation_line="eval \"\$(~/.local/bin/mise activate ${shell_name})\""
+  info "Updating ${rc_file} to enable mise activation (one-time)."
+  mkdir -p "$(dirname "$rc_file")"
+  touch "$rc_file"
+  printf "\n%s\n" "$activation_line" >> "$rc_file"
+  info "Added mise activation to ${rc_file}"
+}
+
 ensure_docker_compose() {
   have docker || die "Docker is required. Install Docker Desktop."
   docker compose version >/dev/null 2>&1 || die "'docker compose' is required. Install Docker Desktop."
@@ -93,10 +115,10 @@ main() {
   MISE_BIN="$(pick_mise)"
 
   info "Using mise: $("${MISE_BIN}" --version | head -n1)"
-
-  trap cleanup EXIT
+  ensure_mise_activation
 
   info "Installing toolchain..."
+  "${MISE_BIN}" trust || die "mise trust failed. Re-run with: ${MISE_BIN} trust"
   "${MISE_BIN}" install -y
 
   info "Installing pre-commit hooks..."
@@ -120,6 +142,7 @@ main() {
   "${MISE_BIN}" exec -- task frontend:codegen
 
   info "Running migrations..."
+  trap cleanup EXIT
   DB_STARTED=1
   "${MISE_BIN}" exec -- task backend:migrate
 
