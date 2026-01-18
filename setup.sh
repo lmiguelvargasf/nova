@@ -40,8 +40,7 @@ ensure_mise_activation() {
   case "$shell_name" in
     bash) rc_file="${HOME}/.bashrc" ;;
     zsh) rc_file="${HOME}/.zshrc" ;;
-    fish) rc_file="${HOME}/.config/fish/config.fish" ;;
-    *) err "Shell '${shell_name:-unknown}' not supported. Only bash, zsh, and fish are supported by mise."; return 1 ;;
+    *) err "Shell '${shell_name:-unknown}' not supported by this setup script. Only bash and zsh are configured here. See https://mise.jdx.dev/getting-started.html for other shells."; return 1 ;;
   esac
 
   if [[ -f "$rc_file" ]] && grep -Fq "mise activate ${shell_name}" "$rc_file"; then
@@ -49,11 +48,7 @@ ensure_mise_activation() {
     return 0
   fi
 
-  if [[ "$shell_name" == "fish" ]]; then
-    activation_line="~/.local/bin/mise activate ${shell_name} | source"
-  else
-    activation_line="eval \"\$(~/.local/bin/mise activate ${shell_name})\""
-  fi
+  activation_line="eval \"\$(~/.local/bin/mise activate ${shell_name})\""
   info "Updating ${rc_file} to enable mise activation (one-time)."
   mkdir -p "$(dirname "$rc_file")"
   touch "$rc_file"
