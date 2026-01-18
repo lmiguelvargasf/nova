@@ -97,7 +97,7 @@ main() {
   trap cleanup EXIT
 
   info "Installing toolchain..."
-  "${MISE_BIN}" install -y
+  "${MISE_BIN}" trust && "${MISE_BIN}" install -y
 
   info "Installing pre-commit hooks..."
   "${MISE_BIN}" exec -- pre-commit install || die "pre-commit install failed. Re-run with: mise exec -- pre-commit install"
