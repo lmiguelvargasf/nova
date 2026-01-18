@@ -6,7 +6,6 @@
     "bradlc.vscode-tailwindcss",
     "charliermarsh.ruff",
     "christian-kohler.path-intellisense",
-    "eamodio.gitlens",
     "graphql.vscode-graphql",
     "graphql.vscode-graphql-syntax",
     "mikestead.dotenv",
