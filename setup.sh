@@ -54,6 +54,7 @@ ensure_mise_activation() {
   else
     activation_line="eval \"\$(~/.local/bin/mise activate ${shell_name})\""
   fi
+  info "Updating ${rc_file} to enable mise activation (one-time)."
   mkdir -p "$(dirname "$rc_file")"
   touch "$rc_file"
   printf "\n%s\n" "$activation_line" >> "$rc_file"
