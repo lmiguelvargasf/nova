@@ -34,6 +34,32 @@ pick_mise() {
   return 1
 }
 
+ensure_mise_activation() {
+  local shell_name rc_file activation_line
+  shell_name="$(basename "${SHELL:-}")"
+  case "$shell_name" in
+    bash) rc_file="${HOME}/.bashrc" ;;
+    zsh) rc_file="${HOME}/.zshrc" ;;
+    fish) rc_file="${HOME}/.config/fish/config.fish" ;;
+    *) err "Shell '${shell_name:-unknown}' not supported. Only bash, zsh, and fish are supported by mise."; return 1 ;;
+  esac
+
+  if [[ -f "$rc_file" ]] && grep -Fq "mise activate ${shell_name}" "$rc_file"; then
+    info "mise activation already configured in ${rc_file}"
+    return 0
+  fi
+
+  if [[ "$shell_name" == "fish" ]]; then
+    activation_line="${MISE_BIN} activate ${shell_name} | source"
+  else
+    activation_line="eval \"\$(${MISE_BIN} activate ${shell_name})\""
+  fi
+  mkdir -p "$(dirname "$rc_file")"
+  touch "$rc_file"
+  printf "\n%s\n" "$activation_line" >> "$rc_file"
+  info "Added mise activation to ${rc_file}"
+}
+
 ensure_docker_compose() {
   have docker || die "Docker is required. Install Docker Desktop."
   docker compose version >/dev/null 2>&1 || die "'docker compose' is required. Install Docker Desktop."
@@ -93,6 +119,7 @@ main() {
   MISE_BIN="$(pick_mise)"
 
   info "Using mise: $("${MISE_BIN}" --version | head -n1)"
+  ensure_mise_activation
 
   trap cleanup EXIT
 
