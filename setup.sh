@@ -138,6 +138,9 @@ main() {
   info "Installing frontend deps..."
   "${MISE_BIN}" exec -- task frontend:install
 
+  info "Installing Playwright browsers..."
+  "${MISE_BIN}" exec -- task frontend:playwright:install
+
   info "Running codegen..."
   "${MISE_BIN}" exec -- task frontend:codegen
 

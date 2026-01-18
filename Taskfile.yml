@@ -139,6 +139,11 @@ tasks:
     cmds:
       - "{{.FRONTEND_TASK}} install"
 
+  frontend:playwright:install:
+    desc: Install Playwright browser binaries for frontend tests
+    cmds:
+      - "{{.FRONTEND_TASK}} playwright:install"
+
   frontend:dev:
     desc: Run frontend
     cmds:
