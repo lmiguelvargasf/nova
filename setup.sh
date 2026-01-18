@@ -121,8 +121,6 @@ main() {
   info "Using mise: $("${MISE_BIN}" --version | head -n1)"
   ensure_mise_activation
 
-  trap cleanup EXIT
-
   info "Installing toolchain..."
   "${MISE_BIN}" trust || die "mise trust failed. Re-run with: ${MISE_BIN} trust"
   "${MISE_BIN}" install -y
@@ -148,6 +146,7 @@ main() {
   "${MISE_BIN}" exec -- task frontend:codegen
 
   info "Running migrations..."
+  trap cleanup EXIT
   DB_STARTED=1
   "${MISE_BIN}" exec -- task backend:migrate
 
