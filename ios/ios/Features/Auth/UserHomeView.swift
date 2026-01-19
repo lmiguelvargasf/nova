@@ -5,23 +5,33 @@ struct UserHomeView: View {
     let onLogout: () -> Void
 
     var body: some View {
-        List {
-            Section {
+        ScrollView {
+            VStack(spacing: 20) {
                 VStack(alignment: .leading, spacing: 6) {
+                    Text("Nova 🌟")
+                        .font(.largeTitle)
+                        .bold()
                     Text("Hello, \(user.firstName)")
                         .font(.title2)
                         .bold()
                     Text(user.email)
                         .foregroundStyle(.secondary)
                 }
-                .padding(.vertical, 4)
-            }
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-            Section {
-                Button("Log Out", action: onLogout)
-                    .foregroundStyle(.red)
+                VStack(spacing: 12) {
+                    Button("Log Out", action: onLogout)
+                        .foregroundStyle(.red)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background(.thinMaterial)
+                        .clipShape(.rect(cornerRadius: 18))
+                }
             }
+            .padding(24)
         }
-        .navigationTitle("Nova")
+        .scrollIndicators(.hidden)
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }

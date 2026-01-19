@@ -12,53 +12,63 @@ struct LoginView: View {
         @Bindable var viewModel = viewModel
 
         ScrollView {
-            VStack(spacing: 20) {
-                VStack(spacing: 8) {
-                    Text("Welcome back")
-                        .font(.title)
+            VStack(spacing: 24) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Nova 🌟")
+                        .font(.largeTitle)
                         .bold()
-                    Text("Sign in to your Nova account.")
+                    Text("Welcome back")
+                        .font(.title2)
+                        .bold()
+                    Text("Use your account to continue.")
                         .foregroundStyle(.secondary)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
 
                 VStack(spacing: 16) {
-                    TextField("Email", text: $viewModel.email)
-                        .textContentType(.emailAddress)
-                        .keyboardType(.emailAddress)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .textFieldStyle(.roundedBorder)
+                    VStack(spacing: 12) {
+                        TextField("Email", text: $viewModel.email)
+                            .textContentType(.emailAddress)
+                            .keyboardType(.emailAddress)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled()
+                            .textFieldStyle(.roundedBorder)
 
-                    SecureField("Password", text: $viewModel.password)
-                        .textContentType(.password)
-                        .textFieldStyle(.roundedBorder)
-                }
-
-                if let errorMessage = viewModel.errorMessage {
-                    Text(errorMessage)
-                        .foregroundStyle(.red)
-                        .multilineTextAlignment(.center)
-                }
-
-                Button {
-                    Task {
-                        await viewModel.submit()
+                        SecureField("Password", text: $viewModel.password)
+                            .textContentType(.password)
+                            .textFieldStyle(.roundedBorder)
                     }
-                } label: {
-                    if viewModel.isSubmitting {
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
-                    } else {
-                        Text("Sign In")
-                            .frame(maxWidth: .infinity)
+
+                    if let errorMessage = viewModel.errorMessage {
+                        Text(errorMessage)
+                            .foregroundStyle(.red)
+                            .multilineTextAlignment(.center)
                     }
+
+                    Button {
+                        Task {
+                            await viewModel.submit()
+                        }
+                    } label: {
+                        if viewModel.isSubmitting {
+                            ProgressView()
+                                .frame(maxWidth: .infinity)
+                        } else {
+                            Text("Sign In")
+                                .frame(maxWidth: .infinity)
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(!viewModel.canSubmit || viewModel.isSubmitting)
                 }
-                .buttonStyle(.borderedProminent)
-                .disabled(!viewModel.canSubmit || viewModel.isSubmitting)
+                .padding(20)
+                .background(.thinMaterial)
+                .clipShape(.rect(cornerRadius: 20))
             }
-            .padding()
+            .padding(24)
         }
         .scrollIndicators(.hidden)
-        .navigationTitle("Sign In")
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
