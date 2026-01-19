@@ -26,8 +26,8 @@ smoothly evolve from a PoC into an MVP.
   - [🛠️ Tech Stack](#️-tech-stack)
     - [Backend](#backend)
     - [Frontend](#frontend)
-    - [Mobile (iOS)](#mobile-ios)
     - [Tooling](#tooling)
+    - [Mobile (iOS)](#mobile-ios)
   - [🚀 Getting Started](#-getting-started)
     - [Prerequisites](#prerequisites)
     - [Scripted setup (recommended)](#scripted-setup-recommended)
@@ -35,7 +35,7 @@ smoothly evolve from a PoC into an MVP.
       - [Local environment](#local-environment)
       - [Start services](#start-services)
   - [💻 Developer Experience](#-developer-experience)
-    - [📱 iOS App](#-ios-app)
+  - [📱 iOS App](#-ios-app)
   - [📏 Rules System](#-rules-system)
   - [🌐 Production Deployment](#-production-deployment)
   - [⚙️ Development Tasks](#️-development-tasks)
@@ -89,6 +89,7 @@ smoothly evolve from a PoC into an MVP.
 ### Prerequisites
 
 - **[Docker Desktop][]**
+- **[Xcode][]** (for iOS development)
 
 ### Scripted setup (recommended)
 
