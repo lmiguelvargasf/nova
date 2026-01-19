@@ -13,8 +13,7 @@ struct NovaApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(sessionStore)
+            ContentView(sessionStore: sessionStore)
                 .task {
                     await sessionStore.restoreSession()
                 }

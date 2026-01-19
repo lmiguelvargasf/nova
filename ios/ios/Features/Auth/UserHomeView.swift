@@ -17,12 +17,6 @@ struct UserHomeView: View {
                 .padding(.vertical, 4)
             }
 
-            Section("Account") {
-                NavigationLink(value: SessionRoute.profile(user)) {
-                    Text("View profile")
-                }
-            }
-
             Section {
                 Button("Log Out", action: onLogout)
                     .foregroundStyle(.red)

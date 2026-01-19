@@ -1,11 +1,11 @@
+import Observation
 import SwiftUI
 
 struct SessionRootView: View {
-    @Environment(SessionStore.self) private var sessionStore
-    @State private var path = NavigationPath()
+    @Bindable var sessionStore: SessionStore
 
     var body: some View {
-        NavigationStack(path: $path) {
+        NavigationStack {
             switch sessionStore.status {
             case .checking:
                 LoadingView()
@@ -23,18 +23,11 @@ struct SessionRootView: View {
                 }
             }
         }
-        .navigationDestination(for: SessionRoute.self) { route in
-            switch route {
-            case .profile(let user):
-                UserProfileView(user: user)
-            }
-        }
     }
 }
 
 #Preview {
     let store = SessionStore(apiClient: .live(), tokenStore: InMemoryTokenStore())
     store.status = .unauthenticated
-    return SessionRootView()
-        .environment(store)
+    return SessionRootView(sessionStore: store)
 }
