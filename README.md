@@ -333,7 +333,7 @@ This project is licensed under the [MIT License](./LICENSE).
 [ruff]: https://docs.astral.sh/ruff/
 [storybook]: https://storybook.js.org/
 [swift]: https://www.swift.org/
-[swiftui]: https://developer.apple.com/xcode/swiftui/
+[swiftui]: https://developer.apple.com/swiftui/
 [tailwind css]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
 [ty]: https://docs.astral.sh/ty/
