@@ -12,31 +12,33 @@ struct LoginView: View {
         @Bindable var viewModel = viewModel
 
         ScrollView {
-            VStack(spacing: 24) {
-                VStack(alignment: .leading, spacing: 8) {
+            VStack(spacing: 28) {
+                VStack(alignment: .leading, spacing: 6) {
                     Text("Nova 🌟")
                         .font(.largeTitle)
                         .bold()
                     Text("Welcome back")
-                        .font(.title2)
+                        .font(.title3)
                         .bold()
-                    Text("Use your account to continue.")
+                    Text("Sign in with your account.")
                         .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 VStack(spacing: 16) {
                     VStack(spacing: 12) {
-                        TextField("Email", text: $viewModel.email)
-                            .textContentType(.emailAddress)
-                            .keyboardType(.emailAddress)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled()
-                            .textFieldStyle(.roundedBorder)
+                        LabeledField(title: "Email") {
+                            TextField("Email", text: $viewModel.email)
+                                .textContentType(.emailAddress)
+                                .keyboardType(.emailAddress)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
+                        }
 
-                        SecureField("Password", text: $viewModel.password)
-                            .textContentType(.password)
-                            .textFieldStyle(.roundedBorder)
+                        LabeledField(title: "Password") {
+                            SecureField("Password", text: $viewModel.password)
+                                .textContentType(.password)
+                        }
                     }
 
                     if let errorMessage = viewModel.errorMessage {
@@ -62,13 +64,35 @@ struct LoginView: View {
                     .disabled(!viewModel.canSubmit || viewModel.isSubmitting)
                 }
                 .padding(20)
-                .background(.thinMaterial)
-                .clipShape(.rect(cornerRadius: 20))
+                .background(.ultraThinMaterial)
+                .clipShape(.rect(cornerRadius: 22))
             }
             .padding(24)
         }
         .scrollIndicators(.hidden)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+private struct LabeledField<Field: View>: View {
+    let title: String
+    @ViewBuilder let field: Field
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+            field
+                .padding(.vertical, 10)
+                .padding(.horizontal, 12)
+                .background(.background)
+                .clipShape(.rect(cornerRadius: 12))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .strokeBorder(.quaternary)
+                )
+        }
     }
 }
