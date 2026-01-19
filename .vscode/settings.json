@@ -45,7 +45,9 @@
   "vitest.rootConfig": "frontend/vitest.config.ts",
   "python-envs.pythonProjects": [
     {
-      "path": "${workspaceFolder}/backend"
+      "path": "${workspaceFolder}/backend",
+      "envManager": "ms-python.python:venv",
+      "packageManager": "ms-python.python:pip"
     }
   ]
 }

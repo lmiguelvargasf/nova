@@ -9,16 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "gearshape.2.fill")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, Nova 🌟")
-        }
-        .padding()
+        SessionRootView()
     }
 }
 
 #Preview {
-    ContentView()
+    let store = SessionStore(apiClient: .live(), tokenStore: InMemoryTokenStore())
+    store.status = .unauthenticated
+    return ContentView()
+        .environment(store)
 }
