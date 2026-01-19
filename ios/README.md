@@ -1,12 +1,17 @@
 # iOS App
 
-This directory contains a minimal SwiftUI app that can be used as a starting
-point for a native iOS client.
+Runs locally using `Xcode`.
+See the [project root README](../README.md) for setup instructions.
 
-## Requirements
+## Access
 
-- Xcode (latest stable recommended)
-- iOS Simulator or a connected device
+- App (simulator or device)
+
+## Tooling
+
+- **[Swift][]** - Primary language
+- **[SwiftUI][]** - UI framework
+- **[Xcode][]** - IDE and simulator
 
 ## Run the app
 
@@ -16,5 +21,9 @@ point for a native iOS client.
 
 ## Structure
 
-- [ios/iosApp.swift](ios/ios/iosApp.swift) — application entry point.
-- [ios/ContentView.swift](ios/ios/ContentView.swift) — root view.
+- [ios/iosApp.swift](ios/ios/iosApp.swift) - application entry point.
+- [ios/ContentView.swift](ios/ios/ContentView.swift) - root view.
+
+[Swift]: https://www.swift.org/
+[SwiftUI]: https://developer.apple.com/xcode/swiftui/
+[Xcode]: https://developer.apple.com/xcode/
