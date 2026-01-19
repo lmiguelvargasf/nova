@@ -11,11 +11,13 @@
 ![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-0074D9?style=for-the-badge&logo=docker&logoColor=white)
 ![Task](https://img.shields.io/badge/Task-43B883?style=for-the-badge&logo=task&logoColor=white)
+![Swift](https://img.shields.io/badge/Swift-6.2-F05138?style=for-the-badge&logo=swift&logoColor=white)
+![iOS](https://img.shields.io/badge/iOS-18-000000?style=for-the-badge&logo=apple&logoColor=white)
 
 A full-stack application template with a Python (Litestar) backend and a
-TypeScript (Next.js) frontend, connected via GraphQL and REST. Ideal for
-hackathons and rapid prototyping, designed to smoothly evolve from a PoC into
-an MVP.
+TypeScript (Next.js) frontend, connected via GraphQL and REST, plus an optional
+SwiftUI iOS client. Ideal for hackathons and rapid prototyping, designed to
+smoothly evolve from a PoC into an MVP.
 
 ## 📚 Table of Contents
 
@@ -25,6 +27,7 @@ an MVP.
     - [Backend](#backend)
     - [Frontend](#frontend)
     - [Tooling](#tooling)
+    - [Mobile (iOS)](#mobile-ios)
   - [🚀 Getting Started](#-getting-started)
     - [Prerequisites](#prerequisites)
     - [Scripted setup (recommended)](#scripted-setup-recommended)
@@ -32,6 +35,7 @@ an MVP.
       - [Local environment](#local-environment)
       - [Start services](#start-services)
   - [💻 Developer Experience](#-developer-experience)
+  - [📱 iOS App](#-ios-app)
   - [📏 Rules System](#-rules-system)
   - [🌐 Production Deployment](#-production-deployment)
   - [⚙️ Development Tasks](#️-development-tasks)
@@ -74,11 +78,18 @@ an MVP.
 - **[Task][]** – Task runner designed for modern workflows.
 - **[pre-commit][]** – Manages and runs automated Git hooks.
 
+### Mobile (iOS)
+
+- **[Swift][]** – Primary language for the iOS client.
+- **[SwiftUI][]** – UI framework for modern iOS interfaces.
+- **[Xcode][]** – IDE and simulator for iOS development.
+
 ## 🚀 Getting Started
 
 ### Prerequisites
 
 - **[Docker Desktop][]**
+- **[Xcode][]** (for iOS development)
 
 ### Scripted setup (recommended)
 
@@ -231,6 +242,19 @@ This project is pre-configured for **VS Code** (or any fork like **Cursor** or
     avoids running two language servers simultaneously when the Python extension
     is enabled (see [official ty configuration][ty-editors]).
 
+## 📱 iOS App
+
+An iOS starter app lives in the [ios](ios) directory.
+
+1. Open [ios/ios.xcodeproj](ios/ios.xcodeproj) in Xcode.
+2. Select a simulator or device.
+3. Run the app from Xcode.
+
+Key entry points:
+
+- [ios/ios/iosApp.swift](ios/ios/iosApp.swift)
+- [ios/ios/ContentView.swift](ios/ios/ContentView.swift)
+
 ## 📏 Rules System
 
 This project uses a canonical rule system to manage AI/LLM coding rules, first
@@ -308,6 +332,8 @@ This project is licensed under the [MIT License](./LICENSE).
 [rest]: https://restfulapi.net/
 [ruff]: https://docs.astral.sh/ruff/
 [storybook]: https://storybook.js.org/
+[swift]: https://www.swift.org/
+[swiftui]: https://developer.apple.com/swiftui/
 [tailwind css]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
 [ty]: https://docs.astral.sh/ty/
@@ -315,3 +341,4 @@ This project is licensed under the [MIT License](./LICENSE).
 [typescript]: https://www.typescriptlang.org/
 [uv]: https://docs.astral.sh/uv/
 [vitest]: https://vitest.dev/
+[xcode]: https://developer.apple.com/xcode/
