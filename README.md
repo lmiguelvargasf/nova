@@ -12,7 +12,7 @@
 ![Docker](https://img.shields.io/badge/Docker-0074D9?style=for-the-badge&logo=docker&logoColor=white)
 ![Task](https://img.shields.io/badge/Task-43B883?style=for-the-badge&logo=task&logoColor=white)
 ![Swift](https://img.shields.io/badge/Swift-6.2-F05138?style=for-the-badge&logo=swift&logoColor=white)
-![iOS](https://img.shields.io/badge/iOS-18-000000?style=for-the-badge&logo=apple&logoColor=white)
+![iOS](https://img.shields.io/badge/iOS-26-000000?style=for-the-badge&logo=apple&logoColor=white)
 
 A full-stack application template with a Python (Litestar) backend and a
 TypeScript (Next.js) frontend, connected via GraphQL and REST, plus an optional
