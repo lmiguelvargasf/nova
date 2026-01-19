@@ -39,7 +39,7 @@ applyTo: "ios/**/*.swift"
 - Always use the `Tab` API instead of `tabItem()`.
 - Never use `ObservableObject` or `@Published`; prefer `@Observable`.
 - Never use `onChange()` 1-parameter variant; use 0- or 2-parameter variants.
-- Avoid `onTapGesture()`; use `Button` unless tap location/Count is required.
+- Avoid `onTapGesture()`; use `Button` unless tap location/count is required.
 - Avoid `AnyView` unless strictly necessary.
 - Avoid hard-coded font sizes and fixed padding/spacing unless requested;
   support Dynamic Type.
