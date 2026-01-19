@@ -6,6 +6,7 @@ Nova is a full-stack template:
 
 - Backend: Python 3.14 + Litestar + Postgres + Redis
 - Frontend: TypeScript + Next.js 16 + React 19
+- Mobile: Swift + SwiftUI (iOS)
 - API: GraphQL + REST (either or both)
 - Async: Celery workers + Beat
 
@@ -14,6 +15,7 @@ Nova is a full-stack template:
 - Backend domains live in `backend/src/backend/apps/<domain>/`
 - Frontend App Router in `frontend/src/app/`, features in
   `frontend/src/features/`
+- iOS app lives in `ios/` (SwiftUI scaffolding)
 - GraphQL schema defined in `backend/src/backend/graphql/schema.py`
 - Taskfile (`task` CLI) is the workflow source of truth
 
@@ -41,3 +43,6 @@ Nova is a full-stack template:
 - Next config: `frontend/next.config.ts`
 - Taskfile: `Taskfile.yml`
 - Docker: `compose.yaml`
+- iOS app entry: `ios/ios/iosApp.swift`
+- iOS root view: `ios/ios/ContentView.swift`
+- iOS project: `ios/ios.xcodeproj`
