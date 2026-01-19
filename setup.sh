@@ -56,6 +56,21 @@ ensure_mise_activation() {
   info "Added mise activation to ${rc_file}"
 }
 
+ensure_mise_trusted() {
+  local trust_status expected_home expected_abs
+  trust_status="$("${MISE_BIN}" trust --show 2>/dev/null || true)"
+  expected_home="${ROOT_DIR/#$HOME/~}"
+  expected_abs="${ROOT_DIR}"
+
+  if printf '%s\n' "$trust_status" | grep -Fqx -e "${expected_home}: trusted" -e "${expected_abs}: trusted"; then
+    info "mise config already trusted"
+    return 0
+  fi
+
+  info "Trusting mise config..."
+  "${MISE_BIN}" trust || die "mise trust failed. Re-run with: ${MISE_BIN} trust"
+}
+
 ensure_docker_compose() {
   have docker || die "Docker is required. Install Docker Desktop."
   docker compose version >/dev/null 2>&1 || die "'docker compose' is required. Install Docker Desktop."
@@ -118,7 +133,7 @@ main() {
   ensure_mise_activation
 
   info "Installing toolchain..."
-  "${MISE_BIN}" trust || die "mise trust failed. Re-run with: ${MISE_BIN} trust"
+  ensure_mise_trusted
   "${MISE_BIN}" install -y
 
   info "Installing pre-commit hooks..."
