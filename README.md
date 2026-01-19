@@ -332,6 +332,8 @@ This project is licensed under the [MIT License](./LICENSE).
 [rest]: https://restfulapi.net/
 [ruff]: https://docs.astral.sh/ruff/
 [storybook]: https://storybook.js.org/
+[swift]: https://www.swift.org/
+[swiftui]: https://developer.apple.com/xcode/swiftui/
 [tailwind css]: https://tailwindcss.com/
 [task]: https://taskfile.dev/
 [ty]: https://docs.astral.sh/ty/
@@ -339,6 +341,4 @@ This project is licensed under the [MIT License](./LICENSE).
 [typescript]: https://www.typescriptlang.org/
 [uv]: https://docs.astral.sh/uv/
 [vitest]: https://vitest.dev/
-[swift]: https://www.swift.org/
-[swiftui]: https://developer.apple.com/xcode/swiftui/
 [xcode]: https://developer.apple.com/xcode/
