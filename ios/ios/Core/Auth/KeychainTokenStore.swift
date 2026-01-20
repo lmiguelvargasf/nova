@@ -1,7 +1,7 @@
 import Foundation
 import Security
 
-struct KeychainTokenStore: TokenStore {
+struct KeychainTokenStore: TokenStore, Sendable {
     enum StoreError: Error {
         case unexpectedStatus(OSStatus)
     }

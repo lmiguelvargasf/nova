@@ -1,6 +1,6 @@
 import Foundation
 
-final class InMemoryTokenStore: TokenStore {
+final class InMemoryTokenStore: TokenStore, @unchecked Sendable {
     private var token: String?
 
     init(token: String? = nil) {

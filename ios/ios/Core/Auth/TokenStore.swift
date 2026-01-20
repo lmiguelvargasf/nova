@@ -1,6 +1,6 @@
 import Foundation
 
-protocol TokenStore {
+protocol TokenStore: Sendable {
     func readToken() throws -> String?
     func saveToken(_ token: String) throws
     func clearToken() throws
