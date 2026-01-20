@@ -1,6 +1,7 @@
 import XCTest
 @testable import ios
 
+@MainActor
 final class APIClientTests: XCTestCase {
     override func tearDown() {
         URLProtocolMock.requestHandler = nil

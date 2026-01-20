@@ -9,6 +9,7 @@ vars:
   DOCKER_COMPOSE: docker compose
   BACKEND_TASK: task -d backend
   FRONTEND_TASK: task -d frontend
+  IOS_TEST_DESTINATION: platform=iOS Simulator,name=iPhone 17,OS=26.2
 
 tasks:
   infra:pull:
@@ -219,6 +220,11 @@ tasks:
     desc: Run frontend storybook:dev
     cmds:
       - "{{.FRONTEND_TASK}} storybook:dev"
+
+  ios:test:
+    desc: Run iOS tests
+    cmds:
+      - xcodebuild test -project ios/ios.xcodeproj -scheme ios -destination '{{.IOS_TEST_DESTINATION}}' -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 {{.CLI_ARGS}}
 
   worker:dev:
     desc: Run backend worker

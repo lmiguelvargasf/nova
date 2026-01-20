@@ -8,7 +8,7 @@ final class LoginViewModelTests: XCTestCase {
     }
 
     @MainActor
-    func testCanSubmitRequiresEmailAndPassword() {
+    func testCanSubmitRequiresEmailAndPassword() async {
         let viewModel = LoginViewModel(sessionStore: makeSessionStore())
 
         viewModel.email = ""
@@ -29,7 +29,7 @@ final class LoginViewModelTests: XCTestCase {
     }
 
     @MainActor
-    func testCanSubmitTrimsEmail() {
+    func testCanSubmitTrimsEmail() async {
         let viewModel = LoginViewModel(sessionStore: makeSessionStore())
         viewModel.email = "   "
         viewModel.password = "password"
@@ -109,7 +109,7 @@ final class LoginViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isSubmitting)
     }
 
-    private func makeSessionStore() -> SessionStore {
+    @MainActor private func makeSessionStore() -> SessionStore {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [URLProtocolMock.self]
         let session = URLSession(configuration: config)

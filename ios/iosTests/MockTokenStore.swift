@@ -1,7 +1,7 @@
 import Foundation
 @testable import ios
 
-final class MockTokenStore: TokenStore {
+final class MockTokenStore: TokenStore, @unchecked Sendable {
     private(set) var token: String?
     private(set) var savedToken: String?
     private(set) var clearCallCount = 0
