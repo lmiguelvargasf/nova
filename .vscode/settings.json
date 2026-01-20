@@ -42,6 +42,5 @@
     "source.fixAll.ruff": "explicit",
     "source.organizeImports.ruff": "explicit"
   },
-  "vitest.rootConfig": "frontend/vitest.config.ts",
-  "python-envs.pythonProjects": []
+  "vitest.rootConfig": "frontend/vitest.config.ts"
 }
