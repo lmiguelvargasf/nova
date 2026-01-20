@@ -11,7 +11,7 @@ runs:
     - name: Setup PNPM
       uses: pnpm/action-setup@v4
       with:
-        version: '10.8.1'
+        version: '10.28.1'
 
     - name: Get pnpm store directory
       id: pnpm-store
