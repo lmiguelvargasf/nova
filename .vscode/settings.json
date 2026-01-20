@@ -43,9 +43,5 @@
     "source.organizeImports.ruff": "explicit"
   },
   "vitest.rootConfig": "frontend/vitest.config.ts",
-  "python-envs.pythonProjects": [
-    {
-      "path": "${workspaceFolder}/backend"
-    }
-  ]
+  "python-envs.pythonProjects": []
 }
