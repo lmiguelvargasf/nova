@@ -11,7 +11,7 @@ Task:
 
 - Find the latest pnpm version
 - Update mise.toml to use the latest pnpm version.
-- Update .github/actions/frontend-setup/action.yaml to use the latest pnpm
+- Update .github/actions/frontend-setup/action.yml to use the latest pnpm
   version.
 - Update frontend/package.json `packageManager` to the latest pnpm version.
 
