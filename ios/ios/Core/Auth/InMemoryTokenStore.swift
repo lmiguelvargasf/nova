@@ -1,0 +1,22 @@
+import Foundation
+
+@MainActor
+final class InMemoryTokenStore: TokenStore, @unchecked Sendable {
+    private var token: String?
+
+    init(token: String? = nil) {
+        self.token = token
+    }
+
+    func readToken() throws -> String? {
+        token
+    }
+
+    func saveToken(_ token: String) throws {
+        self.token = token
+    }
+
+    func clearToken() throws {
+        token = nil
+    }
+}

@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct NovaApp: App {
+    @State private var sessionStore = SessionStore()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(sessionStore: sessionStore)
+                .task {
+                    await sessionStore.restoreSession()
+                }
         }
     }
 }
