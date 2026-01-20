@@ -49,3 +49,7 @@ This workflow runs automatically on:
 - Run `ruff` for linting and formatting
 - Run `ty` for type checking
 - Run `pytest` for tests
+
+#### iOS SwiftLint
+
+- Run SwiftLint on a macOS runner

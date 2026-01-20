@@ -133,3 +133,20 @@ jobs:
 
       - name: Run tests
         run: uv run pytest --no-cov
+
+  ios-swiftlint:
+    name: iOS SwiftLint
+    runs-on: macos-latest
+
+    defaults:
+      run:
+        working-directory: ./ios
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install SwiftLint
+        run: brew install swiftlint
+
+      - name: SwiftLint
+        run: swiftlint
