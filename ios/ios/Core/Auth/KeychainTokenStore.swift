@@ -8,10 +8,16 @@ struct KeychainTokenStore: TokenStore, Sendable {
 
     private let service: String
     private let account: String
+    private let client: KeychainClient
 
-    init(service: String = Bundle.main.bundleIdentifier ?? "NovaApp", account: String = "authToken") {
+    init(
+        service: String = Bundle.main.bundleIdentifier ?? "NovaApp",
+        account: String = "authToken",
+        client: KeychainClient = LiveKeychainClient()
+    ) {
         self.service = service
         self.account = account
+        self.client = client
     }
 
     func readToken() throws -> String? {
@@ -19,8 +25,7 @@ struct KeychainTokenStore: TokenStore, Sendable {
         query[kSecMatchLimit as String] = kSecMatchLimitOne
         query[kSecReturnData as String] = true
 
-        var item: CFTypeRef?
-        let status = SecItemCopyMatching(query as CFDictionary, &item)
+        let (status, item) = client.copyMatching(query as CFDictionary)
         if status == errSecItemNotFound {
             return nil
         }
@@ -34,18 +39,18 @@ struct KeychainTokenStore: TokenStore, Sendable {
     }
 
     func saveToken(_ token: String) throws {
-        _ = SecItemDelete(baseQuery as CFDictionary)
+        _ = client.delete(baseQuery as CFDictionary)
         var query = baseQuery
         query[kSecValueData as String] = Data(token.utf8)
 
-        let status = SecItemAdd(query as CFDictionary, nil)
+        let status = client.add(query as CFDictionary)
         guard status == errSecSuccess else {
             throw StoreError.unexpectedStatus(status)
         }
     }
 
     func clearToken() throws {
-        let status = SecItemDelete(baseQuery as CFDictionary)
+        let status = client.delete(baseQuery as CFDictionary)
         guard status == errSecSuccess || status == errSecItemNotFound else {
             throw StoreError.unexpectedStatus(status)
         }
