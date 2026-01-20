@@ -2,7 +2,7 @@ import Security
 import XCTest
 @testable import ios
 
-final class KeychainTokenStoreTests: XCTestCase {
+@MainActor final class KeychainTokenStoreTests: XCTestCase {
     func testSaveReadAndClearToken() throws {
         let client = MockKeychainClient()
         let store = KeychainTokenStore(client: client)

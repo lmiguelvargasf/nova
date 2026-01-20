@@ -1,6 +1,7 @@
 import XCTest
 @testable import ios
 
+@MainActor
 final class APIClientTests: XCTestCase {
     override func tearDown() {
         URLProtocolMock.requestHandler = nil
@@ -31,8 +32,12 @@ final class APIClientTests: XCTestCase {
         let client = makeClient()
         let response = try await client.login(email: "admin@local.dev", password: "password")
 
-        XCTAssertEqual(response.token, "token")
-        XCTAssertEqual(response.user.email, "admin@local.dev")
+        if response.token != "token" {
+            XCTFail("Expected token to equal \"token\"")
+        }
+        if response.user.email != "admin@local.dev" {
+            XCTFail("Expected user email to equal \"admin@local.dev\"")
+        }
     }
 
     func testGetCurrentUserBuildsAuthorizationHeader() async throws {

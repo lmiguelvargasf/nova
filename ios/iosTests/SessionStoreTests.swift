@@ -4,11 +4,11 @@ import XCTest
 final class SessionStoreTests: XCTestCase {
     func testRestoreSessionWithoutTokenSetsUnauthenticated() async {
         let tokenStore = MockTokenStore(token: nil)
-        let store = SessionStore(apiClient: makeClient(), tokenStore: tokenStore)
+        let store = await SessionStore(apiClient: makeClient(), tokenStore: tokenStore)
 
         await store.restoreSession()
 
-        switch store.status {
+        switch await store.status {
         case .unauthenticated:
             XCTAssertEqual(tokenStore.clearCallCount, 0)
         default:
@@ -28,13 +28,14 @@ final class SessionStoreTests: XCTestCase {
             let data = Self.userResponseData
             return (response, data)
         }
-        let store = SessionStore(apiClient: makeClient(), tokenStore: tokenStore)
+        let store = await SessionStore(apiClient: makeClient(), tokenStore: tokenStore)
 
         await store.restoreSession()
 
-        switch store.status {
+        switch await store.status {
         case .authenticated(let user):
-            XCTAssertEqual(user.email, "admin@local.dev")
+            let email = await user.email
+            XCTAssertEqual(email, "admin@local.dev")
         default:
             XCTFail("Expected authenticated status")
         }
@@ -51,11 +52,11 @@ final class SessionStoreTests: XCTestCase {
             )!
             return (response, Data())
         }
-        let store = SessionStore(apiClient: makeClient(), tokenStore: tokenStore)
+        let store = await SessionStore(apiClient: makeClient(), tokenStore: tokenStore)
 
         await store.restoreSession()
 
-        switch store.status {
+        switch await store.status {
         case .unauthenticated:
             XCTAssertEqual(tokenStore.clearCallCount, 1)
         default:
@@ -75,11 +76,11 @@ final class SessionStoreTests: XCTestCase {
             let data = Self.errorResponseData
             return (response, data)
         }
-        let store = SessionStore(apiClient: makeClient(), tokenStore: tokenStore)
+        let store = await SessionStore(apiClient: makeClient(), tokenStore: tokenStore)
 
         await store.restoreSession()
 
-        switch store.status {
+        switch await store.status {
         case .error:
             XCTAssertEqual(tokenStore.clearCallCount, 1)
         default:
@@ -99,14 +100,15 @@ final class SessionStoreTests: XCTestCase {
             let data = Self.loginResponseData
             return (response, data)
         }
-        let store = SessionStore(apiClient: makeClient(), tokenStore: tokenStore)
+        let store = await SessionStore(apiClient: makeClient(), tokenStore: tokenStore)
 
         try await store.login(email: "admin@local.dev", password: "password")
 
         XCTAssertEqual(tokenStore.savedToken, "token")
-        switch store.status {
+        switch await store.status {
         case .authenticated(let user):
-            XCTAssertEqual(user.firstName, "M")
+            let firstName = await user.firstName
+            XCTAssertEqual(firstName, "M")
         default:
             XCTFail("Expected authenticated status")
         }
@@ -123,14 +125,14 @@ final class SessionStoreTests: XCTestCase {
             )!
             return (response, Data())
         }
-        let store = SessionStore(apiClient: makeClient(), tokenStore: tokenStore)
-        store.status = .unauthenticated
+        let store = await SessionStore(apiClient: makeClient(), tokenStore: tokenStore)
+        await MainActor.run { store.status = .unauthenticated }
 
         do {
             try await store.login(email: "admin@local.dev", password: "wrong")
             XCTFail("Expected login to throw")
         } catch {
-            switch store.status {
+            switch await store.status {
             case .unauthenticated:
                 XCTAssertEqual(tokenStore.savedToken, nil)
             default:
@@ -139,14 +141,14 @@ final class SessionStoreTests: XCTestCase {
         }
     }
 
-    func testLogoutClearsTokenAndResetsStatus() {
+    func testLogoutClearsTokenAndResetsStatus() async {
         let tokenStore = MockTokenStore(token: "token")
-        let store = SessionStore(apiClient: makeClient(), tokenStore: tokenStore)
-        store.status = .authenticated(User(id: 1, email: "admin@local.dev", firstName: "M", lastName: "User"))
+        let store = await SessionStore(apiClient: makeClient(), tokenStore: tokenStore)
+        await MainActor.run { store.status = .authenticated(User(id: 1, email: "admin@local.dev", firstName: "M", lastName: "User")) }
 
-        store.logout()
+        await store.logout()
 
-        switch store.status {
+        switch await store.status {
         case .unauthenticated:
             XCTAssertEqual(tokenStore.clearCallCount, 1)
         default:

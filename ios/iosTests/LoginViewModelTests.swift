@@ -109,7 +109,7 @@ final class LoginViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isSubmitting)
     }
 
-    private func makeSessionStore() -> SessionStore {
+    @MainActor private func makeSessionStore() -> SessionStore {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [URLProtocolMock.self]
         let session = URLSession(configuration: config)
