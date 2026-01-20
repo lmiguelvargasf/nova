@@ -41,3 +41,10 @@ repos:
         language: system
         pass_filenames: false
         files: ^frontend/
+
+      - id: ios-swiftlint
+        name: "ios: swiftlint"
+        entry: swiftlint --fix
+        language: system
+        pass_filenames: false
+        files: ^ios/
