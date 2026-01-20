@@ -32,12 +32,8 @@ final class APIClientTests: XCTestCase {
         let client = makeClient()
         let response = try await client.login(email: "admin@local.dev", password: "password")
 
-        if response.token != "token" {
-            XCTFail("Expected token to equal \"token\"")
-        }
-        if response.user.email != "admin@local.dev" {
-            XCTFail("Expected user email to equal \"admin@local.dev\"")
-        }
+        XCTAssertEqual(response.token, "token")
+        XCTAssertEqual(response.user.email, "admin@local.dev")
     }
 
     func testGetCurrentUserBuildsAuthorizationHeader() async throws {
