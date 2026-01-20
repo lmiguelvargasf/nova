@@ -2,7 +2,7 @@ import Foundation
 import Security
 @testable import ios
 
-final class MockKeychainClient: KeychainClient {
+final class MockKeychainClient: KeychainClient, @unchecked Sendable {
     var storedData: Data?
 
     var copyStatus: OSStatus = errSecSuccess
