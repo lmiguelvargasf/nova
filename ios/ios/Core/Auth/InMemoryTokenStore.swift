@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 final class InMemoryTokenStore: TokenStore, @unchecked Sendable {
     private var token: String?
 
