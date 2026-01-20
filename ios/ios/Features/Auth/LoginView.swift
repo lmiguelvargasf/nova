@@ -96,3 +96,11 @@ private struct LabeledField<Field: View>: View {
         }
     }
 }
+
+#Preview {
+    let store = SessionStore(apiClient: .live(), tokenStore: InMemoryTokenStore())
+    store.status = .unauthenticated
+    return NavigationStack {
+        LoginView(sessionStore: store)
+    }
+}
