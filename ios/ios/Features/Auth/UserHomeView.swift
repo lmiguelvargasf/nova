@@ -35,3 +35,9 @@ struct UserHomeView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
+#Preview {
+    let user = User(id: 1, email: "jane@example.com", firstName: "Jane", lastName: "Doe")
+    return NavigationStack {
+        UserHomeView(user: user, onLogout: {})
+    }
+}
