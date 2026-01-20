@@ -133,3 +133,22 @@ jobs:
 
       - name: Run tests
         run: uv run pytest --no-cov
+
+  ios-swiftlint:
+    name: iOS SwiftLint
+    runs-on: macos-latest
+
+    defaults:
+      run:
+        working-directory: ./ios
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup mise
+        uses: jdx/mise-action@v3
+
+      - name: Install SwiftLint via mise
+        run: mise install swiftlint
+      - name: SwiftLint
+        run: swiftlint
