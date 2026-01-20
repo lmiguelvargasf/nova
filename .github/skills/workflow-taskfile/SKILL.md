@@ -16,7 +16,8 @@ description: >
 ## Steps
 
 1. Inspect `Taskfile.yml` (and included Taskfiles) to confirm valid targets.
-2. If the workflow likely lives in a subdirectory, check for a local Taskfile and use `task -d <dir> <target>`.
+2. If the workflow likely lives in a subdirectory, check for a local Taskfile
+  and use `task -d <dir> <target>`.
 3. If you cannot confirm a target, ask for `task --list` or `task --list-all` output.
 4. Prefer `task <target>` over raw commands for workflows.
 5. For unfamiliar tasks, use `task --summary <task>` before execution.
