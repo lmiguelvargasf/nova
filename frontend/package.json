@@ -68,7 +68,7 @@
     "@vitest/coverage-v8": "4.0.16",
     "@vitest/ui": "4.0.16",
     "jsdom": "^28.0.0",
-    "playwright": "^1.57.0",
+    "playwright": "^1.58.2",
     "storybook": "^10.1.11",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
