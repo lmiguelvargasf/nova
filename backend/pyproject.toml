@@ -34,7 +34,7 @@ dev = [
   "pytest-mock>=3.15.1",
   "ruff>=0.15.1",
   "strawberry-graphql[debug-server]>=0.291.3",
-  "ty>=0.0.5",
+  "ty>=0.0.17",
 ]
 
 [tool.ruff]
