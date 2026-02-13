@@ -1,7 +1,3 @@
-from collections.abc import AsyncIterator
-
-import pytest
-from advanced_alchemy.extensions.litestar import SQLAlchemyAsyncConfig
 from argon2 import PasswordHasher
 from litestar import Litestar
 from litestar.status_codes import (
@@ -14,76 +10,8 @@ from litestar.status_codes import (
 from litestar.testing import AsyncTestClient
 from sqlalchemy import select
 
-from backend.application import create_app
-from backend.apps import models as app_models
 from backend.apps.users.models import UserModel
 from backend.auth.jwt import jwt_auth
-from backend.config.alchemy import build_connection_string, session_config
-from backend.config.base import settings
-
-
-async def _create_user(
-    db_sessionmaker,
-    *,
-    email: str,
-    password: str = "SecurePassword123!",
-    first_name: str = "Test",
-    last_name: str = "User",
-    is_admin: bool = False,
-    is_active: bool = True,
-) -> UserModel:
-    async with db_sessionmaker() as session:
-        ph = PasswordHasher()
-        user_model = UserModel(
-            email=email,
-            password_hash=ph.hash(password),
-            first_name=first_name,
-            last_name=last_name,
-            is_admin=is_admin,
-            is_active=is_active,
-        )
-        session.add(user_model)
-        await session.commit()
-        await session.refresh(user_model)
-        return user_model
-
-
-@pytest.fixture
-async def user(db_sessionmaker) -> UserModel:
-    return await _create_user(db_sessionmaker, email="user@example.com")
-
-
-@pytest.fixture
-async def other_user(db_sessionmaker) -> UserModel:
-    return await _create_user(db_sessionmaker, email="other@example.com")
-
-
-@pytest.fixture
-async def rest_client(
-    db_schema: None,
-    monkeypatch: pytest.MonkeyPatch,
-) -> AsyncIterator[AsyncTestClient[Litestar]]:
-    async def retrieve_user_handler(token, _connection):
-        try:
-            user_id = int(token.sub)
-        except TypeError, ValueError:
-            return None
-        return UserModel(id=user_id)
-
-    monkeypatch.setattr(jwt_auth, "retrieve_user_handler", retrieve_user_handler)
-    config = SQLAlchemyAsyncConfig(
-        connection_string=build_connection_string(db_name=settings.postgres_test_db),
-        session_config=session_config,
-        metadata=app_models.metadata,
-        create_all=False,
-    )
-    test_app = create_app(
-        use_sqlalchemy_plugin=True,
-        enable_admin=False,
-        alchemy_config_override=config,
-    )
-    async with AsyncTestClient(app=test_app) as client:
-        yield client
 
 
 async def test_rest_soft_delete_reactivates_user(
@@ -165,13 +93,13 @@ async def test_rest_list_users_non_admin(
 
 async def test_rest_list_users_cursor_pagination(
     rest_client: AsyncTestClient[Litestar],
-    db_sessionmaker,
+    create_user,
 ) -> None:
-    viewer = await _create_user(db_sessionmaker, email="viewer@example.com")
+    viewer = await create_user(email="viewer@example.com")
     token = jwt_auth.create_token(identifier=str(viewer.id))
 
     for i in range(12):
-        await _create_user(db_sessionmaker, email=f"user-{i}@example.com")
+        await create_user(email=f"user-{i}@example.com")
 
     response1 = await rest_client.get(
         "/api/users?limit=5",
@@ -213,11 +141,9 @@ async def test_rest_list_users_cursor_pagination(
 
 async def test_rest_list_users_invalid_cursor(
     rest_client: AsyncTestClient[Litestar],
-    db_sessionmaker,
+    create_user,
 ) -> None:
-    admin = await _create_user(
-        db_sessionmaker, email="admin2@example.com", is_admin=True
-    )
+    admin = await create_user(email="admin2@example.com", is_admin=True)
     token = jwt_auth.create_token(identifier=str(admin.id))
 
     response = await rest_client.get(
@@ -229,15 +155,13 @@ async def test_rest_list_users_invalid_cursor(
 
 async def test_rest_list_users_cursor_filter_mismatch(
     rest_client: AsyncTestClient[Litestar],
-    db_sessionmaker,
+    create_user,
 ) -> None:
-    admin = await _create_user(
-        db_sessionmaker, email="admin4@example.com", is_admin=True
-    )
+    admin = await create_user(email="admin4@example.com", is_admin=True)
     token = jwt_auth.create_token(identifier=str(admin.id))
 
     for i in range(3):
-        await _create_user(db_sessionmaker, email=f"filter-{i}@example.com")
+        await create_user(email=f"filter-{i}@example.com")
 
     response1 = await rest_client.get(
         "/api/users?limit=2&searchString=filter",
@@ -257,11 +181,9 @@ async def test_rest_list_users_cursor_filter_mismatch(
 
 async def test_rest_list_users_limit_too_large(
     rest_client: AsyncTestClient[Litestar],
-    db_sessionmaker,
+    create_user,
 ) -> None:
-    admin = await _create_user(
-        db_sessionmaker, email="admin3@example.com", is_admin=True
-    )
+    admin = await create_user(email="admin3@example.com", is_admin=True)
     token = jwt_auth.create_token(identifier=str(admin.id))
 
     response = await rest_client.get(
@@ -351,10 +273,9 @@ async def test_rest_login_invalid_credentials(
 
 async def test_rest_login_inactive_user(
     rest_client: AsyncTestClient[Litestar],
-    db_sessionmaker,
+    create_user,
 ) -> None:
-    user = await _create_user(
-        db_sessionmaker,
+    user = await create_user(
         email="inactive@example.com",
         password="InactivePassword123!",
         is_active=False,
