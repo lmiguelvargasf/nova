@@ -178,7 +178,7 @@ requires-dist = [
     { name = "msgspec", specifier = ">=0.20.0" },
     { name = "pydantic-settings", specifier = ">=2.12.0" },
     { name = "starlette-admin", specifier = ">=0.16.0" },
-    { name = "strawberry-graphql", specifier = ">=0.287.3" },
+    { name = "strawberry-graphql", specifier = ">=0.291.3" },
 ]
 
 [package.metadata.requires-dev]
