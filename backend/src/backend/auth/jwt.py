@@ -16,7 +16,7 @@ async def retrieve_user_handler(
 
     try:
         user_id = int(token.sub)
-    except (TypeError, ValueError):
+    except TypeError, ValueError:
         return None
 
     async with config.get_session() as session:
