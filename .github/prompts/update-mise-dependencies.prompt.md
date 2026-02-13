@@ -1,6 +1,6 @@
 ---
 name: update-mise-dependencies
-description: Update all mise-managed dependencies, validate setup, and open a PR.
+description: Update all mise-managed dependencies and validate setup.
 ---
 
 Task:
@@ -15,9 +15,6 @@ Task:
 - Update `mise.toml` for each dependency that has a newer target version.
 - Commit each dependency upgrade separately (one commit per dependency).
 - Run `./setup.sh` and confirm it completes successfully.
-- Push the branch.
-- Create a PR using `.github/prompts/pr-creation.prompt.md`.
-- Reference the Linear issue in the PR body.
 
 Constraints:
 
@@ -32,4 +29,3 @@ Output:
 - Linear issue URL.
 - Final `mise.toml` tool versions.
 - List of commits created.
-- PR URL.
