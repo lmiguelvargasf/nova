@@ -5,10 +5,6 @@ description: Update all mise-managed dependencies and validate setup.
 
 Task:
 
-- Create a Linear issue in team `nova` and project `Support for Codex` for the
-  update work.
-- Create a branch from `main` using the issue id and `codex/` prefix (for example,
-  `codex/NOVA-123-update-mise-dependencies`).
 - Find the latest version for each tool in `mise.toml` with `mise latest <tool>`.
 - For Node.js, use the latest LTS version with `mise latest node@lts` (not the
   development line).
@@ -26,6 +22,4 @@ Constraints:
 
 Output:
 
-- Linear issue URL.
 - Final `mise.toml` tool versions.
-- List of commits created.
