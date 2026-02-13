@@ -25,7 +25,6 @@ from advanced_alchemy.types.password_hash.argon2 import Argon2Hasher
 from advanced_alchemy.types.password_hash.passlib import PasslibHasher
 from advanced_alchemy.types.password_hash.pwdlib import PwdlibHasher
 from alembic import op
-from sqlalchemy import Text  # noqa: F401
 
 if TYPE_CHECKING:
     pass
