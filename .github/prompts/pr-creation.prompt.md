@@ -13,9 +13,27 @@ Constraints:
 
 - Do not modify code unless explicitly asked.
 - Keep changes minimal and scoped.
+- Read `.github/pull_request_template.md` and fill in the required sections.
+- Write the completed body into a temporary file. For example:
+
+  ```bash
+  cat <<'EOF' > /tmp/prbody.md
+  <rendered template>
+  EOF
+  ```
+
+- When updating a PR body, run:
+
+  ```bash
+  gh pr edit <pr-number> --body "$(cat /tmp/prbody.md)"
+  ```
+
+- When creating a PR, run:
+
+  ```bash
+  gh pr create --base main --head <branch> --body "$(cat /tmp/prbody.md)"
+  ```
 
 Output:
 
-- Summarize the diff at a high level.
 - Provide the PR URL.
-- List any commands used.
