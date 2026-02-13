@@ -1,6 +1,6 @@
 [tools]
 node = "25.6.1"
-pnpm = "10.28.1"
+pnpm = "10.29.3"
 pre-commit = "4.5.1"
 swiftlint = "0.63.1"
 task = "3.46.3"
