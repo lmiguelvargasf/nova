@@ -101,7 +101,7 @@ class AuthController(Controller):
         ph = PasswordHasher()
         try:
             ok = ph.verify(user.password_hash, data.password)
-        except (VerifyMismatchError, InvalidHash, VerificationError):
+        except VerifyMismatchError, InvalidHash, VerificationError:
             ok = False
         except Exception:  # noqa: BLE001 # security boundary: do not leak verification errors
             ok = False

@@ -28,7 +28,7 @@ def _get_cached_subject(request: Request) -> str | None:
                     algorithm="HS256",
                 )
                 subject = token.sub
-            except (NotAuthorizedException, ValueError):
+            except NotAuthorizedException, ValueError:
                 subject = None
 
     request.state.rate_limit_subject = subject or ""

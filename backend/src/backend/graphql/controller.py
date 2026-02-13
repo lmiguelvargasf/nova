@@ -34,7 +34,7 @@ async def default_graphql_context_getter(
             user_id = token.sub
             if user_id:
                 user = await services.users.get_one_or_none(id=int(user_id))
-        except (NotAuthorizedException, ValueError):
+        except NotAuthorizedException, ValueError:
             pass
 
     return GraphQLContext(

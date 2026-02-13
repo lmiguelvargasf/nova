@@ -66,7 +66,7 @@ async def rest_client(
     async def retrieve_user_handler(token, _connection):
         try:
             user_id = int(token.sub)
-        except (TypeError, ValueError):
+        except TypeError, ValueError:
             return None
         return UserModel(id=user_id)
 
