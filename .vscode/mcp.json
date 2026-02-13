@@ -7,6 +7,10 @@
 				"mcp-remote",
 				"https://mcp.linear.app/mcp"
 			]
+		},
+		"github": {
+			"type": "http",
+			"url": "https://api.githubcopilot.com/mcp/"
 		}
 	},
 	"inputs": []
