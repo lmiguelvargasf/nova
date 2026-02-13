@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from litestar import asgi
 from litestar.handlers.asgi_handlers import ASGIRouteHandler
 from sqlalchemy.ext.asyncio import AsyncEngine
@@ -19,10 +21,13 @@ def create_admin_handler(
 ) -> ASGIRouteHandler:
     """Create a Litestar ASGI handler that mounts the Starlette Admin app."""
     db_engine = engine or alchemy_config.get_engine()
+    base_dir = Path(__file__).resolve().parent
 
     admin = BaseAdmin(
         title="Admin",
         auth_provider=BackendAdminAuthProvider(),
+        templates_dir=str(base_dir / "templates"),
+        statics_dir=str(base_dir / "statics"),
         middlewares=[
             Middleware(DBSessionMiddleware, engine=db_engine),  # type: ignore[arg-type]
         ],
