@@ -62,6 +62,16 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} install"
 
+  backend:dep:add:
+    desc: Add a backend dependency
+    cmds:
+      - "{{.BACKEND_TASK}} dep:add -- {{.CLI_ARGS}}"
+
+  backend:dep:add:dev:
+    desc: Add a backend dev dependency
+    cmds:
+      - "{{.BACKEND_TASK}} dep:add:dev -- {{.CLI_ARGS}}"
+
   backend:lock:
     desc: Upgrade backend dependencies
     cmds:
