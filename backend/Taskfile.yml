@@ -17,6 +17,26 @@ tasks:
     cmds:
       - uv sync
 
+  dep:add:
+    desc: Add a backend dependency
+    cmds:
+      - uv add {{.CLI_ARGS}}
+
+  dep:add:dev:
+    desc: Add a backend dev dependency
+    cmds:
+      - uv add --dev {{.CLI_ARGS}}
+
+  dep:remove:
+    desc: Remove a backend dependency
+    cmds:
+      - uv remove {{.CLI_ARGS}}
+
+  dep:remove:dev:
+    desc: Remove a backend dev dependency
+    cmds:
+      - uv remove --dev {{.CLI_ARGS}}
+
   lock:
     desc: Upgrade backend lockfile (dependencies)
     cmds:
