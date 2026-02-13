@@ -72,6 +72,16 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} dep:add:dev -- {{.CLI_ARGS}}"
 
+  backend:dep:remove:
+    desc: Remove a backend dependency
+    cmds:
+      - "{{.BACKEND_TASK}} dep:remove -- {{.CLI_ARGS}}"
+
+  backend:dep:remove:dev:
+    desc: Remove a backend dev dependency
+    cmds:
+      - "{{.BACKEND_TASK}} dep:remove:dev -- {{.CLI_ARGS}}"
+
   backend:lock:
     desc: Upgrade backend dependencies
     cmds:
