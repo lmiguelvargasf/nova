@@ -79,8 +79,8 @@ profile_apply() {
   remove_path ".github/prompts/graphql-contract.prompt.md"
   remove_path ".github/skills/graphql-contract"
 
-  run_task frontend:dep:remove -- "@apollo/client @apollo/client-integration-nextjs graphql"
-  run_task frontend:dep:remove:dev -- "@graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-operations @graphql-codegen/typescript-react-apollo @graphql-typed-document-node/core"
+  run_task frontend:dep:remove -- @apollo/client @apollo/client-integration-nextjs graphql
+  run_task frontend:dep:remove:dev -- @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-operations @graphql-codegen/typescript-react-apollo @graphql-typed-document-node/core
   run_task backend:dep:remove -- "strawberry-graphql"
   run_task backend:dep:remove:dev -- "strawberry-graphql"
 
