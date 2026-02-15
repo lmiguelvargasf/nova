@@ -1,7 +1,19 @@
 from collections.abc import AsyncIterator
 
 import pytest
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
+from advanced_alchemy.extensions.litestar import SQLAlchemyAsyncConfig
+from litestar import Litestar
+from litestar.testing import AsyncTestClient
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
+
+from backend.application import create_app
+from backend.apps import models as app_models
+from backend.config.alchemy import build_connection_string, session_config
 
 
 class DevelopmentDatabaseError(RuntimeError):
@@ -30,8 +42,6 @@ async def db_engine() -> AsyncIterator[AsyncEngine]:
 
 @pytest.fixture
 async def db_schema(db_engine: AsyncEngine) -> AsyncIterator[None]:
-    from backend.apps import models as app_models
-
     async with db_engine.begin() as conn:
         await conn.run_sync(app_models.metadata.drop_all)
         await conn.run_sync(app_models.metadata.create_all)
@@ -54,3 +64,22 @@ async def db_session(db_sessionmaker: async_sessionmaker[AsyncSession]):
             yield session
         finally:
             await session.rollback()
+
+
+@pytest.fixture
+async def test_client(db_schema: None) -> AsyncIterator[AsyncTestClient[Litestar]]:
+    from backend.config.base import settings
+
+    config = SQLAlchemyAsyncConfig(
+        connection_string=build_connection_string(db_name=settings.postgres_test_db),
+        session_config=session_config,
+        metadata=app_models.metadata,
+        create_all=False,
+    )
+    app = create_app(
+        use_sqlalchemy_plugin=True,
+        enable_admin=False,
+        alchemy_config_override=config,
+    )
+    async with AsyncTestClient(app=app) as client:
+        yield client
