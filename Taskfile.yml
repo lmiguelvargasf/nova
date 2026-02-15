@@ -242,14 +242,19 @@ tasks:
       - "{{.FRONTEND_TASK}} storybook:dev"
 
   pr:create:
-    desc: Create a pull request to main using /tmp/prbody.md (defaults to current branch)
+    desc: Create a pull request to main using /tmp/prbody.md (requires PR_TITLE; defaults branch to current)
     cmds:
       - |
         BRANCH="{{.CLI_ARGS}}"
         if [ -z "$BRANCH" ]; then
           BRANCH="$(git branch --show-current)"
         fi
-        gh pr create --base main --head "$BRANCH" --fill --body "$(cat /tmp/prbody.md)"
+        if [ -z "${PR_TITLE:-}" ]; then
+          echo "Usage: PR_TITLE='<type>: <summary>' task pr:create -- <branch>" >&2
+          echo "Allowed type values: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert" >&2
+          exit 1
+        fi
+        gh pr create --base main --head "$BRANCH" --title "$PR_TITLE" --body "$(cat /tmp/prbody.md)"
 
   pr:edit:
     desc: Update a pull request body from /tmp/prbody.md (requires PR number)
