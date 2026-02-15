@@ -49,7 +49,7 @@ profile_apply() {
   remove_path ".github/instructions/typescript.instructions.md"
   remove_path ".github/instructions/swiftui.instructions.md"
 
-  run_task backend:dep:remove -- "strawberry-graphql celery flower"
+  run_task backend:dep:remove -- strawberry-graphql celery flower
   run_task backend:dep:remove:dev -- "strawberry-graphql"
 
   set_state_bool "has_graphql" "false"
