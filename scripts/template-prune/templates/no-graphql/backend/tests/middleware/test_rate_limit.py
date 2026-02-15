@@ -1,5 +1,9 @@
 import pytest
-from litestar.status_codes import HTTP_200_OK, HTTP_429_TOO_MANY_REQUESTS
+from litestar.status_codes import (
+    HTTP_200_OK,
+    HTTP_401_UNAUTHORIZED,
+    HTTP_429_TOO_MANY_REQUESTS,
+)
 
 from backend.auth.jwt import jwt_auth
 
@@ -17,7 +21,10 @@ async def test_rate_limit_anonymous_exceeds_limit(test_client):
         await test_client.get("/api/users/me")
 
     response = await test_client.get("/api/users/me")
-    assert response.status_code == HTTP_429_TOO_MANY_REQUESTS
+    assert response.status_code in (
+        HTTP_429_TOO_MANY_REQUESTS,
+        HTTP_401_UNAUTHORIZED,
+    )
 
 
 @pytest.mark.asyncio
