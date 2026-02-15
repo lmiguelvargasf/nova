@@ -1,3 +1,4 @@
+import pytest
 from argon2 import PasswordHasher
 from litestar import Litestar
 from litestar.status_codes import (
@@ -12,6 +13,8 @@ from sqlalchemy import select
 
 from backend.apps.users.models import UserModel
 from backend.auth.jwt import jwt_auth
+
+pytestmark = pytest.mark.integration
 
 
 async def test_rest_soft_delete_reactivates_user(
