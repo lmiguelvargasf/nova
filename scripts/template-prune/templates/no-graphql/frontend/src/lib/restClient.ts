@@ -24,8 +24,24 @@ type RestCursorPage<T> = {
   };
 };
 
+export const AUTH_STATE_CHANGED_EVENT = "auth-state-changed";
+
 const restEndpoint =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api";
+
+function isAuthPath(path: string): boolean {
+  return path === "/auth" || path.startsWith("/auth/");
+}
+
+function isProtectedPath(path: string): boolean {
+  return !isAuthPath(path);
+}
+
+export function clearStoredAuth(): void {
+  localStorage.removeItem("token");
+  localStorage.removeItem("userId");
+  window.dispatchEvent(new Event(AUTH_STATE_CHANGED_EVENT));
+}
 
 async function restRequest<T>(
   path: string,
@@ -36,7 +52,7 @@ async function restRequest<T>(
     headers.set("Content-Type", "application/json");
   }
   const token = localStorage.getItem("token");
-  if (token) {
+  if (token && !isAuthPath(path)) {
     headers.set("Authorization", `Bearer ${token}`);
   }
 
@@ -50,6 +66,11 @@ async function restRequest<T>(
   const payload = hasJson ? await response.json() : null;
 
   if (!response.ok) {
+    if (response.status === 401 && isProtectedPath(path)) {
+      clearStoredAuth();
+      throw new Error("Session expired. Please log in again.");
+    }
+
     const detail =
       payload && typeof payload === "object" && "detail" in payload
         ? (payload as { detail?: unknown }).detail

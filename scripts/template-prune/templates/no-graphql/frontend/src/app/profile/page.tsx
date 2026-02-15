@@ -6,7 +6,13 @@ import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import { ConfirmDialog, ErrorMessage, Toast } from "@/components/ui";
-import { restGetMe, restSoftDeleteMe, restUpdateMe } from "@/lib/restClient";
+import {
+  AUTH_STATE_CHANGED_EVENT,
+  clearStoredAuth,
+  restGetMe,
+  restSoftDeleteMe,
+  restUpdateMe,
+} from "@/lib/restClient";
 
 type FormState = {
   firstName: string;
@@ -87,9 +93,25 @@ export default function ProfilePage() {
   const { toastMessage, setToastMessage } = useToastState();
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
-    setUserId(storedUserId);
+    const syncUserId = () => {
+      setUserId(localStorage.getItem("userId"));
+    };
+
+    syncUserId();
+
+    const handleAuthStateChanged = () => {
+      syncUserId();
+    };
+
+    window.addEventListener(AUTH_STATE_CHANGED_EVENT, handleAuthStateChanged);
     setReady(true);
+
+    return () => {
+      window.removeEventListener(
+        AUTH_STATE_CHANGED_EVENT,
+        handleAuthStateChanged,
+      );
+    };
   }, []);
 
   useEffect(() => {
@@ -151,8 +173,7 @@ export default function ProfilePage() {
       const result = await restSoftDeleteMe();
       if (result.deleted) {
         setShowDeleteDialog(false);
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
+        clearStoredAuth();
         router.push("/");
       }
     } catch (error: unknown) {
