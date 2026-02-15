@@ -6,8 +6,8 @@ description: Create a pull request comparing the current branch to main.
 Task:
 
 - Compare the current branch against `main`.
-- Create a pull request using `gh`, applying the template in
-  .github/pull_request_template.md.
+- Create a pull request using Taskfile workflows, applying the template in
+  `.github/pull_request_template.md`.
 
 Constraints:
 
@@ -25,14 +25,16 @@ Constraints:
 - When updating a PR body, run:
 
   ```bash
-  gh pr edit <pr-number> --body "$(cat /tmp/prbody.md)"
+  task pr:edit -- <pr-number>
   ```
 
 - When creating a PR, run:
 
   ```bash
-  gh pr create --base main --head <branch> --body "$(cat /tmp/prbody.md)"
+  task pr:create -- <branch>
   ```
+
+- If `<branch>` is omitted, `task pr:create` defaults to the current branch.
 
 Output:
 

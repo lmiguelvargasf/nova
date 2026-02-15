@@ -241,6 +241,27 @@ tasks:
     cmds:
       - "{{.FRONTEND_TASK}} storybook:dev"
 
+  pr:create:
+    desc: Create a pull request to main using /tmp/prbody.md (defaults to current branch)
+    cmds:
+      - |
+        BRANCH="{{.CLI_ARGS}}"
+        if [ -z "$BRANCH" ]; then
+          BRANCH="$(git branch --show-current)"
+        fi
+        gh pr create --base main --head "$BRANCH" --fill --body "$(cat /tmp/prbody.md)"
+
+  pr:edit:
+    desc: Update a pull request body from /tmp/prbody.md (requires PR number)
+    cmds:
+      - |
+        PR_NUMBER="{{.CLI_ARGS}}"
+        if [ -z "$PR_NUMBER" ]; then
+          echo "Usage: task pr:edit -- <pr-number>" >&2
+          exit 1
+        fi
+        gh pr edit "$PR_NUMBER" --body "$(cat /tmp/prbody.md)"
+
   ios:test:
     desc: Run iOS tests
     cmds:

@@ -8,6 +8,16 @@
   as a task, call that out explicitly and ask whether to add a task
   first.
 
+## Prompt-Scoped Command Exception
+
+- If a command is explicitly documented in a prompt file under
+  [`.github/prompts/`](.github/prompts/), that command is allowed when running
+  that specific prompt.
+- If both a Taskfile task and an explicit prompt command exist for the same
+  operation, prefer the Taskfile task.
+- For recurring workflows, add/update a Taskfile task and then update the prompt
+  to call the task so the workflow remains single-sourced.
+
 ## Canonical Rule Source
 
 - Canonical coding policies live in [`.github/instructions/`](.github/instructions/).
