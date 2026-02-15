@@ -12,6 +12,21 @@ die() { err "$*"; exit 1; }
 
 have() { command -v "$1" >/dev/null 2>&1; }
 
+task_exists() {
+  local task_name="$1"
+  "${MISE_BIN}" exec -- task --summary "$task_name" >/dev/null 2>&1
+}
+
+run_task_if_present() {
+  local task_name="$1"
+  shift || true
+  if task_exists "$task_name"; then
+    "${MISE_BIN}" exec -- task "$task_name" "$@"
+  else
+    info "Skipping ${task_name} (not available for this template profile)."
+  fi
+}
+
 stop_db() {
   if [[ "${DB_STARTED}" == "1" && -n "${MISE_BIN:-}" ]]; then
     info "Stopping infrastructure..."
@@ -142,7 +157,9 @@ main() {
   info "Bootstrapping env files..."
   copy_if_missing "${ROOT_DIR}/.env.example" "${ROOT_DIR}/.env"
   copy_if_missing "${ROOT_DIR}/backend/.env.example" "${ROOT_DIR}/backend/.env"
-  copy_if_missing "${ROOT_DIR}/frontend/.env.local.example" "${ROOT_DIR}/frontend/.env.local"
+  if [[ -f "${ROOT_DIR}/frontend/.env.local.example" ]]; then
+    copy_if_missing "${ROOT_DIR}/frontend/.env.local.example" "${ROOT_DIR}/frontend/.env.local"
+  fi
 
   info "Generating python environment..."
   generate_python_env
@@ -150,14 +167,14 @@ main() {
   info "Installing backend deps..."
   "${MISE_BIN}" exec -- task backend:install
 
-  info "Installing frontend deps..."
-  "${MISE_BIN}" exec -- task frontend:install
+  info "Installing frontend deps (if available)..."
+  run_task_if_present frontend:install
 
-  info "Installing Playwright browsers..."
-  "${MISE_BIN}" exec -- task frontend:playwright:install
+  info "Installing Playwright browsers (if available)..."
+  run_task_if_present frontend:playwright:install
 
-  info "Running codegen..."
-  "${MISE_BIN}" exec -- task frontend:codegen
+  info "Running codegen (if available)..."
+  run_task_if_present frontend:codegen
 
   info "Running migrations..."
   trap cleanup EXIT
