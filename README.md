@@ -266,6 +266,14 @@ Antigravity).
 - Prompt files (workflow entry points) live in
     [`.github/prompts/`](.github/prompts/).
 
+### AI Rules Hierarchy
+
+- Canonical rules are defined in [`.github/instructions/`](.github/instructions/).
+- [`AGENTS.md`](AGENTS.md) provides a cross-agent routing layer that delegates to
+  those canonical files.
+- [`backend/AGENTS.md`](backend/AGENTS.md) provides backend-local scoping while
+  still delegating to the canonical instruction files.
+
 ## 🌐 Production Deployment
 
 This is an opinionated deployment recommendation that has worked well in
