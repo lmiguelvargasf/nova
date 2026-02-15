@@ -68,13 +68,17 @@ profile_apply() {
 
   replace_in_file \
     ".github/workflows/ci.yml" \
-    "\\n  verify-schema:[\\s\\S]*?exit 1\\n" \
+    "\\n  verify-schema:[\\s\\S]*?\\n\\s*fi\\n" \
     "\n"
 
   remove_regex_lines "README.md" "GraphQL|graphql-contract|frontend:codegen|schema:export|/graphql"
   remove_regex_lines ".github/workflows/README.md" "GraphQL|codegen"
   remove_regex_lines ".github/copilot-instructions.md" "GraphQL|graphql"
   remove_regex_lines ".vscode/extensions.json" "graphql\\.vscode-graphql"
+
+  replace_in_file "README.md" "\\n{3,}" "\n\n"
+  replace_in_file ".github/workflows/README.md" "\\n{3,}" "\n\n"
+  replace_in_file ".github/copilot-instructions.md" "\\n{3,}" "\n\n"
 
   remove_path ".github/prompts/graphql-contract.prompt.md"
   remove_path ".github/skills/graphql-contract"

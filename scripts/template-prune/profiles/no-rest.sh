@@ -34,6 +34,8 @@ profile_apply() {
 
   remove_regex_lines "README.md" "REST|rest"
   remove_regex_lines ".github/copilot-instructions.md" "REST|rest"
+  replace_in_file "README.md" "\\n{3,}" "\n\n"
+  replace_in_file ".github/copilot-instructions.md" "\\n{3,}" "\n\n"
 
   set_state_bool "has_rest" "false"
 }
