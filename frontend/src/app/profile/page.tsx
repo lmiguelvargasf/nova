@@ -14,7 +14,13 @@ import {
   UpdateCurrentUserDocument,
   type UpdateCurrentUserMutationVariables,
 } from "@/lib/graphql/graphql";
-import { restGetMe, restSoftDeleteMe, restUpdateMe } from "@/lib/restClient";
+import {
+  AUTH_STATE_CHANGED_EVENT,
+  clearStoredAuth,
+  restGetMe,
+  restSoftDeleteMe,
+  restUpdateMe,
+} from "@/lib/restClient";
 
 type UpdateUserInput = UpdateCurrentUserMutationVariables["userInput"];
 
@@ -161,8 +167,7 @@ function ProfileGraphQL() {
       const result = await softDeleteCurrentUser();
       if (result.data?.softDeleteCurrentUser) {
         setShowDeleteDialog(false);
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
+        clearStoredAuth();
         await client.clearStore();
         router.push("/");
       }
@@ -333,9 +338,25 @@ function ProfileRest() {
   const { toastMessage, setToastMessage } = useToastState();
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
-    setUserId(storedUserId);
+    const syncUserId = () => {
+      setUserId(localStorage.getItem("userId"));
+    };
+
+    syncUserId();
+
+    const handleAuthStateChanged = () => {
+      syncUserId();
+    };
+
+    window.addEventListener(AUTH_STATE_CHANGED_EVENT, handleAuthStateChanged);
     setReady(true);
+
+    return () => {
+      window.removeEventListener(
+        AUTH_STATE_CHANGED_EVENT,
+        handleAuthStateChanged,
+      );
+    };
   }, []);
 
   useEffect(() => {
@@ -400,8 +421,7 @@ function ProfileRest() {
       const result = await restSoftDeleteMe();
       if (result.deleted) {
         setShowDeleteDialog(false);
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
+        clearStoredAuth();
         await client.clearStore();
         router.push("/");
       }

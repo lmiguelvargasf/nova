@@ -9,6 +9,7 @@ import UsersPaginationCard, {
   UsersPaginationSkeleton,
 } from "@/features/users/UsersPaginationCard.client";
 import { useDataSource } from "@/lib/dataSource";
+import { AUTH_STATE_CHANGED_EVENT, clearStoredAuth } from "@/lib/restClient";
 
 export default function Home() {
   const [userId, setUserId] = useState<string | null>(null);
@@ -18,14 +19,31 @@ export default function Home() {
   const { mode, setMode } = useDataSource();
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
-    setUserId(storedUserId);
+    const syncUserId = () => {
+      setUserId(localStorage.getItem("userId"));
+    };
+
+    syncUserId();
+
+    const handleAuthStateChanged = () => {
+      syncUserId();
+    };
+
+    window.addEventListener(AUTH_STATE_CHANGED_EVENT, handleAuthStateChanged);
+
     const message = sessionStorage.getItem("toastMessage");
     if (message) {
       setToastMessage(message);
       sessionStorage.removeItem("toastMessage");
     }
     setLoading(false);
+
+    return () => {
+      window.removeEventListener(
+        AUTH_STATE_CHANGED_EVENT,
+        handleAuthStateChanged,
+      );
+    };
   }, []);
 
   useEffect(() => {
@@ -37,10 +55,8 @@ export default function Home() {
   }, [toastMessage]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
+    clearStoredAuth();
     client.clearStore();
-    setUserId(null);
   };
 
   if (loading) {
