@@ -32,6 +32,10 @@ Nova is a full-stack template:
 - `frontend-feature`: Next.js feature + GraphQL + tests.
 - `graphql-contract`: sync schema and frontend codegen.
 - `taskfile-workflow`: add or update Taskfile targets.
+- `prune-no-rest`: remove REST implementation profile.
+- `prune-no-graphql`: remove GraphQL implementation profile.
+- `prune-no-ios`: remove iOS template profile.
+- `prune-rest-only`: keep only minimal backend REST profile.
 
 ## Key files
 

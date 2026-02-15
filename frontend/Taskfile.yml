@@ -7,6 +7,26 @@ dotenv:
   - .env.local
 
 tasks:
+  dep:add:
+    desc: Add a frontend dependency
+    cmds:
+      - pnpm add {{.CLI_ARGS}}
+
+  dep:add:dev:
+    desc: Add a frontend dev dependency
+    cmds:
+      - pnpm add -D {{.CLI_ARGS}}
+
+  dep:remove:
+    desc: Remove a frontend dependency
+    cmds:
+      - pnpm remove {{.CLI_ARGS}}
+
+  dep:remove:dev:
+    desc: Remove a frontend dev dependency
+    cmds:
+      - pnpm remove {{.CLI_ARGS}}
+
   playwright:install:
     desc: Install Playwright browser binaries (required for Storybook story tests and e2e tests)
     cmds:

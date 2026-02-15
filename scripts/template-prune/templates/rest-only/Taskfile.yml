@@ -8,8 +8,6 @@ dotenv:
 vars:
   DOCKER_COMPOSE: docker compose
   BACKEND_TASK: task -d backend
-  FRONTEND_TASK: task -d frontend
-  IOS_TEST_DESTINATION: platform=iOS Simulator,name=iPhone 17,OS=26.2
 
 tasks:
   infra:pull:
@@ -22,25 +20,15 @@ tasks:
     cmds:
       - "{{.DOCKER_COMPOSE}} up db --wait"
 
-  redis:up:
-    desc: Start only redis service
-    cmds:
-      - "{{.DOCKER_COMPOSE}} up redis --wait"
-
   infra:up:
-    desc: Start all infrastructure services (db, redis)
+    desc: Start infrastructure services (db)
     cmds:
-      - "{{.DOCKER_COMPOSE}} up --wait"
+      - "{{.DOCKER_COMPOSE}} up db --wait"
 
   db:stop:
     desc: Stop database service
     cmds:
       - "{{.DOCKER_COMPOSE}} stop db"
-
-  redis:stop:
-    desc: Stop redis service
-    cmds:
-      - "{{.DOCKER_COMPOSE}} stop redis"
 
   infra:stop:
     desc: Stop all infrastructure services
@@ -149,118 +137,6 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} create-admin-user -- {{.CLI_ARGS}}"
 
-  backend:schema:export:
-    desc: Export backend GraphQL schema to frontend/schema/schema.graphql
-    cmds:
-      - mkdir -p frontend/schema
-      - "{{.BACKEND_TASK}} schema:export > frontend/schema/schema.graphql"
-
-  frontend:install:
-    desc: Install frontend dependencies
-    cmds:
-      - "{{.FRONTEND_TASK}} install"
-
-  frontend:dep:add:
-    desc: Add a frontend dependency
-    cmds:
-      - "{{.FRONTEND_TASK}} dep:add -- {{.CLI_ARGS}}"
-
-  frontend:dep:add:dev:
-    desc: Add a frontend dev dependency
-    cmds:
-      - "{{.FRONTEND_TASK}} dep:add:dev -- {{.CLI_ARGS}}"
-
-  frontend:dep:remove:
-    desc: Remove a frontend dependency
-    cmds:
-      - "{{.FRONTEND_TASK}} dep:remove -- {{.CLI_ARGS}}"
-
-  frontend:dep:remove:dev:
-    desc: Remove a frontend dev dependency
-    cmds:
-      - "{{.FRONTEND_TASK}} dep:remove:dev -- {{.CLI_ARGS}}"
-
-  frontend:playwright:install:
-    desc: Install Playwright browser binaries for frontend tests
-    cmds:
-      - "{{.FRONTEND_TASK}} playwright:install"
-
-  frontend:dev:
-    desc: Run frontend
-    cmds:
-      - "{{.FRONTEND_TASK}} dev"
-
-  frontend:lint:
-    desc: Run frontend lint
-    cmds:
-      - "{{.FRONTEND_TASK}} lint"
-
-  frontend:format:
-    desc: Run frontend format
-    cmds:
-      - "{{.FRONTEND_TASK}} format"
-
-  frontend:check:
-    desc: Run frontend check (format + lint)
-    cmds:
-      - "{{.FRONTEND_TASK}} check"
-
-  frontend:check:unsafe:
-    desc: Run frontend check:unsafe
-    cmds:
-      - "{{.FRONTEND_TASK}} check:unsafe"
-
-  frontend:check:types:
-    desc: Run frontend check:types
-    cmds:
-      - "{{.FRONTEND_TASK}} check:types"
-
-  frontend:validate:
-    desc: Run frontend validate (check + check:types + tests)
-    cmds:
-      - "{{.FRONTEND_TASK}} validate"
-
-  frontend:test:unit:
-    desc: Run frontend test:unit
-    cmds:
-      - "{{.FRONTEND_TASK}} test:unit"
-
-  frontend:test:unit:run:
-    desc: Run frontend test:unit:run
-    cmds:
-      - "{{.FRONTEND_TASK}} test:unit:run"
-
-  frontend:test:unit:ui:
-    desc: Run frontend test:unit:ui
-    cmds:
-      - "{{.FRONTEND_TASK}} test:unit:ui"
-
-  frontend:test:coverage:
-    desc: Run frontend test:coverage
-    cmds:
-      - "{{.FRONTEND_TASK}} test:coverage"
-
-  frontend:test:e2e:
-    desc: Run frontend test:e2e
-    cmds:
-      - "{{.FRONTEND_TASK}} test:e2e"
-
-  frontend:codegen:
-    desc: Run frontend codegen
-    deps: ["backend:schema:export"]
-    cmds:
-      - "{{.FRONTEND_TASK}} codegen"
-
-  frontend:storybook:build:
-    desc: Run frontend storybook:build
-    cmds:
-      - "{{.FRONTEND_TASK}} storybook:build"
-
-  frontend:storybook:dev:
-    desc: Run frontend storybook:dev
-    cmds:
-      - "{{.FRONTEND_TASK}} storybook:dev"
-
   template:prune:no-rest:
     desc: Remove REST stack while keeping GraphQL/full template
     cmds:
@@ -356,26 +232,3 @@ tasks:
           exit 1
         fi
         gh pr edit "$PR_NUMBER" --body "$(cat /tmp/prbody.md)"
-
-  ios:test:
-    desc: Run iOS tests
-    cmds:
-      - xcodebuild test -project ios/ios.xcodeproj -scheme ios -destination '{{.IOS_TEST_DESTINATION}}' -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 {{.CLI_ARGS}}
-
-  worker:dev:
-    desc: Run backend worker
-    deps: ["infra:up"]
-    cmds:
-      - "{{.BACKEND_TASK}} worker"
-
-  beat:dev:
-    desc: Run backend beat
-    deps: ["infra:up"]
-    cmds:
-      - "{{.BACKEND_TASK}} beat"
-
-  flower:dev:
-    desc: Run Flower monitoring
-    deps: ["infra:up"]
-    cmds:
-      - "{{.BACKEND_TASK}} flower"
