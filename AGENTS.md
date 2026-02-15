@@ -30,6 +30,7 @@
 ## Precedence and Conflicts
 
 - The most specific `AGENTS.md` in scope applies first (for example,
-  `backend/AGENTS.md` over this file for backend paths).
+  `backend/AGENTS.md`, `frontend/AGENTS.md`, or `ios/AGENTS.md` over this file
+  for matching paths).
 - Avoid policy duplication across `AGENTS.md` and
   `.github/instructions/*.instructions.md`.

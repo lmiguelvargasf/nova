@@ -273,6 +273,10 @@ Antigravity).
   those canonical files.
 - [`backend/AGENTS.md`](backend/AGENTS.md) provides backend-local scoping while
   still delegating to the canonical instruction files.
+- [`frontend/AGENTS.md`](frontend/AGENTS.md) provides frontend-local scoping while
+  still delegating to the canonical instruction files.
+- [`ios/AGENTS.md`](ios/AGENTS.md) provides iOS-local scoping while still
+  delegating to the canonical instruction files.
 
 ## 🌐 Production Deployment
 
