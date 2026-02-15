@@ -318,6 +318,16 @@ tasks:
           echo "Usage: task git:commit -- \"<message>\"" >&2
           exit 1
         fi
+        case "$MSG" in
+          \"*\")
+            MSG="${MSG#\"}"
+            MSG="${MSG%\"}"
+            ;;
+          \'*\')
+            MSG="${MSG#\'}"
+            MSG="${MSG%\'}"
+            ;;
+        esac
         git add -A
         git commit -m "$MSG"
 

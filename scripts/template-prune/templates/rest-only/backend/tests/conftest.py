@@ -13,7 +13,10 @@ from sqlalchemy.ext.asyncio import (
 
 from backend.application import create_app
 from backend.apps import models as app_models
+from backend.apps.users.models import UserModel
+from backend.auth.jwt import jwt_auth
 from backend.config.alchemy import build_connection_string, session_config
+from backend.config.base import settings
 
 
 class DevelopmentDatabaseError(RuntimeError):
@@ -23,9 +26,6 @@ class DevelopmentDatabaseError(RuntimeError):
 
 @pytest.fixture
 async def db_engine() -> AsyncIterator[AsyncEngine]:
-    from backend.config.alchemy import build_connection_string
-    from backend.config.base import settings
-
     if settings.postgres_test_db == settings.postgres_db:
         raise DevelopmentDatabaseError
 
@@ -67,9 +67,18 @@ async def db_session(db_sessionmaker: async_sessionmaker[AsyncSession]):
 
 
 @pytest.fixture
-async def test_client(db_schema: None) -> AsyncIterator[AsyncTestClient[Litestar]]:
-    from backend.config.base import settings
+async def test_client(
+    db_schema: None,
+    monkeypatch: pytest.MonkeyPatch,
+) -> AsyncIterator[AsyncTestClient[Litestar]]:
+    async def retrieve_user_handler(token, _connection):
+        try:
+            user_id = int(token.sub)
+        except (TypeError, ValueError):
+            return None
+        return UserModel(id=user_id)
 
+    monkeypatch.setattr(jwt_auth, "retrieve_user_handler", retrieve_user_handler)
     config = SQLAlchemyAsyncConfig(
         connection_string=build_connection_string(db_name=settings.postgres_test_db),
         session_config=session_config,

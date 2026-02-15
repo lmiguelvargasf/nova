@@ -9,6 +9,7 @@ remove GraphQL backend modules and GraphQL tests
 remove Celery/Beat/Flower modules, tests, and dependencies
 remove Redis service and worker/beat/flower tasks
 rewrite setup/docs/CI/taskfiles for backend REST + Postgres only
+rewrite backend tests/fixtures to REST-only variants
 set terminal prune profile to rest-only
 SUMMARY
 }
@@ -30,6 +31,9 @@ profile_apply() {
   copy_template_file "no-graphql" "backend/src/backend/auth/jwt.py"
   copy_template_file "rest-only" "backend/src/backend/config/base.py"
   copy_template_file "rest-only" "backend/src/backend/admin/views/user.py"
+  copy_template_file "rest-only" "backend/tests/conftest.py"
+  copy_template_file "no-graphql" "backend/tests/admin/test_app.py"
+  copy_template_file "no-graphql" "backend/tests/middleware/test_rate_limit.py"
   copy_template_file "rest-only" "backend/Taskfile.yml"
   copy_template_file "rest-only" "backend/.env.example"
 

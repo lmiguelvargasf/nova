@@ -24,10 +24,18 @@ assert_missing() {
   fi
 }
 
+ensure_frontend_deps() {
+  if [[ -d "${ROOT_DIR}/frontend" ]]; then
+    run_task frontend:install
+  fi
+}
+
 validate_no_rest() {
   assert_missing "backend/src/backend/apps/users/controllers.py"
   assert_missing "frontend/src/lib/restClient.ts"
   run_task backend:test
+  ensure_frontend_deps
+  run_task frontend:codegen
   run_task frontend:check
   run_task frontend:test:unit:run
 }
@@ -36,6 +44,7 @@ validate_no_graphql() {
   assert_missing "backend/src/backend/graphql"
   assert_missing "frontend/src/lib/apollo"
   run_task backend:test
+  ensure_frontend_deps
   run_task frontend:check
   run_task frontend:test:unit:run
 }
@@ -44,6 +53,7 @@ validate_no_ios() {
   assert_missing "ios"
   run_task backend:test
   if [[ -d "${ROOT_DIR}/frontend" ]]; then
+    ensure_frontend_deps
     run_task frontend:check
   fi
 }
