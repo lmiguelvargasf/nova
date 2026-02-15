@@ -16,6 +16,7 @@
   },
   "typescript.tsdk": "frontend/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
+  "chat.useNestedAgentsMdFiles": true,
   "typescript.updateImportsOnFileMove.enabled": "always",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "[javascript]": {
