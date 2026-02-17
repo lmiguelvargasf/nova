@@ -31,6 +31,8 @@ Nova is a full-stack template:
 - `backend-entity`: backend entity scaffolding with GraphQL + admin view.
 - `frontend-feature`: Next.js feature + GraphQL + tests.
 - `graphql-contract`: sync schema and frontend codegen.
+- `remove-ios`: decommission the mobile app surface and related tooling.
+- `remove-graphql`: remove GraphQL and keep REST + Celery flows.
 - `taskfile-workflow`: add or update Taskfile targets.
 
 ## Key files
