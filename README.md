@@ -299,6 +299,7 @@ This project uses [Task][] to simplify common development workflows. The main
 - Running development tasks within the `backend` and `frontend` services (such
     as linting, formatting, or testing).
 - Managing background workers (Celery worker and beat).
+- Inspecting worktree-specific infrastructure settings with `task infra:env`.
 - Running full-stack validation with `task validate`.
 
 To list all available tasks, run:

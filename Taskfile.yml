@@ -6,12 +6,40 @@ dotenv:
   - .env
 
 vars:
-  DOCKER_COMPOSE: docker compose
-  BACKEND_TASK: task -d backend
-  FRONTEND_TASK: task -d frontend
+  COMPOSE_PROJECT_NAME:
+    sh: |
+      slug="$(basename "$(pwd)" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')"
+      if [ -z "${slug}" ]; then
+        slug="nova"
+      fi
+      hash="$(pwd | cksum | awk '{print $1}')"
+      echo "${slug}-${hash}"
+  WORKTREE_POSTGRES_PORT:
+    sh: |
+      hash="$(pwd | cksum | awk '{print $1}')"
+      echo $((20000 + hash % 10000))
+  WORKTREE_REDIS_PORT:
+    sh: |
+      hash="$(pwd | cksum | awk '{print $1}')"
+      echo $((30000 + hash % 10000))
+  WORKTREE_CELERY_BROKER_URL: redis://localhost:{{.WORKTREE_REDIS_PORT}}/0
+  WORKTREE_CELERY_RESULT_BACKEND: redis://localhost:{{.WORKTREE_REDIS_PORT}}/0
+  DOCKER_COMPOSE: COMPOSE_PROJECT_NAME={{.COMPOSE_PROJECT_NAME}} POSTGRES_PORT={{.WORKTREE_POSTGRES_PORT}} REDIS_PORT={{.WORKTREE_REDIS_PORT}} docker compose
+  BACKEND_TASK: POSTGRES_PORT={{.WORKTREE_POSTGRES_PORT}} REDIS_PORT={{.WORKTREE_REDIS_PORT}} CELERY_BROKER_URL={{.WORKTREE_CELERY_BROKER_URL}} CELERY_RESULT_BACKEND={{.WORKTREE_CELERY_RESULT_BACKEND}} task -d backend
+  FRONTEND_TASK: POSTGRES_PORT={{.WORKTREE_POSTGRES_PORT}} REDIS_PORT={{.WORKTREE_REDIS_PORT}} task -d frontend
   IOS_TEST_DESTINATION: platform=iOS Simulator,name=iPhone 17,OS=26.2
 
 tasks:
+  infra:env:
+    desc: Show resolved compose project and host ports for this worktree
+    cmds:
+      - |
+        echo "COMPOSE_PROJECT_NAME={{.COMPOSE_PROJECT_NAME}}"
+        echo "POSTGRES_PORT={{.WORKTREE_POSTGRES_PORT}}"
+        echo "REDIS_PORT={{.WORKTREE_REDIS_PORT}}"
+        echo "CELERY_BROKER_URL={{.WORKTREE_CELERY_BROKER_URL}}"
+        echo "CELERY_RESULT_BACKEND={{.WORKTREE_CELERY_RESULT_BACKEND}}"
+
   infra:pull:
     desc: Pull infrastructure images
     cmds:
