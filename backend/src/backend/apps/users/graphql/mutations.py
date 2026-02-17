@@ -1,17 +1,16 @@
-import datetime
-
 import strawberry
-from advanced_alchemy.exceptions import DuplicateKeyError, RepositoryError
-from argon2 import PasswordHasher
-from argon2.exceptions import (
-    InvalidHash,
-    VerificationError,
-    VerifyMismatchError,
-)
+from advanced_alchemy.exceptions import RepositoryError
 from graphql.error import GraphQLError
 from strawberry.types import Info
 
 from backend.apps.users.auth import create_access_token
+from backend.apps.users.services import (
+    InvalidCredentialsError as InvalidCredentialsServiceError,
+)
+from backend.apps.users.services import (
+    UserAlreadyExistsError as UserAlreadyExistsServiceError,
+)
+from backend.apps.users.services import UserFieldEmptyError
 from backend.graphql.context import GraphQLContext
 from backend.graphql.permissions import IsAuthenticated
 
@@ -58,6 +57,18 @@ class EmptyPasswordError(GraphQLError):
         super().__init__("Password cannot be empty.")
 
 
+def _raise_empty_field_error(field_name: str) -> None:
+    if field_name == "email":
+        raise EmptyEmailError from None
+    if field_name == "first_name":
+        raise EmptyFirstNameError from None
+    if field_name == "last_name":
+        raise EmptyLastNameError from None
+    if field_name == "password":
+        raise EmptyPasswordError from None
+    raise EmptyUserFieldError(field_name) from None
+
+
 @strawberry.type
 class UserMutation:
     @strawberry.mutation
@@ -66,26 +77,19 @@ class UserMutation:
     ) -> LoginResponse:
         db_session = info.context.db_session
         user_service = info.context.services.users
-        existing_user = await user_service.get_one_or_none(email=user_input.email)
-        if existing_user:
-            raise UserAlreadyExistsError(user_input.email)
 
         try:
-            ph = PasswordHasher()
-            user = await user_service.create(
-                {
-                    "email": user_input.email,
-                    "password_hash": ph.hash(user_input.password),
-                    "first_name": user_input.first_name,
-                    "last_name": user_input.last_name,
-                    "is_admin": False,
-                    "is_active": True,
-                },
-                auto_commit=True,
+            user = await user_service.create_user_account(
+                db_session=db_session,
+                email=user_input.email,
+                password=user_input.password,
+                first_name=user_input.first_name,
+                last_name=user_input.last_name,
+                is_admin=False,
+                is_active=True,
             )
-        except DuplicateKeyError:
-            await db_session.rollback()
-            raise UserAlreadyExistsError(user_input.email) from None
+        except UserAlreadyExistsServiceError as exc:
+            raise UserAlreadyExistsError(exc.email) from None
         except RepositoryError as exc:
             await db_session.rollback()
             detail = exc.detail or "Unable to create user."
@@ -107,90 +111,47 @@ class UserMutation:
         user = info.context.user
         if user is None:
             raise UserNotAuthenticatedError
+        try:
+            updated_user = await user_service.apply_user_updates(
+                db_session=db_session,
+                user=user,
+                email=user_input.email,
+                first_name=user_input.first_name,
+                last_name=user_input.last_name,
+                password=user_input.password,
+            )
+        except UserAlreadyExistsServiceError as exc:
+            raise UserAlreadyExistsError(exc.email) from None
+        except UserFieldEmptyError as exc:
+            _raise_empty_field_error(exc.field_name)
 
-        has_updates = False
-
-        if user_input.email is not None:
-            email = user_input.email.strip()
-            if not email:
-                raise EmptyEmailError
-            if email != user.email:
-                existing_user = await user_service.get_one_or_none(email=email)
-                if existing_user and existing_user.id != user.id:
-                    raise UserAlreadyExistsError(email)
-            user.email = email
-            has_updates = True
-
-        if user_input.first_name is not None:
-            first_name = user_input.first_name.strip()
-            if not first_name:
-                raise EmptyFirstNameError
-            user.first_name = first_name
-            has_updates = True
-
-        if user_input.last_name is not None:
-            last_name = user_input.last_name.strip()
-            if not last_name:
-                raise EmptyLastNameError
-            user.last_name = last_name
-            has_updates = True
-
-        if user_input.password is not None:
-            if not user_input.password:
-                raise EmptyPasswordError
-            ph = PasswordHasher()
-            user.password_hash = ph.hash(user_input.password)
-            has_updates = True
-
-        if has_updates:
-            await db_session.commit()
-
-        return UserType.from_model(user)
+        return UserType.from_model(updated_user)
 
     @strawberry.mutation(permission_classes=[IsAuthenticated])
     async def soft_delete_current_user(self, info: Info[GraphQLContext, None]) -> bool:
         db_session = info.context.db_session
+        user_service = info.context.services.users
         user = info.context.user
         if user is None:
             raise UserNotAuthenticatedError
 
-        user.soft_delete()
-        await db_session.commit()
+        await user_service.soft_delete_user(db_session=db_session, user=user)
         return True
 
     @strawberry.mutation
     async def login(
         self, info: Info[GraphQLContext, None], email: str, password: str
     ) -> LoginResponse:
-        email_clean = (email or "").strip().lower()
-        if not email_clean or not password:
-            raise InvalidCredentialsError
-
         db_session = info.context.db_session
         user_service = info.context.services.users
-        user = await user_service.get_one_or_none(email=email_clean)
-
-        if user is None or not user.is_active:
-            raise InvalidCredentialsError
-
-        ph = PasswordHasher()
         try:
-            ok = ph.verify(user.password_hash, password)
-        except VerifyMismatchError, InvalidHash, VerificationError:
-            ok = False
-        except Exception:  # noqa: BLE001 # security boundary: do not leak verification errors
-            ok = False
-
-        if not ok:
-            raise InvalidCredentialsError
-
-        reactivated = False
-        if user.deleted_at is not None:
-            user.deleted_at = None
-            reactivated = True
-
-        user.last_login_at = datetime.datetime.now(datetime.UTC)
-        await db_session.commit()
+            user, reactivated = await user_service.authenticate_for_login(
+                db_session=db_session,
+                email=email,
+                password=password,
+            )
+        except InvalidCredentialsServiceError:
+            raise InvalidCredentialsError from None
 
         token = create_access_token(user)
         return LoginResponse(

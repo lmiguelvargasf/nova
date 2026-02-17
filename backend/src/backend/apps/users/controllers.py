@@ -1,12 +1,7 @@
-import datetime
-
 from advanced_alchemy.exceptions import (
-    DuplicateKeyError,
     NotFoundError,
     RepositoryError,
 )
-from argon2 import PasswordHasher
-from argon2.exceptions import InvalidHash, VerificationError, VerifyMismatchError
 from litestar import Controller, Request, delete, get, patch, post
 from litestar.exceptions import HTTPException
 from litestar.params import Parameter
@@ -24,7 +19,12 @@ from backend.apps.users.schemas import (
     UserResponse,
     UserUpdate,
 )
-from backend.apps.users.services import UserService
+from backend.apps.users.services import (
+    InvalidCredentialsError,
+    UserAlreadyExistsError,
+    UserFieldEmptyError,
+    UserService,
+)
 
 
 def _require_user(request: Request) -> UserModel:
@@ -39,6 +39,17 @@ def _require_admin(user: UserModel) -> None:
         raise HTTPException(status_code=403, detail="Not authorized to access users.")
 
 
+async def _require_authenticated_user(
+    request: Request,
+    users_service: UserService,
+) -> UserModel:
+    user = _require_user(request)
+    db_user = await users_service.get_authenticated_user(user.id)
+    if db_user is None:
+        raise HTTPException(status_code=401, detail="User is not authenticated")
+    return db_user
+
+
 class AuthController(Controller):
     path = "/api/auth"
 
@@ -49,25 +60,17 @@ class AuthController(Controller):
         data: UserCreate,
     ) -> LoginResponse:
         users_service = UserService(db_session)
-        existing_user = await users_service.get_one_or_none(email=data.email)
-        if existing_user:
-            raise HTTPException(status_code=409, detail="User already exists.")
-
         try:
-            ph = PasswordHasher()
-            user = await users_service.create(
-                {
-                    "email": data.email,
-                    "password_hash": ph.hash(data.password),
-                    "first_name": data.first_name,
-                    "last_name": data.last_name,
-                    "is_admin": False,
-                    "is_active": True,
-                },
-                auto_commit=True,
+            user = await users_service.create_user_account(
+                db_session=db_session,
+                email=data.email,
+                password=data.password,
+                first_name=data.first_name,
+                last_name=data.last_name,
+                is_admin=False,
+                is_active=True,
             )
-        except DuplicateKeyError:
-            await db_session.rollback()
+        except UserAlreadyExistsError:
             raise HTTPException(
                 status_code=409, detail="User already exists."
             ) from None
@@ -90,32 +93,14 @@ class AuthController(Controller):
         data: LoginRequest,
     ) -> LoginResponse:
         users_service = UserService(db_session)
-        email_clean = (data.email or "").strip().lower()
-        if not email_clean or not data.password:
-            raise HTTPException(status_code=401, detail="Invalid credentials")
-
-        user = await users_service.get_one_or_none(email=email_clean)
-        if user is None or not user.is_active:
-            raise HTTPException(status_code=401, detail="Invalid credentials")
-
-        ph = PasswordHasher()
         try:
-            ok = ph.verify(user.password_hash, data.password)
-        except VerifyMismatchError, InvalidHash, VerificationError:
-            ok = False
-        except Exception:  # noqa: BLE001 # security boundary: do not leak verification errors
-            ok = False
-
-        if not ok:
-            raise HTTPException(status_code=401, detail="Invalid credentials")
-
-        reactivated = False
-        if user.deleted_at is not None:
-            user.deleted_at = None
-            reactivated = True
-
-        user.last_login_at = datetime.datetime.now(datetime.UTC)
-        await db_session.commit()
+            user, reactivated = await users_service.authenticate_for_login(
+                db_session=db_session,
+                email=data.email,
+                password=data.password,
+            )
+        except InvalidCredentialsError:
+            raise HTTPException(status_code=401, detail="Invalid credentials") from None
 
         token = create_access_token(user)
         return LoginResponse(
@@ -148,10 +133,8 @@ class UserController(Controller):
             required=False,
         ),
     ) -> CursorPage[UserResponse]:
-        user = _require_user(request)
-        db_user = await db_session.get(UserModel, user.id)
-        if db_user is None:
-            raise HTTPException(status_code=401, detail="User is not authenticated")
+        users_service = UserService(db_session)
+        await _require_authenticated_user(request, users_service)
 
         paginator = UserCursorPaginator(
             db_session=db_session,
@@ -187,11 +170,8 @@ class UserController(Controller):
         request: Request,
         db_session: AsyncSession,
     ) -> UserResponse:
-        user = _require_user(request)
-        db_user = await db_session.get(UserModel, user.id)
-        if db_user is None:
-            raise HTTPException(status_code=401, detail="User is not authenticated")
         users_service = UserService(db_session)
+        db_user = await _require_authenticated_user(request, users_service)
         return users_service.to_schema(db_user, schema_type=UserResponse)
 
     @patch(path="/me")
@@ -201,46 +181,24 @@ class UserController(Controller):
         db_session: AsyncSession,
         data: UserUpdate,
     ) -> UserResponse:
-        user = _require_user(request)
-        db_user = await db_session.get(UserModel, user.id)
-        if db_user is None:
-            raise HTTPException(status_code=401, detail="User is not authenticated")
         users_service = UserService(db_session)
-
-        if data.email is not None:
-            email = data.email.strip()
-            if not email:
-                raise HTTPException(status_code=400, detail="Email cannot be empty.")
-            if email != db_user.email:
-                existing_user = await users_service.get_one_or_none(email=email)
-                if existing_user and existing_user.id != db_user.id:
-                    raise HTTPException(status_code=409, detail="User already exists.")
-            db_user.email = email
-
-        if data.first_name is not None:
-            first_name = data.first_name.strip()
-            if not first_name:
-                raise HTTPException(
-                    status_code=400, detail="First name cannot be empty."
-                )
-            db_user.first_name = first_name
-
-        if data.last_name is not None:
-            last_name = data.last_name.strip()
-            if not last_name:
-                raise HTTPException(
-                    status_code=400, detail="Last name cannot be empty."
-                )
-            db_user.last_name = last_name
-
-        if data.password is not None:
-            if not data.password:
-                raise HTTPException(status_code=400, detail="Password cannot be empty.")
-            ph = PasswordHasher()
-            db_user.password_hash = ph.hash(data.password)
-
-        await db_session.commit()
-        return users_service.to_schema(db_user, schema_type=UserResponse)
+        db_user = await _require_authenticated_user(request, users_service)
+        try:
+            updated_user = await users_service.apply_user_updates(
+                db_session=db_session,
+                user=db_user,
+                email=data.email,
+                first_name=data.first_name,
+                last_name=data.last_name,
+                password=data.password,
+            )
+        except UserFieldEmptyError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from None
+        except UserAlreadyExistsError:
+            raise HTTPException(
+                status_code=409, detail="User already exists."
+            ) from None
+        return users_service.to_schema(updated_user, schema_type=UserResponse)
 
     @delete(path="/me", status_code=200)
     async def delete_me(
@@ -248,10 +206,7 @@ class UserController(Controller):
         request: Request,
         db_session: AsyncSession,
     ) -> DeleteResponse:
-        user = _require_user(request)
-        db_user = await db_session.get(UserModel, user.id)
-        if db_user is None:
-            raise HTTPException(status_code=401, detail="User is not authenticated")
-        db_user.soft_delete()
-        await db_session.commit()
+        users_service = UserService(db_session)
+        db_user = await _require_authenticated_user(request, users_service)
+        await users_service.soft_delete_user(db_session=db_session, user=db_user)
         return DeleteResponse(deleted=True)

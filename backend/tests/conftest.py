@@ -151,6 +151,11 @@ def user_service_mock(mocker) -> UserService:
     service.get = mocker.AsyncMock()
     service.get_one_or_none = mocker.AsyncMock()
     service.create = mocker.AsyncMock()
+    service.create_user_account = mocker.AsyncMock()
+    service.authenticate_for_login = mocker.AsyncMock()
+    service.apply_user_updates = mocker.AsyncMock()
+    service.soft_delete_user = mocker.AsyncMock()
+    service.get_authenticated_user = mocker.AsyncMock()
     return service
 
 
