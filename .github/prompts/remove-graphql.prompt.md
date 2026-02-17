@@ -38,9 +38,20 @@ Task:
     env var and update env examples.
 - Remove GraphQL workflow and CI glue:
   - remove `backend:schema:export` and `frontend:codegen` Taskfile tasks.
+  - remove `schema:export` from `backend/Taskfile.yml`.
   - remove GraphQL schema verification from `.github/workflows/ci.yml`.
   - remove GraphQL codegen from `.github/actions/frontend-setup/action.yml`.
   - remove GraphQL bootstrap/log output in `setup.sh`.
+- Remove GraphQL-adjacent project glue that is easy to miss:
+  - update `backend/README.md` to remove GraphQL endpoint/docs references.
+  - update `frontend/.gitignore`, `frontend/biome.json`, and
+    `frontend/vitest.config.ts` to remove GraphQL artifact ignores/exclusions.
+  - update `.vscode/extensions.json` to remove GraphQL extension
+    recommendations if GraphQL is no longer a project workflow.
+  - update frontend test setup/mocks that import Apollo:
+    `frontend/__tests__/setup.tsx` and affected tests under `frontend/src/**`.
+  - update `.github/copilot-instructions.md` and
+    `.github/skills/guardrails/SKILL.md` to remove GraphQL-first assumptions.
 - Remove GraphQL-specific docs/prompts/rules:
   - delete `.github/prompts/graphql-contract.prompt.md`.
   - delete `.github/skills/graphql-contract/SKILL.md`.
@@ -71,8 +82,12 @@ Constraints:
 - Keep changes scoped to GraphQL removal only.
 - Do not remove REST endpoints, controllers, or REST client behavior.
 - Do not remove worker/beat/flower code paths.
+- Do not remove `msw` or `msw-storybook-addon`.
+- `graphql` may remain only when required as a peer/transitive dependency for
+  `msw`/`msw-storybook-addon`; remove GraphQL API usage instead.
 - Do not edit generated lockfiles manually.
-- If residual references are lockfile-only, document and keep them.
+- If residual references are lockfile-only or due to `msw`/`msw-storybook-addon`
+  dependency trees, document and keep them.
 
 Validation:
 
