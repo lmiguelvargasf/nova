@@ -3,10 +3,11 @@
 ## General Instruction
 
 - Use tasks defined in [Taskfile.yml](Taskfile.yml) as the source
-  of truth for running project commands.
-- Do not invent commands. If a needed operation is not represented
-  as a task, call that out explicitly and ask whether to add a task
-  first.
+  of truth and first choice for running project commands.
+- If a needed operation is not represented as a task, you may use direct
+  commands that are appropriate for the repository.
+- Keep Taskfile focused on project workflows; routine shell/git commands
+  (for example `git`, `ls`, `rm`) do not need Taskfile targets.
 
 ## Prompt-Scoped Command Exception
 
