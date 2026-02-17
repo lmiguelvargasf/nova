@@ -9,7 +9,8 @@ This workflow runs on pull request events (opened, synchronized, reopened, edite
 #### Validate PR
 
 - Check PR title follows semantic conventions (`feat`, `fix`, `docs`, etc.)
-- Validate PR size is 400 lines of code or less
+- Validate PR size is 1000 lines of code or less (excluding lockfiles and
+  generated artifacts)
 - Comment on PRs that exceed the size threshold
 
 ## CI
