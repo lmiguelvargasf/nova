@@ -1,0 +1,34 @@
+# https://taskfile.dev
+
+version: '3.46'
+
+tasks:
+  template:prune:no-rest:
+    desc: Remove REST stack while keeping GraphQL/full template
+    cmds:
+      - ./scripts/template-prune/apply.sh no-rest
+
+  template:prune:no-graphql:
+    desc: Remove GraphQL stack while keeping REST/full template
+    cmds:
+      - ./scripts/template-prune/apply.sh no-graphql
+
+  template:prune:no-ios:
+    desc: Remove iOS template
+    cmds:
+      - ./scripts/template-prune/apply.sh no-ios
+
+  template:prune:rest-only:
+    desc: Keep only a minimal backend REST template
+    cmds:
+      - ./scripts/template-prune/apply.sh rest-only
+
+  template:prune:status:
+    desc: Show template prune status and capabilities
+    cmds:
+      - cat .nova/template-prune-state.toml
+
+  template:prune:validate:
+    desc: Validate current repository after a prune profile
+    cmds:
+      - ./scripts/template-prune/validate.sh {{.CLI_ARGS}}
