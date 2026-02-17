@@ -54,6 +54,31 @@ validate_no_rest() {
 validate_no_graphql() {
   assert_missing "backend/src/backend/graphql"
   assert_missing "frontend/src/lib/apollo"
+  assert_missing "frontend/codegen.yml"
+  assert_missing "frontend/codegen.schema.json"
+  assert_missing ".github/prompts/graphql-contract.prompt.md"
+  assert_missing ".github/skills/graphql-contract"
+
+  assert_not_contains "backend/Taskfile.yml" "schema:export|backend\\.graphql\\.schema|GraphQL schema"
+  assert_not_contains "backend/.env.example" "GRAPHQL_MAX_DEPTH"
+  assert_not_contains "backend/README.md" "GraphQL|/graphql"
+  assert_not_contains "backend/pyproject.toml" "\"\\*\\*/graphql/\\*\\*/\\*\\.py\""
+  assert_not_contains "frontend/package.json" "graphql-codegen|\"prebuild\"[[:space:]]*:[[:space:]]*\"pnpm codegen\"|\"codegen\"[[:space:]]*:|\"codegen:watch\"[[:space:]]*:"
+  assert_not_contains "frontend/vitest.config.ts" "GraphQL files|src/lib/graphql/\\*\\*|schema/schema\\.graphql"
+  assert_not_contains "frontend/.gitignore" "GraphQL Codegen|/src/lib/graphql/"
+  assert_not_contains "frontend/biome.json" "src/lib/graphql|schema/schema\\.graphql"
+  assert_not_contains "setup.sh" "Running codegen"
+  assert_not_contains "setup.sh" "run_task_if_present frontend:codegen"
+  assert_not_contains "setup.sh" "GraphQL:[[:space:]]+http://localhost:8000/graphql"
+  assert_not_contains ".github/workflows/README.md" "GraphQL|codegen"
+  assert_not_contains ".github/instructions/backend.instructions.md" "GraphQL|graphql"
+  assert_not_contains ".github/instructions/frontend.instructions.md" "GraphQL|graphql"
+  assert_not_contains ".github/instructions/typescript.instructions.md" "GraphQL|graphql"
+  assert_not_contains ".github/instructions/python.instructions.md" "GraphQL|graphql"
+  assert_not_contains ".github/prompts/backend-entity.prompt.md" "GraphQL|graphql"
+  assert_not_contains ".github/prompts/frontend-feature.prompt.md" "GraphQL|graphql"
+  assert_not_contains ".github/skills/guardrails/SKILL.md" "GraphQL|graphql"
+
   run_task backend:test
   ensure_frontend_deps
   run_task frontend:check
