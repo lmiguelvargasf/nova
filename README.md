@@ -299,14 +299,8 @@ This project uses [Task][] to simplify common development workflows. The main
 - Running development tasks within the `backend` and `frontend` services (such
     as linting, formatting, or testing).
 - Managing background workers (Celery worker and beat).
-- Pruning template components after setup using profile-driven tasks:
-  - `task template:prune:no-rest`
-  - `task template:prune:no-graphql`
-  - `task template:prune:no-ios`
-  - `task template:prune:rest-only`
-
-`rest-only` is the backend-focused profile. It keeps a minimal REST backend and
-removes GraphQL, frontend, iOS, Celery/Beat/Flower, and Redis.
+- Inspecting worktree-specific infrastructure settings with `task infra:env`.
+- Running full-stack validation with `task validate`.
 
 To list all available tasks, run:
 
