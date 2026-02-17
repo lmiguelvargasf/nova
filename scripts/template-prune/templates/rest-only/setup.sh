@@ -150,7 +150,7 @@ main() {
   info "Running migrations..."
   trap cleanup EXIT
   DB_STARTED=1
-  "${MISE_BIN}" exec -- task backend:migrate
+  "${MISE_BIN}" exec -- task backend:migrations:migrate
 
   info "Seeding admin user"
   "${MISE_BIN}" exec -- task backend:create-admin-user -- --email admin@local.dev --password admin

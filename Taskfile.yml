@@ -92,17 +92,29 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} lock"
 
-  backend:migrate:
-    desc: Run backend migrations
-    deps: ["db:up"]
-    cmds:
-      - "{{.BACKEND_TASK}} migrate"
-
-  backend:migrate:make:
+  backend:migrations:make:
     desc: Generate a new migration
     deps: ["db:up"]
     cmds:
-      - "{{.BACKEND_TASK}} migrate:make -- {{.CLI_ARGS}}"
+      - "{{.BACKEND_TASK}} migrations:make -- {{.CLI_ARGS}}"
+
+  backend:migrations:make:empty:
+    desc: Generate an empty migration
+    deps: ["db:up"]
+    cmds:
+      - "{{.BACKEND_TASK}} migrations:make:empty -- {{.CLI_ARGS}}"
+
+  backend:migrations:migrate:
+    desc: Run backend migrations
+    deps: ["db:up"]
+    cmds:
+      - "{{.BACKEND_TASK}} migrations:migrate"
+
+  backend:migrations:revert:
+    desc: Revert the latest backend migration
+    deps: ["db:up"]
+    cmds:
+      - "{{.BACKEND_TASK}} migrations:revert"
 
   backend:dev:
     desc: Run backend
