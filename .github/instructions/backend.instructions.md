@@ -43,6 +43,10 @@ applyTo: "backend/**/*, Taskfile.yml, compose.yaml, frontend/schema/schema.graph
 - Prefer Taskfile workflows. If a required workflow is missing
    (e.g., “create a migration”), add a Task target rather than documenting
    multi-step manual commands as the official process.
+- If a migration is executed (or the task explicitly asks you to execute it),
+  validate reversibility by running `task backend:migrations:migrate` and
+  `task backend:migrations:revert`, then re-apply migrations so the local DB
+  returns to latest state unless instructed otherwise.
 
 ## GraphQL & contracts
 
@@ -135,7 +139,8 @@ backend/src/backend/
 12. Admin registration (`backend/src/backend/admin/views/__init__.py`): add the
    new view to `ADMIN_VIEWS`.
 13. Migration: generate and apply a migration using Taskfile targets (review
-   the generated file).
+   the generated file). If migrations are run, verify downgrade works by
+   reverting the latest migration and migrating again.
 
 ## Validation workflow
 

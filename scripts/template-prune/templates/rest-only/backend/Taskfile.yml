@@ -43,19 +43,29 @@ tasks:
       - uv lock --upgrade
       - uv sync
 
-  migrate:
-    desc: Apply database migrations
-    cmds:
-      - uv run litestar --app backend.application:create_app database upgrade --no-prompt
-
-  migrate:make:
+  migrations:make:
     desc: Generate a new migration
     cmds:
       - uv run litestar --app backend.application:create_app database make-migrations --autogenerate -m "{{.CLI_ARGS}}"
 
+  migrations:make:empty:
+    desc: Generate an empty migration
+    cmds:
+      - uv run litestar --app backend.application:create_app database make-migrations --no-autogenerate -m "{{.CLI_ARGS}}"
+
+  migrations:migrate:
+    desc: Apply database migrations
+    cmds:
+      - uv run litestar --app backend.application:create_app database upgrade --no-prompt
+
+  migrations:revert:
+    desc: Revert the latest migration
+    cmds:
+      - uv run litestar --app backend.application:create_app database downgrade --no-prompt
+
   dev:
     desc: Run dev server
-    deps: [migrate]
+    deps: ["migrations:migrate"]
     cmds:
       - uv run litestar --app backend.application:create_app run --reload
 

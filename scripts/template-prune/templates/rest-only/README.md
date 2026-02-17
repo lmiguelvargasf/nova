@@ -36,7 +36,7 @@ task backend:dev
 ## Core tasks
 
 - `task backend:install`
-- `task backend:migrate`
+- `task backend:migrations:migrate`
 - `task backend:dev`
 - `task backend:test`
 - `task backend:check`
