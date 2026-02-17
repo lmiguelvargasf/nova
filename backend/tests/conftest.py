@@ -40,20 +40,24 @@ def _test_db_name_for_worker(base_name: str, worker_id: str) -> str:
     return _validate_test_db_name(f"{base_name}_{safe_worker}")
 
 
+def _base_test_db_name(main_db_name: str) -> str:
+    return _validate_test_db_name(f"{main_db_name}_test")
+
+
 @pytest.fixture(scope="session")
 def test_db_name(worker_id: str) -> str:
     from backend.config.base import settings
 
-    return _test_db_name_for_worker(settings.postgres_test_db, worker_id)
+    base_test_db_name = _base_test_db_name(settings.postgres_db)
+    if base_test_db_name == settings.postgres_db:
+        raise DevelopmentDatabaseError
+    return _test_db_name_for_worker(base_test_db_name, worker_id)
 
 
 @pytest_asyncio.fixture(scope="session", loop_scope="session")
 async def worker_test_database(test_db_name: str) -> AsyncIterator[str]:
     from backend.config.alchemy import build_connection_string
     from backend.config.base import settings
-
-    if settings.postgres_test_db == settings.postgres_db:
-        raise DevelopmentDatabaseError
 
     admin_engine = create_async_engine(
         build_connection_string(db_name=settings.postgres_db),

@@ -21,16 +21,21 @@ class DevelopmentDatabaseError(RuntimeError):
         super().__init__("Refusing to run tests against the development database.")
 
 
+def _test_db_name(main_db_name: str) -> str:
+    return f"{main_db_name}_test"
+
+
 @pytest.fixture
 async def db_engine() -> AsyncIterator[AsyncEngine]:
     from backend.config.alchemy import build_connection_string
     from backend.config.base import settings
 
-    if settings.postgres_test_db == settings.postgres_db:
+    test_db_name = _test_db_name(settings.postgres_db)
+    if test_db_name == settings.postgres_db:
         raise DevelopmentDatabaseError
 
     engine = create_async_engine(
-        build_connection_string(db_name=settings.postgres_test_db),
+        build_connection_string(db_name=test_db_name),
         pool_pre_ping=True,
     )
 
@@ -69,9 +74,10 @@ async def db_session(db_sessionmaker: async_sessionmaker[AsyncSession]):
 @pytest.fixture
 async def test_client(db_schema: None) -> AsyncIterator[AsyncTestClient[Litestar]]:
     from backend.config.base import settings
+    test_db_name = _test_db_name(settings.postgres_db)
 
     config = SQLAlchemyAsyncConfig(
-        connection_string=build_connection_string(db_name=settings.postgres_test_db),
+        connection_string=build_connection_string(db_name=test_db_name),
         session_config=session_config,
         metadata=app_models.metadata,
         create_all=False,
