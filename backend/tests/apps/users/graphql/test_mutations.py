@@ -1,6 +1,14 @@
+from unittest.mock import ANY
+
 from strawberry.relay.utils import to_base64
 
 from backend.apps.users.models import UserModel
+from backend.apps.users.services import (
+    InvalidCredentialsError as InvalidCredentialsServiceError,
+)
+from backend.apps.users.services import (
+    UserAlreadyExistsError as UserAlreadyExistsServiceError,
+)
 
 
 class TestUserMutations:
@@ -14,8 +22,7 @@ class TestUserMutations:
             is_active=True,
         )
         mock_user.id = 1
-        user_service_mock.get_one_or_none.return_value = None
-        user_service_mock.create.return_value = mock_user
+        user_service_mock.create_user_account.return_value = mock_user
 
         mutation = """
         mutation CreateUser($userInput: UserInput!) {
@@ -51,29 +58,20 @@ class TestUserMutations:
         assert result["data"]["createUser"]["user"] == expected_user_data
         assert result["data"]["createUser"]["token"] is not None
 
-        user_service_mock.get_one_or_none.assert_called_once_with(
-            email="new@example.com"
-        )
-        user_service_mock.create.assert_called_once()
-        create_call = user_service_mock.create.call_args
-        data = create_call.args[0]
-        assert data["email"] == "new@example.com"
-        assert data["first_name"] == "New"
-        assert data["last_name"] == "User"
-        assert data["password_hash"] != "TestPassword123"
-        assert create_call.kwargs["auto_commit"] is True
-
-    async def test_create_user_already_exists(self, user_service_mock, graphql_client):
-        existing_user = UserModel(
-            email="existing@example.com",
-            password_hash="hashed",
-            first_name="Existing",
+        user_service_mock.create_user_account.assert_called_once_with(
+            db_session=ANY,
+            email="new@example.com",
+            password="TestPassword123",
+            first_name="New",
             last_name="User",
             is_admin=False,
             is_active=True,
         )
-        existing_user.id = 1
-        user_service_mock.get_one_or_none.return_value = existing_user
+
+    async def test_create_user_already_exists(self, user_service_mock, graphql_client):
+        user_service_mock.create_user_account.side_effect = (
+            UserAlreadyExistsServiceError("existing@example.com")
+        )
 
         mutation = """
         mutation CreateUser($userInput: UserInput!) {
@@ -104,10 +102,15 @@ class TestUserMutations:
             in result["errors"][0]["message"]
         )
 
-        user_service_mock.get_one_or_none.assert_called_once_with(
-            email="existing@example.com"
+        user_service_mock.create_user_account.assert_called_once_with(
+            db_session=ANY,
+            email="existing@example.com",
+            password="TestPassword123",
+            first_name="Test",
+            last_name="User",
+            is_admin=False,
+            is_active=True,
         )
-        user_service_mock.create.assert_not_called()
 
     async def test_update_current_user_success(
         self,
@@ -116,7 +119,16 @@ class TestUserMutations:
         current_user_mock,
         db_session_mock,
     ):
-        user_service_mock.get_one_or_none.return_value = None
+        updated_user = UserModel(
+            email="updated@example.com",
+            password_hash="hashed",
+            first_name="Updated",
+            last_name="User",
+            is_admin=False,
+            is_active=True,
+        )
+        updated_user.id = 1
+        user_service_mock.apply_user_updates.return_value = updated_user
 
         mutation = """
         mutation UpdateCurrentUser($userInput: UpdateUserInput!) {
@@ -147,30 +159,23 @@ class TestUserMutations:
         }
         assert result["data"]["updateCurrentUser"] == expected_user_data
 
-        user_service_mock.get_one_or_none.assert_called_once_with(
-            email="updated@example.com"
+        user_service_mock.apply_user_updates.assert_called_once_with(
+            db_session=db_session_mock,
+            user=current_user_mock,
+            email="updated@example.com",
+            first_name="Updated",
+            last_name="User",
+            password=None,
         )
-        db_session_mock.commit.assert_called_once()
-        assert current_user_mock.email == "updated@example.com"
-        assert current_user_mock.first_name == "Updated"
-        assert current_user_mock.last_name == "User"
 
     async def test_update_current_user_email_taken(
         self,
         user_service_mock,
         graphql_client,
-        current_user_mock,
     ):
-        existing_user = UserModel(
-            email="existing@example.com",
-            password_hash="hashed",
-            first_name="Existing",
-            last_name="User",
-            is_admin=False,
-            is_active=True,
+        user_service_mock.apply_user_updates.side_effect = (
+            UserAlreadyExistsServiceError("existing@example.com")
         )
-        existing_user.id = 2
-        user_service_mock.get_one_or_none.return_value = existing_user
 
         mutation = """
         mutation UpdateCurrentUser($userInput: UpdateUserInput!) {
@@ -193,27 +198,19 @@ class TestUserMutations:
             "User with email 'existing@example.com' already exists"
             in result["errors"][0]["message"]
         )
-        user_service_mock.get_one_or_none.assert_called_once_with(
-            email="existing@example.com"
-        )
 
     async def test_login_success(self, user_service_mock, graphql_client):
-        from argon2 import PasswordHasher
-
-        ph = PasswordHasher()
         password = "SecurePassword123!"
-        hashed = ph.hash(password)
-
         mock_user = UserModel(
             email="login@example.com",
-            password_hash=hashed,
+            password_hash="hashed",
             first_name="Login",
             last_name="User",
             is_admin=False,
             is_active=True,
         )
         mock_user.id = 1
-        user_service_mock.get_one_or_none.return_value = mock_user
+        user_service_mock.authenticate_for_login.return_value = (mock_user, False)
 
         mutation = """
         mutation Login($email: String!, $password: String!) {
@@ -235,29 +232,28 @@ class TestUserMutations:
         assert login_data["token"] is not None
         assert len(login_data["token"]) > 0
         assert login_data["user"]["email"] == "login@example.com"
+        user_service_mock.authenticate_for_login.assert_called_once_with(
+            db_session=ANY,
+            email="login@example.com",
+            password=password,
+        )
 
     async def test_login_reactivates_deleted_user(
-        self, user_service_mock, graphql_client, db_session_mock
+        self,
+        user_service_mock,
+        graphql_client,
     ):
-        import datetime
-
-        from argon2 import PasswordHasher
-
-        ph = PasswordHasher()
         password = "SecurePassword123!"
-        hashed = ph.hash(password)
-
         mock_user = UserModel(
             email="reactivate@example.com",
-            password_hash=hashed,
+            password_hash="hashed",
             first_name="Reactivate",
             last_name="User",
             is_admin=False,
             is_active=True,
-            deleted_at=datetime.datetime.now(datetime.UTC),
         )
         mock_user.id = 1
-        user_service_mock.get_one_or_none.return_value = mock_user
+        user_service_mock.authenticate_for_login.return_value = (mock_user, True)
 
         mutation = """
         mutation Login($email: String!, $password: String!) {
@@ -279,24 +275,16 @@ class TestUserMutations:
         login_data = result["data"]["login"]
         assert login_data["reactivated"] is True
         assert login_data["user"]["email"] == "reactivate@example.com"
-        assert mock_user.deleted_at is None
-        db_session_mock.commit.assert_called_once()
+        user_service_mock.authenticate_for_login.assert_called_once_with(
+            db_session=ANY,
+            email="reactivate@example.com",
+            password=password,
+        )
 
     async def test_login_invalid_credentials(self, user_service_mock, graphql_client):
-        from argon2 import PasswordHasher
-
-        ph = PasswordHasher()
-        # Mock user exists but password will be wrong
-        mock_user = UserModel(
-            email="login@example.com",
-            password_hash=ph.hash("CorrectPassword"),
-            first_name="Login",
-            last_name="User",
-            is_admin=False,
-            is_active=True,
+        user_service_mock.authenticate_for_login.side_effect = (
+            InvalidCredentialsServiceError()
         )
-        mock_user.id = 1
-        user_service_mock.get_one_or_none.return_value = mock_user
 
         mutation = """
         mutation Login($email: String!, $password: String!) {
@@ -310,9 +298,18 @@ class TestUserMutations:
 
         assert "errors" in result
         assert result["errors"][0]["message"] == "Invalid credentials"
+        user_service_mock.authenticate_for_login.assert_called_once_with(
+            db_session=ANY,
+            email="login@example.com",
+            password="WrongPassword",
+        )
 
     async def test_soft_delete_current_user(
-        self, graphql_client, current_user_mock, db_session_mock
+        self,
+        graphql_client,
+        current_user_mock,
+        db_session_mock,
+        user_service_mock,
     ):
         mutation = """
         mutation SoftDeleteCurrentUser {
@@ -323,5 +320,7 @@ class TestUserMutations:
 
         assert "errors" not in result
         assert result["data"]["softDeleteCurrentUser"] is True
-        current_user_mock.soft_delete.assert_called_once()
-        db_session_mock.commit.assert_called_once()
+        user_service_mock.soft_delete_user.assert_called_once_with(
+            db_session=db_session_mock,
+            user=current_user_mock,
+        )
