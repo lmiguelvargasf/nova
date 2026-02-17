@@ -95,6 +95,11 @@ tasks:
     cmds:
       - "{{.TYP}} check"
 
+  audit:
+    desc: Audit Python dependencies for known vulnerabilities
+    cmds:
+      - uv run pip-audit --skip-editable
+
   test:
     desc: Run tests without coverage
     cmds:
