@@ -24,6 +24,17 @@ assert_missing() {
   fi
 }
 
+assert_not_contains() {
+  local rel="$1"
+  local regex="$2"
+  local file="${ROOT_DIR}/${rel}"
+  [[ -f "${file}" ]] || return 0
+
+  if grep -Eq "${regex}" "${file}"; then
+    die "Expected '${rel}' to not contain: ${regex}"
+  fi
+}
+
 ensure_frontend_deps() {
   if [[ -d "${ROOT_DIR}/frontend" ]]; then
     run_task frontend:install
@@ -51,6 +62,8 @@ validate_no_graphql() {
 
 validate_no_ios() {
   assert_missing "ios"
+  assert_not_contains ".pre-commit-config.yaml" "ios-swiftlint"
+  assert_not_contains "mise.toml" "^[[:space:]]*swiftlint[[:space:]]*="
   run_task backend:test
   if [[ -d "${ROOT_DIR}/frontend" ]]; then
     ensure_frontend_deps
