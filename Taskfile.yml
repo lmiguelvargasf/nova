@@ -11,6 +11,11 @@ vars:
   FRONTEND_TASK: task -d frontend
   IOS_TEST_DESTINATION: platform=iOS Simulator,name=iPhone 17,OS=26.2
 
+includes:
+  template:
+    taskfile: ./Taskfile.template.yml
+    flatten: true
+
 tasks:
   infra:pull:
     desc: Pull infrastructure images
@@ -260,86 +265,6 @@ tasks:
     desc: Run frontend storybook:dev
     cmds:
       - "{{.FRONTEND_TASK}} storybook:dev"
-
-  template:prune:no-rest:
-    desc: Remove REST stack while keeping GraphQL/full template
-    cmds:
-      - ./scripts/template-prune/apply.sh no-rest
-
-  template:prune:no-graphql:
-    desc: Remove GraphQL stack while keeping REST/full template
-    cmds:
-      - ./scripts/template-prune/apply.sh no-graphql
-
-  template:prune:no-ios:
-    desc: Remove iOS template
-    cmds:
-      - ./scripts/template-prune/apply.sh no-ios
-
-  template:prune:rest-only:
-    desc: Keep only a minimal backend REST template
-    cmds:
-      - ./scripts/template-prune/apply.sh rest-only
-
-  template:prune:status:
-    desc: Show template prune status and capabilities
-    cmds:
-      - cat .nova/template-prune-state.toml
-
-  template:prune:validate:
-    desc: Validate current repository after a prune profile
-    cmds:
-      - ./scripts/template-prune/validate.sh {{.CLI_ARGS}}
-
-  git:branch:
-    desc: Create and switch to a codex/* branch
-    cmds:
-      - |
-        BRANCH="{{.CLI_ARGS}}"
-        if [ -z "$BRANCH" ]; then
-          echo "Usage: task git:branch -- codex/<name>" >&2
-          exit 1
-        fi
-        case "$BRANCH" in
-          codex/*) ;;
-          *)
-            echo "Branch must start with 'codex/'" >&2
-            exit 1
-            ;;
-        esac
-        git switch -c "$BRANCH"
-
-  git:commit:
-    desc: Commit tracked and untracked changes
-    cmds:
-      - |
-        MSG="{{.CLI_ARGS}}"
-        if [ -z "$MSG" ]; then
-          echo "Usage: task git:commit -- \"<message>\"" >&2
-          exit 1
-        fi
-        case "$MSG" in
-          \"*\")
-            MSG="${MSG#\"}"
-            MSG="${MSG%\"}"
-            ;;
-          \'*\')
-            MSG="${MSG#\'}"
-            MSG="${MSG%\'}"
-            ;;
-        esac
-        git add -A
-        git commit -m "$MSG"
-
-  git:push:
-    desc: Push current branch (or provided branch) to origin
-    cmds:
-      - |
-        BRANCH="{{.CLI_ARGS}}"
-        if [ -z "$BRANCH" ]; then
-          BRANCH="$(git branch --show-current)"
-        fi
-        git push -u origin "$BRANCH"
 
   pr:create:
     desc: Create a pull request to main using /tmp/prbody.md (requires PR_TITLE; defaults branch to current)
