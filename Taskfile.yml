@@ -137,6 +137,12 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} typecheck"
 
+  backend:validate:
+    desc: Run backend validate (check + typecheck + tests)
+    deps: ["db:up"]
+    cmds:
+      - "{{.BACKEND_TASK}} validate"
+
   backend:audit:
     desc: Run backend dependency audit
     cmds:
@@ -247,6 +253,12 @@ tasks:
     desc: Run frontend validate (check + check:types + tests)
     cmds:
       - "{{.FRONTEND_TASK}} validate"
+
+  validate:
+    desc: Run full stack validation (backend + frontend)
+    cmds:
+      - task backend:validate
+      - task frontend:validate
 
   frontend:test:unit:
     desc: Run frontend test:unit

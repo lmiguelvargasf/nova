@@ -95,6 +95,13 @@ tasks:
     cmds:
       - "{{.TYP}} check"
 
+  validate:
+    desc: Run full validation suite (check + typecheck + tests)
+    cmds:
+      - task check
+      - task typecheck
+      - task test
+
   audit:
     desc: Audit Python dependencies for known vulnerabilities
     cmds:
