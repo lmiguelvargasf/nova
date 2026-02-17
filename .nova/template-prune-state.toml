@@ -1,9 +1,0 @@
-version = 1
-applied_profiles = ""
-terminal_profile = ""
-has_rest = true
-has_graphql = true
-has_frontend = true
-has_ios = true
-has_celery = true
-has_redis = true

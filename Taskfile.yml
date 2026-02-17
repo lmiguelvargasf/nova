@@ -11,11 +11,6 @@ vars:
   FRONTEND_TASK: task -d frontend
   IOS_TEST_DESTINATION: platform=iOS Simulator,name=iPhone 17,OS=26.2
 
-includes:
-  template:
-    taskfile: ./Taskfile.template.yml
-    flatten: true
-
 tasks:
   infra:pull:
     desc: Pull infrastructure images
