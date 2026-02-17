@@ -105,6 +105,11 @@ tasks:
     cmds:
       - "{{.PYTEST}} --no-cov {{.CLI_ARGS}}"
 
+  test:parallel:
+    desc: Run tests without coverage in parallel (xdist)
+    cmds:
+      - "{{.PYTEST}} --no-cov -n auto {{.CLI_ARGS}}"
+
   test:cov:
     desc: Run tests with coverage and console report
     cmds:

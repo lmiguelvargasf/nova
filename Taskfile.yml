@@ -153,6 +153,12 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} test -- {{.CLI_ARGS}}"
 
+  backend:test:parallel:
+    desc: Run backend tests in parallel
+    deps: ["db:up"]
+    cmds:
+      - "{{.BACKEND_TASK}} test:parallel -- {{.CLI_ARGS}}"
+
   backend:test:cov:
     desc: Run backend test:cov
     deps: ["db:up"]
