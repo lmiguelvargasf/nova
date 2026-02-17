@@ -37,6 +37,11 @@ tasks:
     cmds:
       - pnpm exec playwright install chromium
 
+  msw:init:
+    desc: Generate Mock Service Worker file in public/
+    cmds:
+      - pnpm exec msw init public --no-save
+
   dev:
     desc: Run Next.js development server
     cmds:

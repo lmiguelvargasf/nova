@@ -35,6 +35,9 @@ dev = [
   "ruff>=0.15.1",
   "strawberry-graphql[debug-server]>=0.291.3",
   "ty>=0.0.17",
+  "ipython>=9.10.0",
+  "pytest-xdist>=3.8.0",
+  "pip-audit>=2.10.0",
 ]
 
 [tool.ruff]

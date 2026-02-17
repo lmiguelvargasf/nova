@@ -103,6 +103,7 @@ jobs:
       postgres:
         image: postgres:18
         env:
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
         ports:
@@ -115,9 +116,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
-
-      - name: Create test database
-        run: PGPASSWORD=${{ env.POSTGRES_PASSWORD }} psql -h localhost -U ${{ env.POSTGRES_USER }} -c "CREATE DATABASE ${POSTGRES_DB}_test;"
 
       - name: Backend Dependencies
         uses: ./.github/actions/backend-setup
@@ -133,6 +131,23 @@ jobs:
 
       - name: Run tests
         run: uv run pytest --no-cov
+
+  backend-dependency-audit:
+    name: Backend Dependency Audit
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Backend Dependencies
+        uses: ./.github/actions/backend-setup
+
+      - name: Run dependency audit
+        run: uv run pip-audit --skip-editable
 
   ios-swiftlint:
     name: iOS SwiftLint

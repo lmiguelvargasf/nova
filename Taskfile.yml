@@ -142,11 +142,22 @@ tasks:
     cmds:
       - "{{.BACKEND_TASK}} typecheck"
 
+  backend:audit:
+    desc: Run backend dependency audit
+    cmds:
+      - "{{.BACKEND_TASK}} audit"
+
   backend:test:
     desc: Run backend test
     deps: ["db:up"]
     cmds:
       - "{{.BACKEND_TASK}} test -- {{.CLI_ARGS}}"
+
+  backend:test:parallel:
+    desc: Run backend tests in parallel
+    deps: ["db:up"]
+    cmds:
+      - "{{.BACKEND_TASK}} test:parallel -- {{.CLI_ARGS}}"
 
   backend:test:cov:
     desc: Run backend test:cov
@@ -201,6 +212,11 @@ tasks:
     desc: Install Playwright browser binaries for frontend tests
     cmds:
       - "{{.FRONTEND_TASK}} playwright:install"
+
+  frontend:msw:init:
+    desc: Generate frontend Mock Service Worker file
+    cmds:
+      - "{{.FRONTEND_TASK}} msw:init"
 
   frontend:dev:
     desc: Run frontend

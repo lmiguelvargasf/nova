@@ -1,5 +1,3 @@
-from functools import cached_property
-
 from pydantic_settings import BaseSettings
 
 
@@ -21,10 +19,6 @@ class Settings(BaseSettings):
     celery_result_backend: str
     celery_timezone: str = "UTC"
     celery_result_expires_seconds: int = 60 * 60  # 1 hour
-
-    @cached_property
-    def postgres_test_db(self) -> str:
-        return f"{self.postgres_db}_test"
 
 
 settings = Settings()  # type: ignore[call-arg]
