@@ -7,6 +7,13 @@ See the [project root README](../README.md) for setup instructions.
 
 - [Application](http://localhost:3000)
 
+## Progressive Web App (PWA)
+
+- Manifest route: [http://localhost:3000/manifest.webmanifest](http://localhost:3000/manifest.webmanifest)
+- Service worker: [http://localhost:3000/sw.js](http://localhost:3000/sw.js)
+- Current scope includes installable PWA metadata and service worker registration.
+- Offline runtime caching and push notifications are not included in this pass.
+
 ## Tooling
 
 - **[Biome][]** – Linting and formatting

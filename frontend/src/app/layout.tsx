@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ServiceWorkerRegistration from "@/components/pwa/ServiceWorkerRegistration.client";
 import ApolloClientProvider from "@/lib/apollo/provider.client";
 
 const geistSans = Geist({
@@ -34,6 +35,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true}
       >
+        <ServiceWorkerRegistration />
         <ApolloClientProvider>{children}</ApolloClientProvider>
       </body>
     </html>
