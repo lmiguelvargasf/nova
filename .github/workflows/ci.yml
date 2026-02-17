@@ -149,13 +149,7 @@ jobs:
         uses: ./.github/actions/backend-setup
 
       - name: Run dependency audit
-        id: dependency_audit
-        continue-on-error: true
         run: uv run pip-audit --skip-editable
-
-      - name: Report dependency audit findings
-        if: steps.dependency_audit.outcome == 'failure'
-        run: echo "::warning::pip-audit found vulnerabilities in backend dependencies."
 
   ios-swiftlint:
     name: iOS SwiftLint
