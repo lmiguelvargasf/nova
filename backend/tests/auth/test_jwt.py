@@ -9,12 +9,12 @@ from backend.apps import models as app_models
 from backend.apps.users.models import UserModel
 from backend.auth.jwt import jwt_auth
 from backend.config.alchemy import build_connection_string, session_config
-from backend.config.base import settings
 
 
 @pytest.mark.asyncio
 async def test_jwt_auth_allows_me_endpoint(
     db_schema: None,
+    test_db_name: str,
     db_sessionmaker,
 ) -> None:
     async with db_sessionmaker() as session:
@@ -33,7 +33,7 @@ async def test_jwt_auth_allows_me_endpoint(
 
     token = jwt_auth.create_token(identifier=str(user.id))
     config = SQLAlchemyAsyncConfig(
-        connection_string=build_connection_string(db_name=settings.postgres_test_db),
+        connection_string=build_connection_string(db_name=test_db_name),
         session_config=session_config,
         metadata=app_models.metadata,
         create_all=False,

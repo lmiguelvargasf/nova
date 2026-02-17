@@ -11,7 +11,6 @@ from backend.apps import models as app_models
 from backend.apps.users.models import UserModel
 from backend.auth.jwt import jwt_auth
 from backend.config.alchemy import build_connection_string, session_config
-from backend.config.base import settings
 
 type UserFactory = Callable[..., Awaitable[UserModel]]
 
@@ -58,6 +57,7 @@ async def other_user(create_user: UserFactory) -> UserModel:
 @pytest.fixture
 async def rest_client(
     db_schema: None,
+    test_db_name: str,
     monkeypatch: pytest.MonkeyPatch,
 ) -> AsyncIterator[AsyncTestClient[Litestar]]:
     async def retrieve_user_handler(token, _connection):
@@ -69,7 +69,7 @@ async def rest_client(
 
     monkeypatch.setattr(jwt_auth, "retrieve_user_handler", retrieve_user_handler)
     config = SQLAlchemyAsyncConfig(
-        connection_string=build_connection_string(db_name=settings.postgres_test_db),
+        connection_string=build_connection_string(db_name=test_db_name),
         session_config=session_config,
         metadata=app_models.metadata,
         create_all=False,

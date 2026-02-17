@@ -2,8 +2,10 @@ from collections.abc import AsyncIterator
 from typing import Any
 
 import pytest
+import pytest_asyncio
 from litestar import Litestar
 from litestar.testing import AsyncTestClient
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -22,19 +24,78 @@ class DevelopmentDatabaseError(RuntimeError):
         super().__init__("Refusing to run tests against the development database.")
 
 
-@pytest.fixture
-async def db_engine() -> AsyncIterator[AsyncEngine]:
+class InvalidTestDatabaseNameError(RuntimeError):
+    def __init__(self, db_name: str) -> None:
+        super().__init__(f"Unsafe test database name generated: {db_name}")
+
+
+def _validate_test_db_name(db_name: str) -> str:
+    if not db_name.replace("_", "").isalnum():
+        raise InvalidTestDatabaseNameError(db_name)
+    return db_name
+
+
+def _test_db_name_for_worker(base_name: str, worker_id: str) -> str:
+    safe_worker = worker_id.replace("-", "_")
+    return _validate_test_db_name(f"{base_name}_{safe_worker}")
+
+
+@pytest.fixture(scope="session")
+def test_db_name(worker_id: str) -> str:
+    from backend.config.base import settings
+
+    return _test_db_name_for_worker(settings.postgres_test_db, worker_id)
+
+
+@pytest_asyncio.fixture(scope="session", loop_scope="session")
+async def worker_test_database(test_db_name: str) -> AsyncIterator[str]:
     from backend.config.alchemy import build_connection_string
     from backend.config.base import settings
 
     if settings.postgres_test_db == settings.postgres_db:
         raise DevelopmentDatabaseError
 
-    engine = create_async_engine(
-        build_connection_string(db_name=settings.postgres_test_db),
+    admin_engine = create_async_engine(
+        build_connection_string(db_name=settings.postgres_db),
         pool_pre_ping=True,
+        isolation_level="AUTOCOMMIT",
     )
 
+    async with admin_engine.connect() as conn:
+        exists = await conn.scalar(
+            text("SELECT 1 FROM pg_database WHERE datname = :db_name"),
+            {"db_name": test_db_name},
+        )
+        if not exists:
+            await conn.execute(text(f'CREATE DATABASE "{test_db_name}"'))
+
+    try:
+        yield test_db_name
+    finally:
+        async with admin_engine.connect() as conn:
+            await conn.execute(
+                text(
+                    """
+                    SELECT pg_terminate_backend(pid)
+                    FROM pg_stat_activity
+                    WHERE datname = :db_name
+                      AND pid <> pg_backend_pid()
+                    """
+                ),
+                {"db_name": test_db_name},
+            )
+            await conn.execute(text(f'DROP DATABASE IF EXISTS "{test_db_name}"'))
+        await admin_engine.dispose()
+
+
+@pytest.fixture
+async def db_engine(worker_test_database: str) -> AsyncIterator[AsyncEngine]:
+    from backend.config.alchemy import build_connection_string
+
+    engine = create_async_engine(
+        build_connection_string(db_name=worker_test_database),
+        pool_pre_ping=True,
+    )
     try:
         yield engine
     finally:
