@@ -62,6 +62,7 @@ validate_no_graphql() {
 
 validate_no_ios() {
   assert_missing "ios"
+  assert_missing ".agents/skills/swiftui-expert-skill"
   assert_not_contains ".pre-commit-config.yaml" "ios-swiftlint"
   assert_not_contains "mise.toml" "^[[:space:]]*swiftlint[[:space:]]*="
   run_task backend:test

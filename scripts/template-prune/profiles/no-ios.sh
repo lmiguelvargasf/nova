@@ -5,6 +5,7 @@ profile_summary() {
   local out="$1"
   cat > "${out}" <<SUMMARY
 remove ios/
+remove SwiftUI skill (.agents/skills/swiftui-expert-skill)
 remove iOS root task (Taskfile.yml: ios:test)
 remove iOS CI job (.github/workflows/ci.yml: ios-swiftlint)
 remove iOS pre-commit hook (.pre-commit-config.yaml: ios-swiftlint)
@@ -15,6 +16,7 @@ SUMMARY
 
 profile_apply() {
   remove_path "ios"
+  remove_path ".agents/skills/swiftui-expert-skill"
 
   remove_root_task_block "Taskfile.yml" "ios:test"
 
