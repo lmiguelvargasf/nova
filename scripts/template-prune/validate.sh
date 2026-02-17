@@ -63,8 +63,21 @@ validate_no_graphql() {
 validate_no_ios() {
   assert_missing "ios"
   assert_missing ".agents/skills/swiftui-expert-skill"
+  assert_missing ".github/instructions/swiftui.instructions.md"
   assert_not_contains ".pre-commit-config.yaml" "ios-swiftlint"
   assert_not_contains "mise.toml" "^[[:space:]]*swiftlint[[:space:]]*="
+  assert_not_contains "Taskfile.yml" "IOS_TEST_DESTINATION"
+  assert_not_contains "AGENTS.md" '`ios/`: apply'
+  assert_not_contains "AGENTS.md" "swiftui.instructions.md"
+  assert_not_contains "AGENTS.md" "ios/AGENTS.md"
+  assert_not_contains "README.md" "### Mobile \\(iOS\\)"
+  assert_not_contains "README.md" "## 📱 iOS App"
+  assert_not_contains "README.md" "\\[Mobile \\(iOS\\)\\]\\(#mobile-ios\\)"
+  assert_not_contains "README.md" "\\[📱 iOS App\\]\\(#-ios-app\\)"
+  assert_not_contains "README.md" "^!\\[Swift\\]"
+  assert_not_contains "README.md" "^!\\[iOS\\]"
+  assert_not_contains "README.md" "^2\\. Select a simulator or device\\.$"
+  assert_not_contains "README.md" "^\\[(swift|swiftui|xcode)\\]:"
   run_task backend:test
   if [[ -d "${ROOT_DIR}/frontend" ]]; then
     ensure_frontend_deps

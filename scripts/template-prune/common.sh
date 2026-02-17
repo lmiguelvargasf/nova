@@ -209,7 +209,12 @@ replace_in_file() {
   local to="$3"
   local file="${ROOT_DIR}/${rel_file}"
   [[ -f "${file}" ]] || return 0
-  perl -0pi -e "s/${from}/${to}/g" "${file}"
+  FROM="${from}" TO="${to}" perl -0pi -e '
+    my $from = $ENV{FROM};
+    my $to = $ENV{TO};
+    $to =~ s/\\n/\n/g;
+    s/$from/$to/g;
+  ' "${file}"
 }
 
 remove_regex_lines() {
