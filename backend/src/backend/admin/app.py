@@ -42,7 +42,7 @@ def create_admin_handler(
     @asgi(path="/admin", is_mount=True, copy_scope=True)
     async def admin_mount(scope: Scope, receive: Receive, send: Send) -> None:
         path = scope.get("path") or "/"
-        if not path.startswith("/admin"):
+        if path != "/admin" and not path.startswith("/admin/"):
             path = f"/admin{path}"
         if path.endswith("/") and path != "/admin/":
             path = path.rstrip("/")
