@@ -48,7 +48,7 @@
     "@biomejs/biome": "^2.4.2",
     "@graphql-codegen/cli": "^6.1.2",
     "@graphql-codegen/typescript": "^5.0.9",
-    "@graphql-codegen/typescript-operations": "^5.0.7",
+    "@graphql-codegen/typescript-operations": "^5.0.9",
     "@graphql-codegen/typescript-react-apollo": "^4.4.0",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@mdx-js/react": "^3.1.1",
