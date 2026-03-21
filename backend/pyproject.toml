@@ -11,12 +11,12 @@ dependencies = [
   "advanced-alchemy[argon2]>=1.8.2",
   "asyncpg>=0.31.0",
   "itsdangerous>=2.2.0",
-  "litestar[brotli,jwt,standard]>=2.21.0",
+  "litestar[brotli,jwt,standard]>=2.21.1",
   "loguru>=0.7.3",
   "msgspec>=0.20.0",
-  "pydantic-settings>=2.13.0",
+  "pydantic-settings>=2.13.1",
   "starlette-admin>=0.16.0",
-  "strawberry-graphql>=0.296.1",
+  "strawberry-graphql>=0.311.3",
   "celery[redis]>=5.6.2",
   "flower>=2.0.1",
 ]
@@ -27,15 +27,15 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
-  "rich>=14.3.2",
+  "rich>=14.3.3",
   "pytest>=9.0.2",
   "pytest-asyncio>=1.3.0",
   "pytest-cov>=7.0.0",
   "pytest-mock>=3.15.1",
-  "ruff>=0.15.1",
-  "strawberry-graphql[cli]>=0.296.1",
-  "ty>=0.0.17",
-  "ipython>=9.10.0",
+  "ruff>=0.15.7",
+  "strawberry-graphql[cli]>=0.311.3",
+  "ty>=0.0.24",
+  "ipython>=9.11.0",
   "pytest-xdist>=3.8.0",
   "pip-audit>=2.10.0",
 ]
