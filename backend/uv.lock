@@ -183,7 +183,7 @@ dev = [
     { name = "pytest-xdist" },
     { name = "rich" },
     { name = "ruff" },
-    { name = "strawberry-graphql", extra = ["debug-server"] },
+    { name = "strawberry-graphql", extra = ["cli"] },
     { name = "ty" },
 ]
 
@@ -213,7 +213,7 @@ dev = [
     { name = "pytest-xdist", specifier = ">=3.8.0" },
     { name = "rich", specifier = ">=14.3.2" },
     { name = "ruff", specifier = ">=0.15.1" },
-    { name = "strawberry-graphql", extras = ["debug-server"], specifier = ">=0.296.1" },
+    { name = "strawberry-graphql", extras = ["cli"], specifier = ">=0.296.1" },
     { name = "ty", specifier = ">=0.0.17" },
 ]
 
@@ -1702,7 +1702,7 @@ wheels = [
 
 [[package]]
 name = "strawberry-graphql"
-version = "0.296.1"
+version = "0.305.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cross-web" },
@@ -1711,13 +1711,13 @@ dependencies = [
     { name = "python-dateutil" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8b/0a/d77b3cbaec698f0e762a6e66a059be25f67e397e3b3dd13902594a8adeef/strawberry_graphql-0.296.1.tar.gz", hash = "sha256:d1ce6a5393fc6d545344eec4b85ccdcbe5337ffe7ca960b1d3aac26446bf0788", size = 216139, upload-time = "2026-02-17T20:25:09.964Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/49/e3/3e6767a897826084510e86d77d35db877037c2fe8aae4dcd61260f760473/strawberry_graphql-0.305.0.tar.gz", hash = "sha256:f03462ba0cc85422a280f021067a04a5fedf6fed8737c0c30c13fec457639cf0", size = 210722, upload-time = "2026-02-22T23:50:37.474Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/af/77/5e66f01df7b69b1dcc8adc40c668d5b99686c1b139e59ea961d72fa9867e/strawberry_graphql-0.296.1-py3-none-any.whl", hash = "sha256:6783a8588cae4393e2189007e366c3c010eb98d69e564fdd90316c7968ddab7d", size = 314110, upload-time = "2026-02-17T20:25:12.409Z" },
+    { url = "https://files.pythonhosted.org/packages/8b/10/8aa0438a80378dc72628a34c115ed6aecf8a26dff425192d3bced8ad66ad/strawberry_graphql-0.305.0-py3-none-any.whl", hash = "sha256:d9a79b566e9e841ffc73beec79b14e637f5e5ec68c8665e08f368316c35b1155", size = 307652, upload-time = "2026-02-22T23:50:39.623Z" },
 ]
 
 [package.optional-dependencies]
-debug-server = [
+cli = [
     { name = "libcst" },
     { name = "pygments" },
     { name = "python-multipart" },
@@ -1816,7 +1816,7 @@ wheels = [
 
 [[package]]
 name = "typer"
-version = "0.24.0"
+version = "0.24.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "annotated-doc" },
@@ -1824,9 +1824,9 @@ dependencies = [
     { name = "rich" },
     { name = "shellingham" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5a/b6/3e681d3b6bb22647509bdbfdd18055d5adc0dce5c5585359fa46ff805fdc/typer-0.24.0.tar.gz", hash = "sha256:f9373dc4eff901350694f519f783c29b6d7a110fc0dcc11b1d7e353b85ca6504", size = 118380, upload-time = "2026-02-16T22:08:48.496Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f5/24/cb09efec5cc954f7f9b930bf8279447d24618bb6758d4f6adf2574c41780/typer-0.24.1.tar.gz", hash = "sha256:e39b4732d65fbdcde189ae76cf7cd48aeae72919dea1fdfc16593be016256b45", size = 118613, upload-time = "2026-02-21T16:54:40.609Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/85/d0/4da85c2a45054bb661993c93524138ace4956cb075a7ae0c9d1deadc331b/typer-0.24.0-py3-none-any.whl", hash = "sha256:5fc435a9c8356f6160ed6e85a6301fdd6e3d8b2851da502050d1f92c5e9eddc8", size = 56441, upload-time = "2026-02-16T22:08:47.535Z" },
+    { url = "https://files.pythonhosted.org/packages/4a/91/48db081e7a63bb37284f9fbcefda7c44c277b18b0e13fbc36ea2335b71e6/typer-0.24.1-py3-none-any.whl", hash = "sha256:112c1f0ce578bfb4cab9ffdabc68f031416ebcc216536611ba21f04e9aa84c9e", size = 56085, upload-time = "2026-02-21T16:54:41.616Z" },
 ]
 
 [[package]]
