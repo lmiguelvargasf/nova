@@ -300,6 +300,8 @@ This project uses [Task][] to simplify common development workflows. The main
     as linting, formatting, or testing).
 - Managing background workers (Celery worker and beat).
 - Inspecting worktree-specific infrastructure settings with `task infra:env`.
+- Cleaning local git branches while preserving `main` with
+  `task git:branches:clean:local`.
 - Running full-stack validation with `task validate`.
 
 To list all available tasks, run:
