@@ -39,7 +39,7 @@
   "dependencies": {
     "@apollo/client": "^4.1.6",
     "@apollo/client-integration-nextjs": "^0.14.4",
-    "graphql": "^16.13.1",
+    "graphql": "^16.13.2",
     "next": "16.2.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
